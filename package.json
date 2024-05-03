@@ -20,7 +20,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix --color",
+    "prepare": "husky"
   },
   "browserslist": {
     "production": [
@@ -40,6 +43,11 @@
     "eslint-plugin-jsx-a11y": "^6.8.0",
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.2",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
     "prettier": "3.2.5"
+  },
+  "lint-staged": {
+    "**/*": "npm run lint:fix"
   }
 }
