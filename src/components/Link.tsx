@@ -1,4 +1,4 @@
-import {ReactNode, useState} from 'react';
+import { ReactNode, useState } from 'react';
 
 const STATUS = {
   HOVERED: 'hovered',
@@ -6,11 +6,11 @@ const STATUS = {
 };
 
 interface Props {
-    page: string, 
-    children: ReactNode
-  }
+  page: string;
+  children: ReactNode;
+}
 
-export default function Link({page, children} : Props) {
+export default function Link({ page, children }: Props) {
   const [status, setStatus] = useState(STATUS.NORMAL);
 
   const onMouseEnter = () => {
