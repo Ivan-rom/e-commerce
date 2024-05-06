@@ -1,6 +1,5 @@
 # Online store e-commerce
-
-# About
+## About
 
 Welcome to our eCommerce application! 
 We offer you an engaging and seamless e-shopping experience. It's only a couple of clicks between you and the desired product!
