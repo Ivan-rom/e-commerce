@@ -1,4 +1,5 @@
 import Input from '../components/Input';
+import { render, screen, fireEvent } from '@testing-library/react';
 
 it('should render as expected when properties are being passed', () => {
   // Arrange
@@ -42,14 +43,20 @@ it('should call to onChange prop when simulate input onChange', () => {
     value: 'test value',
     onChange: jest.fn(),
     error: 'test error',
-    type: 'test type',
+    type: 'text',
+    placeholder: 'enter text here',
   };
 
   // Act
-  // const component = () => <Input {...props} />;
-
-  // TODO: simulate change
+  render(<Input {...props} />);
+  const component = screen.getByPlaceholderText(props.placeholder);
+  const value = 'Entered Text';
+  fireEvent.change(component, {
+    target: {
+      value,
+    },
+  });
 
   // Assert
-  expect(props.onChange).toHaveBeenCalledWith('test name', 'updated value');
+  expect(component).toHaveValue('Entered Text');
 });

@@ -11,12 +11,18 @@ interface InputProps {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function Input(
-  { type, label, value, name, placeholder, error, disabled, onChange }: InputProps,
-  classList: Array<string>,
-) {
+export default function Input({
+  type,
+  label,
+  value,
+  name,
+  placeholder,
+  error,
+  disabled,
+  onChange,
+}: InputProps) {
   return (
-    <div className={classList.join(' ')}>
+    <div>
       <label htmlFor={label}> {label} </label>
       <input
         type={type || 'text'}
