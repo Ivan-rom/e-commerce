@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useState } from 'react';
 
 interface InputProps {
   type?: 'text' | 'number' | 'email' | 'password';
@@ -9,30 +9,29 @@ interface InputProps {
   error: boolean;
   disabled?: boolean;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  id?: 'number';
+  other: object;
 }
 
-export default function Input({
-  type,
-  label,
-  value,
-  name,
-  placeholder,
-  error,
-  disabled,
-  onChange,
-}: InputProps) {
+export default function Input({ ...props }: InputProps) {
+  const [value, setValue] = useState(props.value);
   return (
     <div>
-      <label htmlFor={label}> {label} </label>
+      <label htmlFor={props.label}> {props.label} </label>
       <input
-        type={type || 'text'}
+        {...props.other}
+        type={props.type}
+        name={props.name}
+        placeholder={props.placeholder}
+        disabled={props.disabled}
         value={value}
-        name={name}
-        placeholder={placeholder}
-        onChange={onChange}
-        disabled={disabled}
+        id={props.id}
+        onChange={(e) => {
+          setValue(e.target.value);
+          props.onChange(e);
+        }}
       />
-      {error && <div className="input-error"> Fill the field </div>}
+      {props.error && <div className="input-error"> Fill the field </div>}
     </div>
   );
 }
