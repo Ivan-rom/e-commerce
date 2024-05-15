@@ -1,7 +1,7 @@
 import { InputType } from './enums';
 
 export const emailProps = {
-  type: InputType.email,
+  type: InputType.text,
   label: 'E-mail',
   name: 'email',
   placeholder: 'yourmail@example.com',

@@ -13,57 +13,51 @@ interface Props {
   title: string;
   fields: Array<fieldConfig>;
   submitButton: ButtonProps;
+  validate: (inputs: HTMLFormElement) => { [key: string]: string };
 }
 
-function BasicForm({ title, fields, submitButton }: Props) {
-  const vars = fields.reduce((acc: { [key: string]: string | boolean }, field) => {
-    acc[field.name] = field.default;
-    return acc;
-  }, {});
+function BasicForm({ title, fields, submitButton, validate }: Props) {
+  const [form, setForm] = useState(
+    fields.reduce((acc, { name, default: value }) => ({ ...acc, [name]: value }), {}),
+  );
 
-  const [form, setForm] = useState(vars);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({ ...form });
 
   const onUpdateField = (e: FormEvent) => {
-    const nextFormState = {
-      ...form,
-      [(e.target as HTMLInputElement)?.name]:
-        (e.target as HTMLInputElement)?.value || (e.target as HTMLInputElement)?.checked,
-    };
-    setForm(nextFormState);
+    const { name, value, checked } = e.target as HTMLInputElement;
+    setForm({ ...form, [name]: value || checked });
   };
 
   const onSubmitForm = (e: FormEvent) => {
     e.preventDefault();
+    const validationErrors = validate(e.target as HTMLFormElement);
+    if (Object.keys(validationErrors).length !== 0) {
+      const nextErrorsState = Object.keys(errors).reduce(
+        (acc, key) => ({ ...acc, [key]: validationErrors[key] || errors[key] }),
+        {},
+      );
+      setErrors(nextErrorsState);
+      return;
+    }
     alert(JSON.stringify(form, null, 2));
   };
 
   return (
     <form onSubmit={onSubmitForm}>
       <h1 className="fs-xxl fw-600">{title}</h1>
-      {fields.map((field, index) => {
-        if (typeof field.default === 'string') {
-          return (
-            <Input
-              {...field.props}
-              key={index}
-              value={form[field.name] as string}
-              onChange={onUpdateField}
-            />
-          );
-        }
-        return (
+      {fields.map(({ props, name, default: fieldValue }, index) => (
+        <div key={index}>
           <Input
-            {...field.props}
-            key={index}
-            {...{
-              other: {
-                checked: form[field.name],
-              },
-            }}
+            {...props}
+            value={form[name as keyof typeof form]}
             onChange={onUpdateField}
+            {...(typeof fieldValue !== 'string' && {
+              other: { checked: form[name as keyof typeof form] },
+            })}
           />
-        );
-      })}
+          {errors[name] && <div className="text-rose-600">{errors[name]}</div>}
+        </div>
+      ))}
       <div>
         <Button {...submitButton} />
       </div>

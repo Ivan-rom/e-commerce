@@ -33,7 +33,6 @@ export default function Input({ ...props }: InputProps) {
           props.onChange?.(e);
         }}
       />
-      {props.error && <div className="input-error"> Fill the field </div>}
     </div>
   );
 }
