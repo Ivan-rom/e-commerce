@@ -1,5 +1,5 @@
 import { ChangeEvent, ReactNode, useState } from 'react';
-import InputType from '../constants/inputTypes';
+import { InputType } from '../constants/enums';
 interface InputProps {
   type?: InputType;
   label: string | ReactNode;

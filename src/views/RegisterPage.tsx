@@ -1,19 +1,27 @@
-import Input from '../components/Input';
-import InputType from '../constants/inputTypes';
-import ButtonType from '../constants/buttonTypes';
+import BasicForm from '../components/BasicForm';
+import { ButtonType, InputType } from '../constants/enums';
 import Button from '../components/Button';
-import Link from '../components/Link';
 import { emailProps, passwordProps } from '../constants/inputProps';
 
 const rememberProps = {
   type: InputType.checkbox,
-  label: (
-    <div>
-      By checking this box, you are agreeing to our <Link page="/terms"> terms of service. </Link>
-    </div>
-  ),
+  label: 'Remember me',
   name: 'remember',
-  text: 'Login',
+};
+
+export const repeatProps = {
+  type: InputType.text,
+  label: 'Password',
+  name: 'repeated_password',
+  placeholder: 'repeat password',
+  other: {
+    'aria-label': 'Password repeat field',
+    required: true,
+    minlength: '8',
+    pattern: '(?=.*d)(?=.*[a-z])(?=.*[A-Z]).{8,}',
+    title:
+      'Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters',
+  },
 };
 
 const buttonProps = {
@@ -21,25 +29,38 @@ const buttonProps = {
   text: 'Register',
 };
 
-const loginProps = {
+const registerProps = {
   text: 'Login',
 };
 
-function RegisterPage() {
+const loginFields = [
+  {
+    props: emailProps,
+    name: 'email',
+    default: '',
+  },
+  {
+    props: passwordProps,
+    name: 'password',
+    default: '',
+  },
+  {
+    props: repeatProps,
+    name: 'repeatPassword',
+    default: '',
+  },
+  {
+    props: rememberProps,
+    name: 'remember',
+    default: '',
+  },
+];
+
+export default function Register() {
   return (
-    <form>
-      <h1 className="fs-xxl fw-600">Register</h1>
-      <Input {...emailProps} />
-      <Input {...passwordProps} />
-      <Input {...rememberProps} />
-      <div>{<Button {...buttonProps} />}</div>
-      <div>
-        <Link page="/loginPage">
-          <Button {...loginProps}></Button>
-        </Link>
-      </div>
-    </form>
+    <div>
+      <BasicForm title="Login" fields={loginFields} submitButton={buttonProps} />
+      <Button {...registerProps} />
+    </div>
   );
 }
-
-export default RegisterPage;
