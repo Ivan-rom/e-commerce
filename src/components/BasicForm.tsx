@@ -13,33 +13,46 @@ interface Props {
   title: string;
   fields: Array<fieldConfig>;
   submitButton: ButtonProps;
-  validate: (inputs: HTMLFormElement) => { [key: string]: string };
+  validate: (inputs: HTMLInputElement) => { [key: string]: string };
 }
 
 function BasicForm({ title, fields, submitButton, validate }: Props) {
-  const [form, setForm] = useState(
-    fields.reduce((acc, { name, default: value }) => ({ ...acc, [name]: value }), {}),
+  const defaultForm = fields.reduce(
+    (acc, { name, default: value }) => ({ ...acc, [name]: value }),
+    {},
   );
+  const [form, setForm] = useState(defaultForm);
 
-  const [errors, setErrors] = useState<{ [key: string]: string }>({ ...form });
+  const [errors, setErrors] = useState<{ [key: string]: string }>(defaultForm);
 
-  const onUpdateField = (e: FormEvent) => {
-    const { name, value, checked } = e.target as HTMLInputElement;
-    setForm({ ...form, [name]: value || checked });
-  };
-
-  const onSubmitForm = (e: FormEvent) => {
-    e.preventDefault();
-    const validationErrors = validate(e.target as HTMLFormElement);
-    if (Object.keys(validationErrors).length !== 0) {
+  const validateFields = (e: FormEvent) => {
+    const validationErrors = validate(e.target as HTMLInputElement);
+    if (Object.values(validationErrors)[0] !== '') {
       const nextErrorsState = Object.keys(errors).reduce(
         (acc, key) => ({ ...acc, [key]: validationErrors[key] || errors[key] }),
         {},
       );
       setErrors(nextErrorsState);
       return;
+    } else {
+      setErrors(defaultForm);
+      return;
     }
-    alert(JSON.stringify(form, null, 2));
+  };
+
+  const onUpdateField = (e: FormEvent) => {
+    const { name, value, checked } = e.target as HTMLInputElement;
+
+    validateFields(e);
+    setForm({ ...form, [name]: value || checked });
+  };
+
+  const onSubmitForm = (e: FormEvent) => {
+    e.preventDefault();
+    if (Object.values(errors).join('').length > 0) {
+      return;
+    }
+    alert(JSON.stringify(form, null, 2)); // TODO: make an API call on successfull form submit
   };
 
   return (
