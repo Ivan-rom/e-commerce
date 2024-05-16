@@ -2,7 +2,7 @@ import BasicForm from '../components/BasicForm';
 import { InputType, ButtonType } from '../constants/enums';
 import Button from '../components/Button';
 import { emailProps, passwordProps } from '../constants/inputProps';
-import { validateLogin } from '../scripts/helpers/validation';
+import { validate } from '../scripts/helpers/validation';
 
 const rememberProps = {
   type: InputType.checkbox,
@@ -44,7 +44,7 @@ export default function Login() {
         title="Login"
         fields={loginFields}
         submitButton={buttonProps}
-        validate={validateLogin}
+        validate={validate}
       />
       <Button {...registerProps} />
     </div>

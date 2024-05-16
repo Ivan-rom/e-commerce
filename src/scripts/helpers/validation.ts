@@ -48,7 +48,7 @@ const emailChecker = (email: string) => {
   return errorsList;
 };
 
-export const validateLogin = (input: HTMLInputElement): { [key: string]: string } => {
+export const validate = (input: HTMLInputElement): { [key: string]: string } => {
   const errors: { [key: string]: string } = {};
   switch (input.name) {
     case 'email':

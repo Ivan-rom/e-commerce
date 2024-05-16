@@ -2,7 +2,7 @@ import BasicForm from '../components/BasicForm';
 import { ButtonType, InputType } from '../constants/enums';
 import Button from '../components/Button';
 import { emailProps, passwordProps } from '../constants/inputProps';
-
+import { validate } from '../scripts/helpers/validation';
 const rememberProps = {
   type: InputType.checkbox,
   label: 'Remember me',
@@ -59,7 +59,12 @@ const loginFields = [
 export default function Register() {
   return (
     <div>
-      <BasicForm title="Login" fields={loginFields} submitButton={buttonProps} />
+      <BasicForm
+        title="Login"
+        fields={loginFields}
+        submitButton={buttonProps}
+        validate={validate}
+      />
       <Button {...registerProps} />
     </div>
   );
