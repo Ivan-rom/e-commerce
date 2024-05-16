@@ -1,9 +1,8 @@
 import BasicForm from '../components/BasicForm';
 import { InputType, ButtonType } from '../constants/enums';
-import Button from '../components/Button';
 import { emailProps, passwordProps } from '../constants/inputProps';
 import { validate } from '../scripts/helpers/validation';
-
+import Link from '../components/Link';
 const rememberProps = {
   type: InputType.checkbox,
   label: 'Remember me',
@@ -13,10 +12,6 @@ const rememberProps = {
 const buttonProps = {
   type: ButtonType.submit,
   text: 'Login',
-};
-
-const registerProps = {
-  text: 'Register',
 };
 
 const loginFields = [
@@ -46,7 +41,7 @@ export default function Login() {
         submitButton={buttonProps}
         validate={validate}
       />
-      <Button {...registerProps} />
+      <Link page="/register">Register</Link>
     </div>
   );
 }

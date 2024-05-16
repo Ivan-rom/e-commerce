@@ -1,6 +1,6 @@
 import BasicForm from '../components/BasicForm';
 import { ButtonType, InputType } from '../constants/enums';
-import Button from '../components/Button';
+import Link from '../components/Link';
 import { emailProps, passwordProps } from '../constants/inputProps';
 import { validate } from '../scripts/helpers/validation';
 const rememberProps = {
@@ -17,20 +17,12 @@ export const repeatProps = {
   other: {
     'aria-label': 'Password repeat field',
     required: true,
-    minlength: '8',
-    pattern: '(?=.*d)(?=.*[a-z])(?=.*[A-Z]).{8,}',
-    title:
-      'Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters',
   },
 };
 
 const buttonProps = {
   type: ButtonType.submit,
   text: 'Register',
-};
-
-const registerProps = {
-  text: 'Login',
 };
 
 const loginFields = [
@@ -60,12 +52,12 @@ export default function Register() {
   return (
     <div>
       <BasicForm
-        title="Login"
+        title="Register"
         fields={loginFields}
         submitButton={buttonProps}
         validate={validate}
       />
-      <Button {...registerProps} />
+      <Link page="/login">Login</Link>
     </div>
   );
 }
