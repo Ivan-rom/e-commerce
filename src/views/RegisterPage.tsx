@@ -1,19 +1,35 @@
-import Input from '../components/Input';
-import InputType from '../constants/inputTypes';
-import ButtonType from '../constants/buttonTypes';
-import Button from '../components/Button';
+import BasicForm from '../components/BasicForm';
+import { ButtonType, InputType } from '../constants/enums';
 import Link from '../components/Link';
 import { emailProps, passwordProps } from '../constants/inputProps';
-
+import { validate } from '../scripts/helpers/validation';
 const rememberProps = {
   type: InputType.checkbox,
-  label: (
-    <div>
-      By checking this box, you are agreeing to our <Link page="/terms"> terms of service. </Link>
-    </div>
-  ),
+  label: 'Remember me',
   name: 'remember',
-  text: 'Login',
+};
+
+const street = {
+  type: InputType.text,
+  label: 'Street',
+  name: 'street',
+};
+
+const city = {
+  type: InputType.text,
+  label: 'City',
+  name: 'city',
+};
+
+const birthDateProps = {
+  type: InputType.date,
+  label: 'Date of birth',
+  name: 'birthday',
+  other: {
+    'aria-label': 'Date of birth field',
+    required: true,
+    min: '1924-01-01',
+  },
 };
 
 const buttonProps = {
@@ -21,25 +37,49 @@ const buttonProps = {
   text: 'Register',
 };
 
-const loginProps = {
-  text: 'Login',
-};
+const loginFields = [
+  {
+    props: emailProps,
+    name: 'email',
+    default: '',
+  },
+  {
+    props: passwordProps,
+    name: 'password',
+    default: '',
+  },
+  {
+    props: birthDateProps,
+    name: 'birthday',
+    default: '',
+  },
+  {
+    props: street,
+    name: 'street',
+    default: '',
+  },
+  {
+    props: city,
+    name: 'city',
+    default: '',
+  },
+  {
+    props: rememberProps,
+    name: 'remember',
+    default: '',
+  },
+];
 
-function RegisterPage() {
+export default function Register() {
   return (
-    <form>
-      <h1 className="fs-xxl fw-600">Register</h1>
-      <Input {...emailProps} />
-      <Input {...passwordProps} />
-      <Input {...rememberProps} />
-      <div>{<Button {...buttonProps} />}</div>
-      <div>
-        <Link page="/loginPage">
-          <Button {...loginProps}></Button>
-        </Link>
-      </div>
-    </form>
+    <div>
+      <BasicForm
+        title="Register"
+        fields={loginFields}
+        submitButton={buttonProps}
+        validate={validate}
+      />
+      <Link page="/login">Login</Link>
+    </div>
   );
 }
-
-export default RegisterPage;
