@@ -9,14 +9,26 @@ const rememberProps = {
   name: 'remember',
 };
 
-export const repeatProps = {
+const street = {
   type: InputType.text,
-  label: 'Password',
-  name: 'repeated_password',
-  placeholder: 'repeat password',
+  label: 'Street',
+  name: 'street',
+};
+
+const city = {
+  type: InputType.text,
+  label: 'City',
+  name: 'city',
+};
+
+const birthDateProps = {
+  type: InputType.date,
+  label: 'Date of birth',
+  name: 'birthday',
   other: {
-    'aria-label': 'Password repeat field',
+    'aria-label': 'Date of birth field',
     required: true,
+    min: '1924-01-01',
   },
 };
 
@@ -37,8 +49,18 @@ const loginFields = [
     default: '',
   },
   {
-    props: repeatProps,
-    name: 'repeatPassword',
+    props: birthDateProps,
+    name: 'birthday',
+    default: '',
+  },
+  {
+    props: street,
+    name: 'street',
+    default: '',
+  },
+  {
+    props: city,
+    name: 'city',
     default: '',
   },
   {

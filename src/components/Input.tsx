@@ -22,9 +22,7 @@ export default function Input({ ...props }: InputProps) {
   const [isVisible, setVisibility] = useState(false);
   return (
     <div>
-      <p>
-        <label htmlFor={props.name}> {props.label} </label>
-      </p>
+      <label htmlFor={props.name}> {props.label} </label>
       <input
         {...props.other}
         type={type}

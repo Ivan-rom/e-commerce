@@ -1,7 +1,7 @@
 const containsUppercase = (str: string) => Boolean(str.match(/[A-Z]/));
 const containsLowercase = (str: string) => Boolean(str.match(/[a-z]/));
 const containsNumber = (str: string) => Boolean(str.match(/\d/));
-const containsSpecialCharacters = (str: string) => Boolean(str.match(/[!@#$%^&*]/));
+const containsSpecialCharacters = (str: string) => Boolean(str.match(/[!@#$%^&*+№]/));
 const isValidEmail = (str: string) =>
   Boolean(str.match(/^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/));
 const containsDomainName = (str: string) =>
@@ -48,6 +48,45 @@ const emailChecker = (email: string) => {
   return errorsList;
 };
 
+const calculateAge = (date: Date) => {
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth();
+  const currentDay = currentDate.getDate();
+  let age = currentYear - date.getFullYear();
+
+  if (currentMonth < date.getMonth() - 1) {
+    age--;
+  }
+  if (date.getMonth() - 1 == currentMonth && currentDay < date.getDate()) {
+    age--;
+  }
+  return age;
+};
+
+const textChecker = (str: string) => (str.length > 0 ? '' : 'Must contain at least one character');
+
+const checkCity = (str: string) => {
+  const errorsList = [];
+  errorsList.push(textChecker(str));
+  if (containsSpecialCharacters(str)) {
+    errorsList.push(textChecker("Shouldn't contain special characters"));
+  }
+  if (containsNumber(str)) {
+    errorsList.push(textChecker("Shouldn't contain numbers"));
+  }
+  return errorsList;
+};
+
+const dateChecker = (str: string) => {
+  const errorsList = [];
+  const date = new Date(str);
+  if (calculateAge(date) <= 13) {
+    errorsList.push('You should be more than 13 years old');
+  }
+  return errorsList;
+};
+
 export const validate = (input: HTMLInputElement): { [key: string]: string } => {
   const errors: { [key: string]: string } = {};
   switch (input.name) {
@@ -57,16 +96,20 @@ export const validate = (input: HTMLInputElement): { [key: string]: string } => 
     case 'password':
       errors.password = passwordChecker(input.value).join('\n');
       break;
+    case 'birthday':
+      errors.birthday = dateChecker(input.value).join('\n');
+      break;
+    case 'street':
+      errors.city = textChecker(input.value);
+      break;
+    case 'city':
+      errors.city = checkCity(input.value).join('\n');
+      break;
+    // case 'postal': TODO: implement postal code validation with choosen countries
+    //   errors.postal = checkCity(input.value).join('\n');
+    //   break;
     default:
       break;
   }
   return errors;
 };
-
-// export const validateRegistration = (inputValues: HTMLInputElement): { [key: string]: string } => {
-//   const errors: { [key: string]: string } = {};
-//   const elements = (inputValues as AuthFields).elements;
-//   errors.email = emailChecker(elements.email.value).join('\n');
-//   errors.password = passwordChecker(elements.password.value).join('\n');
-//   return errors;
-// };
