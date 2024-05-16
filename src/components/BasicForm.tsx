@@ -26,18 +26,10 @@ function BasicForm({ title, fields, submitButton, validate }: Props) {
   const [errors, setErrors] = useState<{ [key: string]: string }>(defaultForm);
 
   const validateFields = (e: FormEvent) => {
-    const validationErrors = validate(e.target as HTMLInputElement);
-    if (Object.values(validationErrors)[0] !== '') {
-      const nextErrorsState = Object.keys(errors).reduce(
-        (acc, key) => ({ ...acc, [key]: validationErrors[key] || errors[key] }),
-        {},
-      );
-      setErrors(nextErrorsState);
-      return;
-    } else {
-      setErrors(defaultForm);
-      return;
-    }
+    const target = e.target as HTMLInputElement;
+    const validationErrors = validate(target);
+    setErrors({ ...errors, [target.name]: validationErrors[target.name] });
+    return;
   };
 
   const onUpdateField = (e: FormEvent) => {
