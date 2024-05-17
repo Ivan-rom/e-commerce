@@ -1,6 +1,6 @@
 import BasicForm from '../components/BasicForm';
-import { InputType, ButtonType } from '../constants/enums';
-import { emailProps, passwordProps } from '../constants/inputProps';
+import { InputType, ButtonType } from '../scripts/constants/enums';
+import { emailProps, passwordProps } from '../scripts/constants/inputProps';
 import { validate } from '../scripts/helpers/validation';
 import Link from '../components/Link';
 const rememberProps = {

@@ -1,7 +1,7 @@
 import BasicForm from '../components/BasicForm';
-import { ButtonType, InputType } from '../constants/enums';
+import { ButtonType, InputType } from '../scripts/constants/enums';
 import Link from '../components/Link';
-import { emailProps, passwordProps } from '../constants/inputProps';
+import { emailProps, passwordProps } from '../scripts/constants/inputProps';
 import { validate } from '../scripts/helpers/validation';
 const rememberProps = {
   type: InputType.checkbox,

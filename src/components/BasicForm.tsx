@@ -1,6 +1,6 @@
 import Input from './Input';
 import Button from './Button';
-import { InputProps, ButtonProps } from '../constants/types';
+import { InputProps, ButtonProps } from '../scripts/constants/types';
 import { FormEvent, useState } from 'react';
 // import { post } from '../api/client';
 

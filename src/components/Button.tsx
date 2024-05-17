@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ButtonType } from '../constants/enums';
+import { ButtonType } from '../scripts/constants/enums';
 
 const STATUS = {
   HOVERED: 'hovered',

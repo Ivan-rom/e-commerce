@@ -12,3 +12,8 @@ export enum InputType {
   checkbox = 'checkbox',
   date = 'date',
 }
+
+export enum FieldType {
+  input,
+  select,
+}

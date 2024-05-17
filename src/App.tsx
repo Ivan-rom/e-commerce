@@ -5,6 +5,7 @@ import LoginPage from './views/LoginPage';
 import RegisterPage from './views/RegisterPage';
 import NotFoundPage from './pages/notFound/NotFound';
 import Header from './components/Header';
+
 function App() {
   return (
     <Router>
