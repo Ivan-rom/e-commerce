@@ -14,6 +14,10 @@ export const authenticateCustomer = (data: Customer | AuthData) =>
     })
     .execute();
 
+export const getUserInfo = async () => {
+  return await apiRoot.me().get().execute();
+};
+
 export const createCustomer = (draft: Customer) =>
   apiRoot
     .customers()

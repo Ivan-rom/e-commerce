@@ -17,3 +17,10 @@ export enum FieldType {
   input,
   select,
 }
+
+export enum AuthActions {
+  LOGIN_SUCCESS = 'LOGIN_SUCCESS',
+  LOGIN_FAIL = 'LOGIN_FAIL',
+  LOGOUT = 'LOGOUT',
+  SET_MESSAGE = 'SET_MESSAGE',
+}

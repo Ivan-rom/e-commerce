@@ -18,3 +18,12 @@ export type ButtonProps = {
   text: string;
   type?: ButtonType;
 };
+
+interface LoginFormElementsCollection extends HTMLFormControlsCollection {
+  email: HTMLInputElement;
+  password: HTMLInputElement;
+}
+
+export interface LoginFormElements extends HTMLFormElement {
+  readonly elements: LoginFormElementsCollection;
+}
