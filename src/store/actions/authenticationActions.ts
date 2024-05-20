@@ -22,13 +22,11 @@ export const register =
       password: password,
       dateOfBirth: dateOfBirth,
     }).then(
-      (data) => {
-        console.log(data);
+      () => {
         dispatch({
           type: AuthActions.REGISTER_SUCCESS,
         });
-        console.log(data);
-        return Promise.resolve();
+        return Promise.resolve('Account succesfully created!');
       },
       (error) => {
         const message =
@@ -56,7 +54,7 @@ export const login = (email: string, password: string) => (dispatch: any) =>
         'e-com-user',
         JSON.stringify({ email: email, password: password, user: data.body.customer }),
       );
-      return Promise.resolve();
+      return Promise.resolve('Success!');
     },
     (error) => {
       const message =

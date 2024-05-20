@@ -102,7 +102,6 @@ export default function Register() {
     const target = e.currentTarget as RegisterFormElements;
 
     const elements = target.elements;
-    console.log(elements);
     return await dispatch(
       register(
         elements.firstName.value,

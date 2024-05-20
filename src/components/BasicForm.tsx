@@ -14,7 +14,7 @@ interface Props {
   fields: Array<fieldConfig>;
   submitButton: ButtonProps;
   validate?: (inputs: HTMLInputElement) => { [key: string]: string };
-  onSubmit?: (e: FormEvent) => Promise<void>;
+  onSubmit?: (e: FormEvent) => Promise<string>;
 }
 
 function BasicForm({ title, fields, submitButton, validate, onSubmit }: Props) {
@@ -49,17 +49,15 @@ function BasicForm({ title, fields, submitButton, validate, onSubmit }: Props) {
     }
 
     onSubmit?.(e)
-      .then((data) => {
-        console.log(data);
+      .then(() => {
         navigate(`/`);
       })
       .catch((err) => {
-        console.log(err);
         setSubmitError(err);
         return;
       });
 
-    alert(JSON.stringify(form, null, 2)); // TODO: make an API call on successfull form submit
+    // alert(JSON.stringify(form, null, 2)); // TODO: make an API call on successfull form submit
   };
 
   return (
@@ -80,7 +78,10 @@ function BasicForm({ title, fields, submitButton, validate, onSubmit }: Props) {
       ))}
       {submitError && <div className="text-rose-600">{submitError}</div>}
       <div>
-        <Button {...submitButton} />
+        <Button
+          {...submitButton}
+          class="gap-1 flex flex p-2 rounded-2xl border-black border hover:bg-backgroundHoverPrimary place-items-center"
+        />
       </div>
     </form>
   );

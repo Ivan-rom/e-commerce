@@ -1,5 +1,5 @@
 import BasicForm from '../components/BasicForm';
-import { InputType, ButtonType } from '../scripts/constants/enums';
+import { ButtonType } from '../scripts/constants/enums';
 import { emailProps, passwordProps } from '../scripts/constants/inputProps';
 // import { validate } from '../scripts/helpers/validation';
 import Link from '../components/Link';
@@ -8,11 +8,11 @@ import { login } from '../store/actions/authenticationActions';
 import { FormEvent } from 'react';
 import { LoginFormElements } from '../scripts/constants/types';
 // import Header from '../components/Header';
-const rememberProps = {
-  type: InputType.checkbox,
-  label: 'Remember me',
-  name: 'remember',
-};
+// const rememberProps = {
+//   type: InputType.checkbox,
+//   label: 'Remember me',
+//   name: 'remember',
+// };
 
 const buttonProps = {
   type: ButtonType.submit,
@@ -30,11 +30,11 @@ const loginFields = [
     name: 'password',
     default: '',
   },
-  {
-    props: rememberProps,
-    name: 'remember',
-    default: '',
-  },
+  // {
+  //   props: rememberProps,
+  //   name: 'remember',
+  //   default: '',
+  // },
 ];
 
 export default function Login() {
