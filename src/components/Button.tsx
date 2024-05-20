@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { ButtonType } from '../constants/enums';
+import { ReactNode, useState } from 'react';
+import { ButtonType } from '../scripts/constants/enums';
 
 const STATUS = {
   HOVERED: 'hovered',
@@ -9,6 +9,9 @@ const STATUS = {
 interface Props {
   text: string;
   type?: ButtonType;
+  class?: string;
+  children?: ReactNode;
+  onClick?: () => void;
 }
 
 export default function Button({ ...props }: Props) {
@@ -24,12 +27,14 @@ export default function Button({ ...props }: Props) {
 
   return (
     <button
-      className={status}
+      className={`${status} ${props.class}`}
       type={props.type || ButtonType.button}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      onClick={props.onClick}
     >
       {props.text}
+      {props.children}
     </button>
   );
 }

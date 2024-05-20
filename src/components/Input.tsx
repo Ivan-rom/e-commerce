@@ -1,5 +1,5 @@
 import { ChangeEvent, ReactNode, useState } from 'react';
-import { InputType } from '../constants/enums';
+import { InputType } from '../scripts/constants/enums';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 
 interface InputProps {
