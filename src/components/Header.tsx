@@ -19,6 +19,7 @@ interface props {
 
 export default function Header() {
   const state = useSelector((state: auth) => state.auth);
+  console.log(state);
   const dispatch = useAppDispatch();
   const onSubmit = () => dispatch(logout());
   return (

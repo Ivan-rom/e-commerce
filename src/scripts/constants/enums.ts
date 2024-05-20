@@ -26,3 +26,9 @@ export enum AuthActions {
   LOGOUT = 'LOGOUT',
   SET_MESSAGE = 'SET_MESSAGE',
 }
+
+export enum PageNames {
+  main = 'main',
+  login = 'login',
+  register = 'register',
+}

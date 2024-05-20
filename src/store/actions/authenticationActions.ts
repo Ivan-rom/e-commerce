@@ -14,9 +14,16 @@ export const register =
     // street: any,
     // city: any,
   ) =>
-  (dispatch: (arg0: { type: any; payload?: any }) => void) =>
-    createCustomer({ firstName, lastName, email, password, dateOfBirth }).then(
+  (dispatch: any) =>
+    createCustomer({
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: password,
+      dateOfBirth: dateOfBirth,
+    }).then(
       (data) => {
+        console.log(data);
         dispatch({
           type: AuthActions.REGISTER_SUCCESS,
         });
@@ -28,7 +35,7 @@ export const register =
           (error.response && error.response.data && error.response.data.message) ||
           error.message ||
           error.toString();
-
+        console.log(error);
         dispatch({
           type: AuthActions.REGISTER_FAIL,
         });

@@ -3,13 +3,12 @@ import { ButtonType, InputType } from '../scripts/constants/enums';
 import Link from '../components/Link';
 import { emailProps, passwordProps } from '../scripts/constants/inputProps';
 import { validate } from '../scripts/helpers/validation';
-// import { register } from '../store/actions/authenticationActions';
-// import { useAppDispatch } from '../scripts/hooks/storeHooks';
-// import { RegisterFormElements } from '../scripts/constants/types';
-// import { FormEvent } from 'react';
-// import { FormEvent } from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
+import { register } from '../store/actions/authenticationActions';
+import { useAppDispatch } from '../scripts/hooks/storeHooks';
+import { RegisterFormElements } from '../scripts/constants/types';
+import { FormEvent } from 'react';
 
+// import Header from '../components/Header';
 const rememberProps = {
   type: InputType.checkbox,
   label: 'Remember me',
@@ -97,39 +96,36 @@ const loginFields = [
   },
 ];
 
-// const onSubmit = (e: FormEvent) => {
-//   e.preventDefault();
-//   const { email, password, dateOfBirth, street, city } = e.target as HTMLInputElement;
-//   dispatchEvent()
-// };
-
 export default function Register() {
-  // const dispatch = useAppDispatch();
-  // const onSubmit = async (e: FormEvent<RegisterFormElements>) => {
-  //   const target = e.currentTarget;
+  const dispatch = useAppDispatch();
+  const onSubmit = async (e: FormEvent) => {
+    const target = e.currentTarget as RegisterFormElements;
 
-  //   const elements = target.elements;
-  //   return await dispatch(
-  //     register(
-  //       elements.firstName.value,
-  //       elements.lastName,
-  //       elements.email.value,
-  //       elements.password.value,
-  //       elements.dateOfBirth.value,
-  //     ),
-  //   );
-  // };
+    const elements = target.elements;
+    console.log(elements);
+    return await dispatch(
+      register(
+        elements.firstName.value,
+        elements.lastName.value,
+        elements.email.value,
+        elements.password.value,
+        elements.birthday.value,
+      ),
+    );
+  };
   return (
-    <div>
-      <BasicForm
-        title="Register"
-        fields={loginFields}
-        submitButton={buttonProps}
-        validate={validate}
-        // onSubmit={onSubmit}
-        // formType={RegisterFormElements}
-      />
-      <Link page="/login">Login</Link>
-    </div>
+    <>
+      {/* <Header navPages={[PageNames.main]} /> */}
+      <main>
+        <BasicForm
+          title="Register"
+          fields={loginFields}
+          submitButton={buttonProps}
+          validate={validate}
+          onSubmit={onSubmit}
+        />
+        <Link page="/login">Login</Link>
+      </main>
+    </>
   );
 }

@@ -1,5 +1,5 @@
 import { ChangeEvent, ReactNode } from 'react';
-import { ButtonType, InputType } from './enums';
+import { ButtonType, InputType, PageNames } from './enums';
 
 export type InputProps = {
   type?: InputType;
@@ -31,9 +31,11 @@ export interface LoginFormElements extends HTMLFormElement {
 interface RegisterElementsCollection extends LoginFormElementsCollection {
   firstName: HTMLInputElement;
   lastName: HTMLInputElement;
-  dateOfBirth: HTMLInputElement;
+  birthday: HTMLInputElement;
 }
 
 export interface RegisterFormElements extends HTMLFormElement {
   readonly elements: RegisterElementsCollection;
 }
+
+export type pageInfo = { to: string; name: PageNames; text: string; className: string };

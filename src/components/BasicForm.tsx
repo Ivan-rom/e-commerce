@@ -1,11 +1,6 @@
 import Input from './Input';
 import Button from './Button';
-import {
-  InputProps,
-  ButtonProps,
-  LoginFormElements,
-  RegisterFormElements,
-} from '../scripts/constants/types';
+import { InputProps, ButtonProps } from '../scripts/constants/types';
 import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 interface fieldConfig {
@@ -19,7 +14,7 @@ interface Props {
   fields: Array<fieldConfig>;
   submitButton: ButtonProps;
   validate?: (inputs: HTMLInputElement) => { [key: string]: string };
-  onSubmit?: (e: FormEvent<LoginFormElements>) => Promise<void>;
+  onSubmit?: (e: FormEvent) => Promise<void>;
 }
 
 function BasicForm({ title, fields, submitButton, validate, onSubmit }: Props) {
@@ -53,12 +48,13 @@ function BasicForm({ title, fields, submitButton, validate, onSubmit }: Props) {
       return;
     }
 
-    onSubmit?.(e as FormEvent<LoginFormElements> | FormEvent<RegisterFormElements>)
+    onSubmit?.(e)
       .then((data) => {
         console.log(data);
         navigate(`/`);
       })
       .catch((err) => {
+        console.log(err);
         setSubmitError(err);
         return;
       });

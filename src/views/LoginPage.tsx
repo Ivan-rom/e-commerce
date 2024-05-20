@@ -7,6 +7,7 @@ import { useAppDispatch } from '../scripts/hooks/storeHooks';
 import { login } from '../store/actions/authenticationActions';
 import { FormEvent } from 'react';
 import { LoginFormElements } from '../scripts/constants/types';
+// import Header from '../components/Header';
 const rememberProps = {
   type: InputType.checkbox,
   label: 'Remember me',
@@ -38,23 +39,26 @@ const loginFields = [
 
 export default function Login() {
   const dispatch = useAppDispatch();
-  const onSubmit = async (e: FormEvent<LoginFormElements>) => {
-    const target = e.currentTarget;
+  const onSubmit = async (e: FormEvent) => {
+    const target = e.currentTarget as LoginFormElements;
     const elements = target.elements;
     const email = elements.email.value;
     const password = elements.password.value;
     return await dispatch(login(email, password));
   };
   return (
-    <div>
-      <BasicForm
-        title="Login"
-        fields={loginFields}
-        submitButton={buttonProps}
-        // validate={validate}
-        onSubmit={onSubmit}
-      />
-      <Link page="/register">Register</Link>
-    </div>
+    <>
+      {/* <Header navPages={[PageNames.main]} /> */}
+      <main>
+        <BasicForm
+          title="Login"
+          fields={loginFields}
+          submitButton={buttonProps}
+          // validate={validate}
+          onSubmit={onSubmit}
+        />
+        <Link page="/register">Register</Link>
+      </main>
+    </>
   );
 }
