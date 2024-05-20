@@ -1,8 +1,9 @@
 import BasicForm from '../components/BasicForm';
-import { ButtonType, InputType } from '../scripts/constants/enums';
+import { ButtonType, InputType, PageNames } from '../scripts/constants/enums';
 import Link from '../components/Link';
 import { emailProps, passwordProps } from '../scripts/constants/inputProps';
 import { validate } from '../scripts/helpers/validation';
+import Header from '../components/Header';
 const rememberProps = {
   type: InputType.checkbox,
   label: 'Remember me',
@@ -72,14 +73,17 @@ const loginFields = [
 
 export default function Register() {
   return (
-    <div>
-      <BasicForm
-        title="Register"
-        fields={loginFields}
-        submitButton={buttonProps}
-        validate={validate}
-      />
-      <Link page="/login">Login</Link>
-    </div>
+    <>
+      <Header navPages={[PageNames.main]} />
+      <main>
+        <BasicForm
+          title="Register"
+          fields={loginFields}
+          submitButton={buttonProps}
+          validate={validate}
+        />
+        <Link page="/login">Login</Link>
+      </main>
+    </>
   );
 }

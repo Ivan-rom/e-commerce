@@ -17,3 +17,9 @@ export enum FieldType {
   input,
   select,
 }
+
+export enum PageNames {
+  main = 'main',
+  login = 'login',
+  register = 'register',
+}

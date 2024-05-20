@@ -1,5 +1,5 @@
 import { ChangeEvent, ReactNode } from 'react';
-import { ButtonType, InputType } from './enums';
+import { ButtonType, InputType, PageNames } from './enums';
 
 export type InputProps = {
   type?: InputType;
@@ -18,3 +18,5 @@ export type ButtonProps = {
   text: string;
   type?: ButtonType;
 };
+
+export type pageInfo = { to: string; name: PageNames; text: string; className: string };
