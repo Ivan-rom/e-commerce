@@ -1,6 +1,11 @@
 import Input from './Input';
 import Button from './Button';
-import { InputProps, ButtonProps, LoginFormElements } from '../scripts/constants/types';
+import {
+  InputProps,
+  ButtonProps,
+  LoginFormElements,
+  RegisterFormElements,
+} from '../scripts/constants/types';
 import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 interface fieldConfig {
@@ -48,7 +53,7 @@ function BasicForm({ title, fields, submitButton, validate, onSubmit }: Props) {
       return;
     }
 
-    onSubmit?.(e as FormEvent<LoginFormElements>)
+    onSubmit?.(e as FormEvent<LoginFormElements> | FormEvent<RegisterFormElements>)
       .then((data) => {
         console.log(data);
         navigate(`/`);

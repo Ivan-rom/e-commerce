@@ -19,6 +19,8 @@ export enum FieldType {
 }
 
 export enum AuthActions {
+  REGISTER_SUCCESS = 'REGISTER_SUCCESS',
+  REGISTER_FAIL = 'REGISTER_FAILS',
   LOGIN_SUCCESS = 'LOGIN_SUCCESS',
   LOGIN_FAIL = 'LOGIN_FAIL',
   LOGOUT = 'LOGOUT',

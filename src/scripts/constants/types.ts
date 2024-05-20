@@ -27,3 +27,13 @@ interface LoginFormElementsCollection extends HTMLFormControlsCollection {
 export interface LoginFormElements extends HTMLFormElement {
   readonly elements: LoginFormElementsCollection;
 }
+
+interface RegisterElementsCollection extends LoginFormElementsCollection {
+  firstName: HTMLInputElement;
+  lastName: HTMLInputElement;
+  dateOfBirth: HTMLInputElement;
+}
+
+export interface RegisterFormElements extends HTMLFormElement {
+  readonly elements: RegisterElementsCollection;
+}
