@@ -80,7 +80,7 @@ function BasicForm({ title, fields, submitButton, validate, onSubmit }: Props) {
       <div>
         <Button
           {...submitButton}
-          class="gap-1 flex flex p-2 rounded-2xl border-black border hover:bg-backgroundHoverPrimary place-items-center"
+          class="gap-1 flex p-2 rounded-2xl border-black border hover:bg-backgroundHoverPrimary place-items-center"
         />
       </div>
     </form>
