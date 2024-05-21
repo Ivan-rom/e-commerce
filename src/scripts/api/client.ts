@@ -19,7 +19,6 @@ export const getUserInfo = async () => {
 };
 
 export const createCustomer = (draft: Customer) => {
-  console.log(draft);
   return apiRoot
     .customers()
     .post({

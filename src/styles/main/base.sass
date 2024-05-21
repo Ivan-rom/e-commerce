@@ -9,13 +9,15 @@ h1
   margin: 1rem
 
 body
-  margin: 3rem 0
+  margin: 0 auto
   font-family: 'Roboto'
   background: var(--main)
   color: var(--text-color)
   display: flex
   flex-direction: column
   align-items: center
+  max-width: 1440px
+  padding: 1rem 5rem
 
 .text-common
   margin: 1rem
@@ -27,3 +29,9 @@ body
   margin: 3rem 0
   padding: 1rem 0
   border-top: 1px solid #77a8a8
+
+
+@media (max-width: 400px) 
+  body
+    max-width: 100%
+    padding: 1rem

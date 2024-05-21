@@ -61,7 +61,7 @@ function BasicForm({ title, fields, submitButton, validate, onSubmit }: Props) {
   };
 
   return (
-    <form onSubmit={onSubmitForm}>
+    <form onSubmit={onSubmitForm} className="w-full">
       <h1 className="fs-xxl fw-600">{title}</h1>
       {fields.map(({ props, name, default: fieldValue }, index) => (
         <div key={index}>

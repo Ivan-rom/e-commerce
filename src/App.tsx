@@ -1,5 +1,6 @@
 import '../src/styles/index.sass';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+
 import LoginPage from './views/LoginPage';
 import RegisterPage from './views/RegisterPage';
 import NotFoundPage from './pages/notFound/NotFound';
@@ -29,8 +30,16 @@ function App() {
           <Route path="/home" element={<Main />}></Route>
           <Route path="/main" element={<Main />}></Route>
           {/* <Route path="/" element={<About />}></Route> */}
-          {!state.isLoggedIn && <Route path="/login" element={<LoginPage />}></Route>}
-          <Route path="/register" element={<RegisterPage />}></Route>
+          {!state.isLoggedIn ? (
+            <Route path="/login" element={<LoginPage />}></Route>
+          ) : (
+            <Route path="/login" element={<Navigate replace to="/" />}></Route>
+          )}
+          {!state.isLoggedIn ? (
+            <Route path="/register" element={<RegisterPage />}></Route>
+          ) : (
+            <Route path="/register" element={<Navigate replace to="/" />}></Route>
+          )}
           <Route path="*" element={<NotFoundPage />}></Route>
         </Routes>
       </main>

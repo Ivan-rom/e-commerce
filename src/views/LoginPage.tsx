@@ -1,7 +1,7 @@
 import BasicForm from '../components/BasicForm';
 import { ButtonType } from '../scripts/constants/enums';
 import { emailProps, passwordProps } from '../scripts/constants/inputProps';
-// import { validate } from '../scripts/helpers/validation';
+import { validate } from '../scripts/helpers/validation';
 import Link from '../components/Link';
 import { useAppDispatch } from '../scripts/hooks/storeHooks';
 import { login } from '../store/actions/authenticationActions';
@@ -49,16 +49,14 @@ export default function Login() {
   return (
     <>
       {/* <Header navPages={[PageNames.main]} /> */}
-      <main>
-        <BasicForm
-          title="Login"
-          fields={loginFields}
-          submitButton={buttonProps}
-          // validate={validate}
-          onSubmit={onSubmit}
-        />
-        <Link page="/register">Register</Link>
-      </main>
+      <BasicForm
+        title="Login"
+        fields={loginFields}
+        submitButton={buttonProps}
+        validate={validate}
+        onSubmit={onSubmit}
+      />
+      <Link page="/register">Register</Link>
     </>
   );
 }

@@ -115,16 +115,14 @@ export default function Register() {
   return (
     <>
       {/* <Header navPages={[PageNames.main]} /> */}
-      <main>
-        <BasicForm
-          title="Register"
-          fields={loginFields}
-          submitButton={buttonProps}
-          validate={validate}
-          onSubmit={onSubmit}
-        />
-        <Link page="/login">Login</Link>
-      </main>
+      <BasicForm
+        title="Register"
+        fields={loginFields}
+        submitButton={buttonProps}
+        validate={validate}
+        onSubmit={onSubmit}
+      />
+      <Link page="/login">Login</Link>
     </>
   );
 }
