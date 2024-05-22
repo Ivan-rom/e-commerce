@@ -22,14 +22,11 @@ export default function Input({ ...props }: InputProps) {
   const [type, setType] = useState(props.type);
   const [isVisible, setVisibility] = useState(false);
   return (
-    <div className="flex gap-2 items-center my-3">
+    <div className={props.class || 'flex gap-2 items-center my-3'}>
       <div>
         <label htmlFor={props.name}> {props.label} </label>
         <input
-          className={
-            props.class ||
-            'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-          }
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           {...props.other}
           type={type}
           name={props.name}
@@ -39,6 +36,7 @@ export default function Input({ ...props }: InputProps) {
           id={props.id}
           onChange={(e) => {
             setValue(e.target.value);
+            console.log(e.target);
             props.onChange?.(e);
           }}
         />

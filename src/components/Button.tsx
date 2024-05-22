@@ -9,6 +9,7 @@ const STATUS = {
 interface Props {
   text: string;
   type?: ButtonType;
+  disabled?: boolean;
   class?: string;
   children?: ReactNode;
   onClick?: () => void;
@@ -32,6 +33,7 @@ export default function Button({ ...props }: Props) {
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       onClick={props.onClick}
+      disabled={props.disabled}
     >
       {props.text}
       {props.children}

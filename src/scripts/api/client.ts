@@ -32,6 +32,7 @@ export const createCustomer = (draft: Customer) => {
     })
     .execute();
 };
+
 // export const signinCustomer = (creditials: AuthData) => apiRoot.;
 
 // console.log(getProject());

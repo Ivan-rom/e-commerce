@@ -87,7 +87,21 @@ const dateChecker = (str: string) => {
   return errorsList;
 };
 
-export const validate = (input: HTMLInputElement): { [key: string]: string } => {
+const codeChecker = (str: string, country: string) => {
+  const errorsList = [];
+  if (country === 'UK' && Boolean(str.match(/^([A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}|GIR ?0A{2})$/))) {
+    errorsList.push(
+      'The provided code does not match the UK postal code pattern (example: GIR 0AA)',
+    );
+  } else if (country === 'US' && Boolean(str.match(/^\d{5}(?:[-\s]\d{4})?$/))) {
+    errorsList.push(
+      'The provided code does not match the US zip code pattern (example: 12345 1234)',
+    );
+  }
+  return errorsList;
+};
+
+export const validate = (input: HTMLInputElement, country?: string): { [key: string]: string } => {
   const errors: { [key: string]: string } = {};
   switch (input.name) {
     case 'email':
@@ -105,9 +119,9 @@ export const validate = (input: HTMLInputElement): { [key: string]: string } => 
     case 'city':
       errors.city = checkCity(input.value).join('\n');
       break;
-    // case 'postal': TODO: implement postal code validation with choosen countries
-    //   errors.postal = checkCity(input.value).join('\n');
-    //   break;
+    case 'postalCode':
+      errors.postalCode = codeChecker(input.value, country as string).join('\n');
+      break;
     default:
       break;
   }

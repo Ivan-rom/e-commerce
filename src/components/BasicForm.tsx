@@ -1,8 +1,9 @@
 import Input from './Input';
 import Button from './Button';
 import { InputProps, ButtonProps } from '../scripts/constants/types';
-import { FormEvent, useState } from 'react';
+import { FormEvent, ReactNode, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { validateFields } from '../scripts/helpers/fieldHandler';
 interface fieldConfig {
   props: InputProps;
   name: string;
@@ -15,9 +16,10 @@ interface Props {
   submitButton: ButtonProps;
   validate?: (inputs: HTMLInputElement) => { [key: string]: string };
   onSubmit?: (e: FormEvent) => Promise<string>;
+  children?: ReactNode;
 }
 
-function BasicForm({ title, fields, submitButton, validate, onSubmit }: Props) {
+function BasicForm({ title, fields, submitButton, validate, onSubmit, children }: Props) {
   const defaultForm = fields.reduce(
     (acc, { name, default: value }) => ({ ...acc, [name]: value }),
     {},
@@ -26,19 +28,10 @@ function BasicForm({ title, fields, submitButton, validate, onSubmit }: Props) {
   const [submitError, setSubmitError] = useState('');
   const [errors, setErrors] = useState<{ [key: string]: string }>(defaultForm);
   const navigate = useNavigate();
-  const validateFields = (e: FormEvent) => {
-    const target = e.target as HTMLInputElement;
-    const validationErrors = validate?.(target);
-    if (validationErrors) {
-      setErrors({ ...errors, [target.name]: validationErrors[target.name] });
-    }
-
-    return;
-  };
 
   const onUpdateField = (e: FormEvent) => {
     const { name, value, checked } = e.target as HTMLInputElement;
-    validateFields(e);
+    validateFields(e, setErrors, errors, validate);
     setForm({ ...form, [name]: value || checked });
   };
 
@@ -56,8 +49,6 @@ function BasicForm({ title, fields, submitButton, validate, onSubmit }: Props) {
         setSubmitError(err);
         return;
       });
-
-    // alert(JSON.stringify(form, null, 2)); // TODO: make an API call on successfull form submit
   };
 
   return (
@@ -76,6 +67,7 @@ function BasicForm({ title, fields, submitButton, validate, onSubmit }: Props) {
           {errors[name] && <div className="text-rose-600">{errors[name]}</div>}
         </div>
       ))}
+      {children}
       {submitError && <div className="text-rose-600">{submitError}</div>}
       <div>
         <Button

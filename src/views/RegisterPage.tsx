@@ -1,25 +1,14 @@
 import BasicForm from '../components/BasicForm';
 import { ButtonType, InputType } from '../scripts/constants/enums';
+import Input from '../components/Input';
 import Link from '../components/Link';
 import { emailProps, passwordProps } from '../scripts/constants/inputProps';
 import { validate } from '../scripts/helpers/validation';
 import { register } from '../store/actions/authenticationActions';
 import { useAppDispatch } from '../scripts/hooks/storeHooks';
 import { RegisterFormElements } from '../scripts/constants/types';
-import { FormEvent } from 'react';
-
-// import Header from '../components/Header';
-const rememberProps = {
-  type: InputType.checkbox,
-  label: 'Remember me',
-  name: 'remember',
-};
-
-const street = {
-  type: InputType.text,
-  label: 'Street',
-  name: 'street',
-};
+import { ChangeEvent, FormEvent, useState } from 'react';
+import Address from '../components/AddressForm';
 
 const firstName = {
   type: InputType.text,
@@ -30,11 +19,6 @@ const lastName = {
   type: InputType.text,
   label: 'Last name',
   name: 'lastName',
-};
-const city = {
-  type: InputType.text,
-  label: 'City',
-  name: 'city',
 };
 
 const birthDateProps = {
@@ -79,29 +63,20 @@ const loginFields = [
     name: 'birthday',
     default: '',
   },
-  {
-    props: street,
-    name: 'street',
-    default: '',
-  },
-  {
-    props: city,
-    name: 'city',
-    default: '',
-  },
-  {
-    props: rememberProps,
-    name: 'remember',
-    default: '',
-  },
 ];
 
 export default function Register() {
   const dispatch = useAppDispatch();
+  const address = { city: '', street: '', postalCode: '', country: '' };
+  const [billingAddress, setBillingAddress] = useState(false);
   const onSubmit = async (e: FormEvent) => {
     const target = e.currentTarget as RegisterFormElements;
 
     const elements = target.elements;
+    if (!Object.values(address).every((el) => el.length > 0)) {
+      return Promise.reject('No address provided');
+    }
+    setBillingAddress(true);
     return await dispatch(
       register(
         elements.firstName.value,
@@ -112,6 +87,16 @@ export default function Register() {
       ),
     );
   };
+
+  const handleAddressSet = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log(billingAddress, e.target.checked);
+    e.preventDefault();
+    setBillingAddress(!billingAddress);
+    e.target.checked = billingAddress;
+    // billingAddress ? e.target.setAttribute('checked', 'true') : e.target.removeAttribute('checked');
+    // e.target.checked = !billingAddress;
+  };
+
   return (
     <>
       {/* <Header navPages={[PageNames.main]} /> */}
@@ -121,7 +106,21 @@ export default function Register() {
         submitButton={buttonProps}
         validate={validate}
         onSubmit={onSubmit}
-      />
+      >
+        <Address title="Shipping address" value={address}></Address>
+        <Input
+          type={InputType.checkbox}
+          name="sameAsShipping"
+          label="Use the same address for billing"
+          onChange={handleAddressSet}
+          {...(billingAddress && {
+            other: {
+              checked: { billingAddress },
+            },
+          })}
+        />
+      </BasicForm>
+
       <Link page="/login">Login</Link>
     </>
   );

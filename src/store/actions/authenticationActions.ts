@@ -33,7 +33,7 @@ export const register =
           (error.response && error.response.data && error.response.data.message) ||
           error.message ||
           error.toString();
-        console.log(error);
+
         dispatch({
           type: AuthActions.REGISTER_FAIL,
         });
