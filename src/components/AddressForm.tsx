@@ -1,7 +1,7 @@
 import Input from './Input';
 import { InputType } from '../scripts/constants/enums';
 import { useState, FormEvent } from 'react';
-import { validate } from '../scripts/helpers/validation';
+import { validate, codeChecker } from '../scripts/helpers/validation';
 import { validateFields } from '../scripts/helpers/fieldHandler';
 import Select from './Select';
 import { countries } from '../scripts/data/countryList';
@@ -25,12 +25,20 @@ const postalCode = {
 };
 export default function Address({
   title,
-  value,
+  address,
+  handleChange,
 }: {
   title: string;
-  value: { city: string; street: string; postalCode: string; country: string };
+  address: { city: string; street: string; postalCode: string; country: string };
+  handleChange: React.Dispatch<
+    React.SetStateAction<{
+      city: string;
+      street: string;
+      postalCode: string;
+      country: string;
+    }>
+  >;
 }) {
-  const [address, setAddress] = useState(value);
   const [errors, setErrors] = useState<{ [key: string]: string }>({
     city: '',
     street: '',
@@ -41,26 +49,32 @@ export default function Address({
   const onUpdateField = (e: FormEvent) => {
     const { name, value } = e.target as HTMLInputElement;
     if (name === 'postalCode') {
-      validateFields(e, setErrors, errors, validate, address.postalCode);
+      validateFields(e, setErrors, errors, validate, address.country);
     } else validateFields(e, setErrors, errors, validate);
-    setAddress({ ...address, [name]: value });
+    handleChange({ ...address, [name]: value });
   };
 
-  const onSubmitForm = (e: FormEvent) => {
-    e.preventDefault();
-    if (Object.values(errors).join('').length > 0) {
-      return;
+  const onUpdateAddressField = (e: FormEvent) => {
+    const { name, value } = e.target as HTMLSelectElement;
+    if (codeChecker(address.postalCode, value).join().length > 0) {
+      setErrors({
+        ...errors,
+        ['postalCode']: codeChecker(address.postalCode, value).join(),
+      });
     }
+    handleChange({ ...address, [name]: value });
   };
+
   return (
     <div className="border-slate-200 my-3 border-2 p-2 rounded">
       <div className="font-semibold"> {title} </div>
-      <fieldset onSubmit={onSubmitForm} className="flex gap-5 flex-wrap">
+      <fieldset className="flex gap-5 flex-wrap">
         <Select
           options={countries}
           label="Country"
           defaultOption="Select country"
           name="country"
+          onChange={onUpdateAddressField}
         ></Select>
         <div className="grow">
           <Input {...city} value={address.city} onChange={onUpdateField} class="w-100"></Input>{' '}

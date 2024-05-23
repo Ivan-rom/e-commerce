@@ -36,7 +36,6 @@ export default function Input({ ...props }: InputProps) {
           id={props.id}
           onChange={(e) => {
             setValue(e.target.value);
-            console.log(e.target);
             props.onChange?.(e);
           }}
         />

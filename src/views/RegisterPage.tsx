@@ -7,7 +7,7 @@ import { validate } from '../scripts/helpers/validation';
 import { register } from '../store/actions/authenticationActions';
 import { useAppDispatch } from '../scripts/hooks/storeHooks';
 import { RegisterFormElements } from '../scripts/constants/types';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import Address from '../components/AddressForm';
 
 const firstName = {
@@ -67,7 +67,8 @@ const loginFields = [
 
 export default function Register() {
   const dispatch = useAppDispatch();
-  const address = { city: '', street: '', postalCode: '', country: '' };
+  // const address = { city: '', street: '', postalCode: '', country: '' };
+  const [address, setAddress] = useState({ city: '', street: '', postalCode: '', country: '' });
   const [billingAddress, setBillingAddress] = useState(false);
   const onSubmit = async (e: FormEvent) => {
     const target = e.currentTarget as RegisterFormElements;
@@ -88,13 +89,10 @@ export default function Register() {
     );
   };
 
-  const handleAddressSet = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(billingAddress, e.target.checked);
+  const handleAddressSet = (e: FormEvent) => {
     e.preventDefault();
-    setBillingAddress(!billingAddress);
-    e.target.checked = billingAddress;
-    // billingAddress ? e.target.setAttribute('checked', 'true') : e.target.removeAttribute('checked');
-    // e.target.checked = !billingAddress;
+    const { checked } = e.target as HTMLInputElement;
+    setBillingAddress(!checked);
   };
 
   return (
@@ -107,11 +105,12 @@ export default function Register() {
         validate={validate}
         onSubmit={onSubmit}
       >
-        <Address title="Shipping address" value={address}></Address>
+        <Address title="Shipping address" address={address} handleChange={setAddress}></Address>
         <Input
           type={InputType.checkbox}
           name="sameAsShipping"
           label="Use the same address for billing"
+          value={`${billingAddress}`}
           onChange={handleAddressSet}
           {...(billingAddress && {
             other: {

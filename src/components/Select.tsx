@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ChangeEvent, ReactNode } from 'react';
 
 interface SelectProps {
   label: string | ReactNode;
@@ -9,10 +9,10 @@ interface SelectProps {
   disabled?: boolean;
   id?: 'number';
   class?: string;
+  onChange?: (e: ChangeEvent<HTMLSelectElement>) => void;
 }
 
 export default function Select({ ...props }: SelectProps) {
-  //   const [value, setValue] = useState('');
   return (
     <div>
       <label htmlFor={props.name}> {props.label} </label>
@@ -26,6 +26,9 @@ export default function Select({ ...props }: SelectProps) {
         // value={value}
         id={props.id}
         defaultValue={'DEFAULT'}
+        onChange={(e) => {
+          props.onChange?.(e);
+        }}
       >
         <option value="DEFAULT" disabled>
           {props.defaultOption}

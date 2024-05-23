@@ -70,10 +70,10 @@ const checkCity = (str: string) => {
   const errorsList = [];
   errorsList.push(textChecker(str));
   if (containsSpecialCharacters(str)) {
-    errorsList.push(textChecker("Shouldn't contain special characters"));
+    errorsList.push("Shouldn't contain special characters");
   }
   if (containsNumber(str)) {
-    errorsList.push(textChecker("Shouldn't contain numbers"));
+    errorsList.push("Shouldn't contain numbers");
   }
   return errorsList;
 };
@@ -87,13 +87,16 @@ const dateChecker = (str: string) => {
   return errorsList;
 };
 
-const codeChecker = (str: string, country: string) => {
+const checkUKCode = (code: string) =>
+  Boolean(code.match(/^([A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}|GIR ?0A{2})$/));
+
+export const codeChecker = (str: string, country: string) => {
   const errorsList = [];
-  if (country === 'UK' && Boolean(str.match(/^([A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}|GIR ?0A{2})$/))) {
+  if (country === 'UK' && !checkUKCode(str)) {
     errorsList.push(
       'The provided code does not match the UK postal code pattern (example: GIR 0AA)',
     );
-  } else if (country === 'US' && Boolean(str.match(/^\d{5}(?:[-\s]\d{4})?$/))) {
+  } else if (country === 'US' && !str.match(/^\d{5}(?:[-\s]\d{4})?$/)) {
     errorsList.push(
       'The provided code does not match the US zip code pattern (example: 12345 1234)',
     );
@@ -114,7 +117,7 @@ export const validate = (input: HTMLInputElement, country?: string): { [key: str
       errors.birthday = dateChecker(input.value).join('\n');
       break;
     case 'street':
-      errors.city = textChecker(input.value);
+      errors.street = textChecker(input.value);
       break;
     case 'city':
       errors.city = checkCity(input.value).join('\n');
