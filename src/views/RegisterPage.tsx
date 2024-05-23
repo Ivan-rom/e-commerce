@@ -69,7 +69,7 @@ export default function Register() {
   const dispatch = useAppDispatch();
   // const address = { city: '', street: '', postalCode: '', country: '' };
   const [address, setAddress] = useState({ city: '', street: '', postalCode: '', country: '' });
-  const [billingAddress, setBillingAddress] = useState(false);
+  const [billingAddress, setBillingAddress] = useState(true);
   const onSubmit = async (e: FormEvent) => {
     const target = e.currentTarget as RegisterFormElements;
 
@@ -90,7 +90,6 @@ export default function Register() {
   };
 
   const handleAddressSet = (e: FormEvent) => {
-    e.preventDefault();
     const { checked } = e.target as HTMLInputElement;
     setBillingAddress(!checked);
   };
@@ -112,11 +111,7 @@ export default function Register() {
           label="Use the same address for billing"
           value={`${billingAddress}`}
           onChange={handleAddressSet}
-          {...(billingAddress && {
-            other: {
-              checked: { billingAddress },
-            },
-          })}
+          checked={billingAddress}
         />
       </BasicForm>
 

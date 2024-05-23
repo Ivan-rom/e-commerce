@@ -66,7 +66,7 @@ export default function Address({
   };
 
   return (
-    <div className="border-slate-200 my-3 border-2 p-2 rounded">
+    <div className="border-slate-200 my-3 border-2 p-2 rounded w-2/3">
       <div className="font-semibold"> {title} </div>
       <fieldset className="flex gap-5 flex-wrap">
         <Select

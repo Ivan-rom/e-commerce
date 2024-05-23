@@ -10,6 +10,7 @@ interface InputProps {
   placeholder?: string;
   error?: boolean;
   disabled?: boolean;
+  checked?: boolean;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   id?: 'number';
   other?: object;
@@ -34,9 +35,12 @@ export default function Input({ ...props }: InputProps) {
           disabled={props.disabled}
           value={value}
           id={props.id}
+          checked={props.checked}
           onChange={(e) => {
-            setValue(e.target.value);
-            props.onChange?.(e);
+            if (e.target.type === InputType.checkbox) {
+              e.target.checked = !e.target.checked;
+            } else setValue(e.target.value);
+            e && props.onChange?.(e);
           }}
         />
       </div>
