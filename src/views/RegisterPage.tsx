@@ -14,11 +14,19 @@ const firstName = {
   type: InputType.text,
   label: 'First name',
   name: 'firstName',
+  other: {
+    'aria-label': 'First name',
+    required: true,
+  },
 };
 const lastName = {
   type: InputType.text,
   label: 'Last name',
   name: 'lastName',
+  other: {
+    'aria-label': 'Last name',
+    required: true,
+  },
 };
 
 const birthDateProps = {
