@@ -113,6 +113,9 @@ export default function Register() {
           onChange={handleAddressSet}
           checked={billingAddress}
         />
+        {!billingAddress && (
+          <Address title="Billing address" address={address} handleChange={setAddress}></Address>
+        )}
       </BasicForm>
 
       <Link page="/login">Login</Link>
