@@ -9,6 +9,7 @@ import { useAppDispatch } from '../scripts/hooks/storeHooks';
 import { RegisterFormElements } from '../scripts/constants/types';
 import { FormEvent, useState } from 'react';
 import Address from '../components/AddressForm';
+import { motion, MotionConfig } from 'framer-motion';
 
 const firstName = {
   type: InputType.text,
@@ -103,30 +104,57 @@ export default function Register() {
   };
 
   return (
-    <>
-      {/* <Header navPages={[PageNames.main]} /> */}
-      <BasicForm
-        title="Register"
-        fields={loginFields}
-        submitButton={buttonProps}
-        validate={validate}
-        onSubmit={onSubmit}
-      >
-        <Address title="Shipping address" address={address} handleChange={setAddress}></Address>
-        <Input
-          type={InputType.checkbox}
-          name="sameAsShipping"
-          label="Use the same address for billing"
-          value={`${billingAddress}`}
-          onChange={handleAddressSet}
-          checked={billingAddress}
-        />
-        {!billingAddress && (
-          <Address title="Billing address" address={address} handleChange={setAddress}></Address>
-        )}
-      </BasicForm>
+    <MotionConfig transition={{ duration: 1 }}>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        <div className="transition-all">
+          {/* <Header navPages={[PageNames.main]} /> */}
+          <BasicForm
+            title="Register"
+            fields={loginFields}
+            submitButton={buttonProps}
+            validate={validate}
+            onSubmit={onSubmit}
+          >
+            <Address title="Shipping address" address={address} handleChange={setAddress}></Address>
+            <Input
+              type={InputType.checkbox}
+              name="sameAsShipping"
+              label="Use the same address for billing"
+              value={`${billingAddress}`}
+              onChange={handleAddressSet}
+              checked={billingAddress}
+            />
+            <MotionConfig transition={{ duration: 0.1 }}>
+              <motion.div
+                initial={{
+                  height: !billingAddress ? 0 : 'auto',
+                  opacity: !billingAddress ? 0 : 1,
+                  visibility: !billingAddress ? 'hidden' : 'visible',
+                }}
+                animate={{
+                  height: !billingAddress ? 'auto' : 0,
+                  opacity: !billingAddress ? 1 : 0,
+                  visibility: !billingAddress ? 'visible' : 'hidden',
+                }}
+                exit={{
+                  height: 0,
+                  opacity: 0,
+                }}
+              >
+                {/* {!billingAddress && ( */}
+                <Address
+                  title="Billing address"
+                  address={address}
+                  handleChange={setAddress}
+                ></Address>
+                {/* )} */}
+              </motion.div>
+            </MotionConfig>
+          </BasicForm>
 
-      <Link page="/login">Login</Link>
-    </>
+          <Link page="/login">Login</Link>
+        </div>
+      </motion.div>
+    </MotionConfig>
   );
 }

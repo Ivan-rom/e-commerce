@@ -7,6 +7,7 @@ import { useAppDispatch } from '../scripts/hooks/storeHooks';
 import { login } from '../store/actions/authenticationActions';
 import { FormEvent } from 'react';
 import { LoginFormElements } from '../scripts/constants/types';
+import { motion, MotionConfig } from 'framer-motion';
 // import Header from '../components/Header';
 // const rememberProps = {
 //   type: InputType.checkbox,
@@ -47,16 +48,17 @@ export default function Login() {
     return await dispatch(login(email, password));
   };
   return (
-    <>
-      {/* <Header navPages={[PageNames.main]} /> */}
-      <BasicForm
-        title="Login"
-        fields={loginFields}
-        submitButton={buttonProps}
-        validate={validate}
-        onSubmit={onSubmit}
-      />
-      <Link page="/register">Register</Link>
-    </>
+    <MotionConfig transition={{ duration: 1 }}>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        <BasicForm
+          title="Login"
+          fields={loginFields}
+          submitButton={buttonProps}
+          validate={validate}
+          onSubmit={onSubmit}
+        />
+        <Link page="/register">Register</Link>
+      </motion.div>
+    </MotionConfig>
   );
 }

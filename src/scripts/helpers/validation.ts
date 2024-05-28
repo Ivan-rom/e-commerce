@@ -110,6 +110,12 @@ export const validate = (input: HTMLInputElement, country?: string): { [key: str
     case 'email':
       errors.email = emailChecker(input.value).join('\n');
       break;
+    case 'firstName':
+      errors.firstName = checkCity(input.value).join('\n');
+      break;
+    case 'lastName':
+      errors.lastName = checkCity(input.value).join('\n');
+      break;
     case 'password':
       errors.password = passwordChecker(input.value).join('\n');
       break;

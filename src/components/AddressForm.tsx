@@ -5,6 +5,7 @@ import { validate, codeChecker } from '../scripts/helpers/validation';
 import { validateFields } from '../scripts/helpers/fieldHandler';
 import Select from './Select';
 import { countries } from '../scripts/data/countryList';
+import { MotionConfig, motion } from 'framer-motion';
 const city = {
   type: InputType.text,
   label: 'City',
@@ -66,34 +67,43 @@ export default function Address({
   };
 
   return (
-    <div className="border-slate-200 my-3 border-2 p-2 rounded w-2/3">
-      <div className="font-semibold"> {title} </div>
-      <fieldset className="flex gap-5 flex-wrap">
-        <Select
-          options={countries}
-          label="Country"
-          defaultOption="Select country"
-          name="country"
-          onChange={onUpdateAddressField}
-        ></Select>
-        <div className="grow">
-          <Input {...city} value={address.city} onChange={onUpdateField} class="w-100"></Input>{' '}
-          {errors.city && <div className="text-rose-600">{errors.city}</div>}
+    <MotionConfig transition={{ duration: 2 }}>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        <div className="border-slate-200 my-3 border-2 p-2 rounded w-2/3">
+          <div className="font-semibold"> {title} </div>
+          <fieldset className="flex gap-5 flex-wrap">
+            <Select
+              options={countries}
+              label="Country"
+              defaultOption="Select country"
+              name="country"
+              onChange={onUpdateAddressField}
+            ></Select>
+            <div className="grow">
+              <Input {...city} value={address.city} onChange={onUpdateField} class="w-100"></Input>{' '}
+              {errors.city && <div className="error">{errors.city}</div>}
+            </div>
+            <div className="basis-8/12">
+              <Input
+                {...street}
+                value={address.street}
+                onChange={onUpdateField}
+                class="w-100"
+              ></Input>
+              {errors.street && <div className="error">{errors.street}</div>}
+            </div>
+            <div className="grow">
+              <Input
+                {...postalCode}
+                value={address.postalCode}
+                onChange={onUpdateField}
+                class="w-100"
+              ></Input>
+              {errors.postalCode && <div className="error">{errors.postalCode}</div>}
+            </div>
+          </fieldset>
         </div>
-        <div className="basis-8/12">
-          <Input {...street} value={address.street} onChange={onUpdateField} class="w-100"></Input>
-          {errors.street && <div className="text-rose-600">{errors.street}</div>}
-        </div>
-        <div className="grow">
-          <Input
-            {...postalCode}
-            value={address.postalCode}
-            onChange={onUpdateField}
-            class="w-100"
-          ></Input>
-          {errors.postalCode && <div className="text-rose-600">{errors.postalCode}</div>}
-        </div>
-      </fieldset>
-    </div>
+      </motion.div>
+    </MotionConfig>
   );
 }

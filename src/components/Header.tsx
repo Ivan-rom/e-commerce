@@ -23,7 +23,7 @@ export default function Header() {
   const onSubmit = () => dispatch(logout());
   return (
     <header>
-      <nav className="nav text-base inline-flex justify-between w-full justify-center items-center">
+      <nav className="nav text-base inline-flex justify-between w-full items-center">
         <NavLink
           to="/"
           className={({ isActive, isPending }) =>
@@ -37,15 +37,11 @@ export default function Header() {
             <NavLink
               to="/login"
               className={({ isActive, isPending }) =>
-                isPending
-                  ? 'fw-200 gap-1 flex flex p-2 rounded-2xl border-black border hover:bg-backgroundHoverPrimary place-items-center'
-                  : isActive
-                    ? 'fw-700 gap-1 flex flex p-2 rounded-2xl border-black border hover:bg-backgroundHoverPrimary place-items-center cursor-default'
-                    : 'fw-200 gap-1 flex flex p-2 rounded-2xl border-black border hover:bg-backgroundHoverPrimary place-items-center'
+                isPending ? 'button' : isActive ? 'button button-hover' : 'button'
               }
             >
               <span>Login</span>
-              <ArrowRightStartOnRectangleIcon className="max-h-4" />
+              <ArrowRightStartOnRectangleIcon className="h-4" />
             </NavLink>
           )}
 
@@ -53,11 +49,7 @@ export default function Header() {
             <NavLink
               to="/register"
               className={({ isActive, isPending }) =>
-                isPending
-                  ? 'fw-200 gap-1 flex flex p-2 rounded-2xl border-black border hover:bg-backgroundHoverPrimary place-items-center'
-                  : isActive
-                    ? 'fw-700 gap-1 flex flex p-2 rounded-2xl border-black border hover:bg-backgroundHoverPrimary place-items-center cursor-default'
-                    : 'fw-200 gap-1 flex flex p-2 rounded-2xl border-black border hover:bg-backgroundHoverPrimary place-items-center'
+                isPending ? 'button' : isActive ? 'button button-hover' : 'button'
               }
             >
               Register
@@ -72,11 +64,7 @@ export default function Header() {
                 </p>
               )}
 
-              <Button
-                text="Logout"
-                class="gap-1 flex flex p-2 rounded-2xl border-black border hover:bg-backgroundHoverPrimary place-items-center"
-                onClick={onSubmit}
-              >
+              <Button text="Logout" class="button" onClick={onSubmit}>
                 <ArrowLeftStartOnRectangleIcon className="h-4" />
               </Button>
             </div>

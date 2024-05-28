@@ -21,10 +21,7 @@ function App() {
   return (
     <Router>
       <Header />
-      <main
-        className="container min-w-full md mx-auto min-w-80
-"
-      >
+      <main className="container md mx-auto min-w-80">
         <Routes>
           <Route path="/" element={<Main />}></Route>
           <Route path="/home" element={<Main />}></Route>
