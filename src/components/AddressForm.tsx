@@ -15,7 +15,7 @@ const city = {
 const street = {
   type: InputType.text,
   label: 'Street',
-  name: 'street',
+  name: 'streetName',
   default: '',
 };
 const postalCode = {
@@ -30,11 +30,11 @@ export default function Address({
   handleChange,
 }: {
   title: string;
-  address: { city: string; street: string; postalCode: string; country: string };
+  address: { city: string; streetName: string; postalCode: string; country: string };
   handleChange: React.Dispatch<
     React.SetStateAction<{
       city: string;
-      street: string;
+      streetName: string;
       postalCode: string;
       country: string;
     }>
@@ -42,7 +42,7 @@ export default function Address({
 }) {
   const [errors, setErrors] = useState<{ [key: string]: string }>({
     city: '',
-    street: '',
+    streetName: '',
     postalCode: '',
     country: '',
   });
@@ -86,11 +86,11 @@ export default function Address({
             <div className="basis-8/12">
               <Input
                 {...street}
-                value={address.street}
+                value={address.streetName}
                 onChange={onUpdateField}
                 class="w-100"
               ></Input>
-              {errors.street && <div className="error">{errors.street}</div>}
+              {errors.streetName && <div className="error">{errors.street}</div>}
             </div>
             <div className="grow">
               <Input

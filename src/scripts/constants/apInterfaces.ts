@@ -20,6 +20,6 @@ export interface Address {
   postalCode: string;
   city: string;
   country: string;
-  building: string;
-  apartment: string;
+  // building: string;
+  // apartment: string;
 }

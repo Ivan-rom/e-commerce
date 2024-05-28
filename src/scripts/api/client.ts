@@ -28,6 +28,9 @@ export const createCustomer = (draft: Customer) => {
         email: draft.email,
         password: draft.password,
         dateOfBirth: draft.dateOfBirth,
+        addresses: draft.address,
+        defaultBillingAddress: 0,
+        defaultShippingAddress: 1,
       },
     })
     .execute();

@@ -76,8 +76,7 @@ const loginFields = [
 
 export default function Register() {
   const dispatch = useAppDispatch();
-  // const address = { city: '', street: '', postalCode: '', country: '' };
-  const [address, setAddress] = useState({ city: '', street: '', postalCode: '', country: '' });
+  const [address, setAddress] = useState({ city: '', streetName: '', postalCode: '', country: '' });
   const [billingAddress, setBillingAddress] = useState(true);
   const onSubmit = async (e: FormEvent) => {
     const target = e.currentTarget as RegisterFormElements;
@@ -87,14 +86,23 @@ export default function Register() {
       return Promise.reject('No address provided');
     }
     setBillingAddress(true);
+    const addressObj = {
+      ...address,
+      firstName: elements.firstName.value,
+      title: 'Default address',
+      lastName: elements.lastName.value,
+      streetName: '',
+    };
+
     return await dispatch(
-      register(
-        elements.firstName.value,
-        elements.lastName.value,
-        elements.email.value,
-        elements.password.value,
-        elements.birthday.value,
-      ),
+      register({
+        firstName: elements.firstName.value,
+        lastName: elements.lastName.value,
+        email: elements.email.value,
+        address: [addressObj, addressObj],
+        password: elements.password.value,
+        dateOfBirth: elements.birthday.value,
+      }),
     );
   };
 
