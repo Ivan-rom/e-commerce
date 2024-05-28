@@ -1,24 +1,16 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AuthActions } from '../../scripts/constants/enums';
-
+import { AppDispatch } from '../store';
 import { authenticateCustomer, createCustomer } from '../../scripts/api/client';
-// import { Customer, AuthData } from '../constants/apInterfaces';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Customer } from '../../scripts/constants/apInterfaces';
+
 export const register =
-  (
-    firstName: any,
-    lastName: any,
-    email: any,
-    password: any,
-    dateOfBirth: any,
-    // street: any,
-    // city: any,
-  ) =>
-  (dispatch: any) =>
+  ({ firstName, lastName, email, address, password, dateOfBirth }: Customer) =>
+  (dispatch: AppDispatch) =>
     createCustomer({
       firstName: firstName,
       lastName: lastName,
       email: email,
+      address: address,
       password: password,
       dateOfBirth: dateOfBirth,
     }).then(
@@ -42,8 +34,7 @@ export const register =
       },
     );
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const login = (email: string, password: string) => (dispatch: any) =>
+export const login = (email: string, password: string) => (dispatch: AppDispatch) =>
   authenticateCustomer({ email: email, password: password }).then(
     (data) => {
       dispatch({

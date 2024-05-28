@@ -4,6 +4,7 @@ export interface Customer {
   email: string;
   password: string;
   dateOfBirth: string;
+  address: Array<Address>;
 }
 
 export interface AuthData {
@@ -12,15 +13,13 @@ export interface AuthData {
 }
 
 export interface Address {
-  address: {
-    title: string;
-    firstName: string;
-    lastName: string;
-    streetName: string;
-    postalCode: string;
-    city: string;
-    country: string;
-    building: string;
-    apartment: string;
-  };
+  title: string;
+  firstName: string;
+  lastName: string;
+  streetName: string;
+  postalCode: string;
+  city: string;
+  country: string;
+  building: string;
+  apartment: string;
 }
