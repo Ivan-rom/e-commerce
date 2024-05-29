@@ -14,7 +14,6 @@ export default function Header() {
   const state = useSelector((state: Auth) => state);
   const dispatch = useAppDispatch();
   const onSubmit = () => dispatch(logout());
-  console.log(state);
   return (
     <header>
       <nav className="nav text-base inline-flex justify-between w-full items-center">
