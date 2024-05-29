@@ -23,3 +23,18 @@ export interface Address {
   // building: string;
   // apartment: string;
 }
+
+export interface Auth {
+  auth: AuthState;
+}
+
+export interface AuthState {
+  isLoggedIn: boolean;
+  user: {
+    email: string;
+    password: string;
+    user: {
+      [key: string]: string | number | boolean | undefined;
+    };
+  };
+}

@@ -1,23 +1,15 @@
 import '../src/styles/index.sass';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-
+import Profile from './views/Profile';
 import LoginPage from './views/LoginPage';
 import RegisterPage from './views/RegisterPage';
 import NotFoundPage from './pages/notFound/NotFound';
 import Main from './views/MainPage';
 import { useSelector } from 'react-redux';
 import Header from './components/Header';
-// import { useDispatch, useSelector } from 'react-redux';
-interface auth {
-  auth: props;
-}
-
-interface props {
-  isLoggedIn: boolean;
-  user: object;
-}
+import { Auth } from './scripts/constants/apInterfaces';
 function App() {
-  const state = useSelector((state: auth) => state.auth);
+  const state = useSelector((state: Auth) => state.auth);
   return (
     <Router>
       <Header />
@@ -37,6 +29,7 @@ function App() {
           ) : (
             <Route path="/register" element={<Navigate replace to="/" />}></Route>
           )}
+          {state.isLoggedIn && <Route path="/profile" element={<Profile />}></Route>}
           <Route path="*" element={<NotFoundPage />}></Route>
         </Routes>
       </main>

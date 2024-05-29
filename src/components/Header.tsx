@@ -8,18 +8,10 @@ import {
 import Button from './Button';
 import { useAppDispatch } from '../scripts/hooks/storeHooks';
 import { logout } from '../store/actions/authenticationActions';
-interface auth {
-  auth: props;
-}
-
-interface props {
-  isLoggedIn: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  user: any;
-}
+import { Auth } from '../scripts/constants/apInterfaces';
 
 export default function Header() {
-  const state = useSelector((state: auth) => state);
+  const state = useSelector((state: Auth) => state);
   const dispatch = useAppDispatch();
   const onSubmit = () => dispatch(logout());
   console.log(state);
@@ -63,13 +55,15 @@ export default function Header() {
               <div className="button-collapsed">
                 <div className="button-collapsed__wrapper">
                   <div className="font-semibold text-xs">{state.auth.user.email}</div>
-                  <UserCircleIcon className="h-8" />
+                  <UserCircleIcon className="h-8 cursor-pointer" />
                   <div className="user-menu">
                     <div className="font-bold text-base py-2">
                       {state.auth.user.user.firstName} {state.auth.user.user.lastName}
                     </div>
                     <ul>
-                      <li>Profile</li>
+                      <li>
+                        <NavLink to="/profile">Profile</NavLink>
+                      </li>
                       <li>
                         <div className="inline-flex gap-2  items-center">
                           <Button

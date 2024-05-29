@@ -58,7 +58,7 @@ function BasicForm({ title, fields, submitButton, validate, onSubmit, children }
 
   return (
     <>
-      <h1 className="fs-xxl fw-600">{title}</h1>
+      <h1 className="font-bold text-3xl">{title}</h1>
       <form onSubmit={onSubmitForm} className={shakeForm ? 'form shadow-rose-600 ' : 'form'}>
         {fields.map(({ props, name, default: fieldValue }, index) => (
           <div key={index}>

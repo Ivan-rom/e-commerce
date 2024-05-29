@@ -6,6 +6,10 @@ export const theme = {
     colors: {
       backgroundHoverPrimary: '#e2e8f0',
     },
+    transitionProperty: {
+      height: 'height',
+      spacing: 'margin, padding',
+    },
   },
 };
 export const plugins = [];
