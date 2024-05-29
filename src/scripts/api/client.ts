@@ -65,3 +65,21 @@ export const changePassword = (currentPassword: string, newPassword: string, ver
     })
     .execute();
 };
+
+export const getProducts = () => {
+  return apiRoot.products().get().execute();
+};
+
+export const getProduct = (id: string) => {
+  return apiRoot.products().withId({ ID: id }).get().execute();
+};
+
+// export const addToCard = (id: string) => {
+//   return apiRoot
+//     .carts()
+//     .withId({ ID: id })
+//     .post({
+//       body: {},
+//     })
+//     .execute();
+// };
