@@ -4,8 +4,10 @@ const user = JSON.parse(<string>localStorage.getItem('e-com-user'));
 
 const initialState = user ? { isLoggedIn: true, user } : { isLoggedIn: false, user: null };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function (state = initialState, action: { type: AuthActions; payload: any }) {
+export default function (
+  state = initialState,
+  action: { type: AuthActions; payload: { user: object } },
+) {
   const { type, payload } = action;
   switch (type) {
     // case REGISTER_SUCCESS:
