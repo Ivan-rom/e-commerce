@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import {
   ArrowRightStartOnRectangleIcon,
   ArrowLeftStartOnRectangleIcon,
+  UserCircleIcon,
 } from '@heroicons/react/24/solid';
 import Button from './Button';
 import { useAppDispatch } from '../scripts/hooks/storeHooks';
@@ -14,13 +15,14 @@ interface auth {
 interface props {
   isLoggedIn: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any;
+  user: any;
 }
 
 export default function Header() {
   const state = useSelector((state: auth) => state);
   const dispatch = useAppDispatch();
   const onSubmit = () => dispatch(logout());
+  console.log(state);
   return (
     <header>
       <nav className="nav text-base inline-flex justify-between w-full items-center">
@@ -57,17 +59,33 @@ export default function Header() {
           )}
 
           {state.auth.isLoggedIn && (
-            <div className="inline-flex gap-2  items-center">
-              {state.auth.user.email && state.auth.isLoggedIn && (
-                <p>
-                  You&apos;re exploring as {state.auth.user.email} <span> Not you? </span>
-                </p>
-              )}
-
-              <Button text="Logout" class="button" onClick={onSubmit}>
-                <ArrowLeftStartOnRectangleIcon className="h-4" />
-              </Button>
-            </div>
+            <>
+              <div className="button-collapsed">
+                <div className="button-collapsed__wrapper">
+                  <div className="font-semibold text-xs">{state.auth.user.email}</div>
+                  <UserCircleIcon className="h-8" />
+                  <div className="user-menu">
+                    <div className="font-bold text-base py-2">
+                      {state.auth.user.user.firstName} {state.auth.user.user.lastName}
+                    </div>
+                    <ul>
+                      <li>Profile</li>
+                      <li>
+                        <div className="inline-flex gap-2  items-center">
+                          <Button
+                            text="Logout"
+                            class="inline-flex align-middle gap-1"
+                            onClick={onSubmit}
+                          >
+                            <ArrowLeftStartOnRectangleIcon className="h-4" />
+                          </Button>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </>
           )}
         </div>
       </nav>
