@@ -2,7 +2,7 @@ import { PencilIcon } from '@heroicons/react/24/solid';
 import { useSelector } from 'react-redux';
 import { Auth } from '../scripts/constants/apInterfaces';
 export default function Profile() {
-  const user = useSelector((state: Auth) => state.auth.user.user);
+  const user = useSelector((state: Auth) => state.auth.user);
   return (
     <>
       <div>

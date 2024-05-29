@@ -32,3 +32,10 @@ export enum PageNames {
   login = 'login',
   register = 'register',
 }
+
+export enum ProfileActions {
+  setFirstName = 'setFirstName',
+  setLastName = 'setLastName',
+  setDateOfBirth = 'setDateOfBirth',
+  changeEmail = 'changeEmail',
+}

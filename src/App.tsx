@@ -29,7 +29,11 @@ function App() {
           ) : (
             <Route path="/register" element={<Navigate replace to="/" />}></Route>
           )}
-          {state.isLoggedIn && <Route path="/profile" element={<Profile />}></Route>}
+          {state.isLoggedIn ? (
+            <Route path="/profile" element={<Profile />}></Route>
+          ) : (
+            <Route path="/profile" element={<Navigate replace to="/" />}></Route>
+          )}
           <Route path="*" element={<NotFoundPage />}></Route>
         </Routes>
       </main>

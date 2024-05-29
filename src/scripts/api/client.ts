@@ -1,7 +1,7 @@
 import { ctpClient } from './buildClient';
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import { Customer, AuthData } from '../constants/apInterfaces';
-
+// import { ProfileActions } from '../constants/enums';
 const apiRoot = createApiBuilderFromCtpClient(ctpClient).withProjectKey({
   projectKey: <string>process.env.REACT_APP_KEY,
 });
@@ -35,7 +35,33 @@ export const createCustomer = (draft: Customer) => {
     })
     .execute();
 };
+// export const updateInfo = ( // TODO: find a way to set actions by taking
+//   id: string,
+//   version: number,
+//   actions: Array<{ action: ProfileActions; [x: string]: string | number | boolean }>,
+// ) => {
+//   return apiRoot
+//     .customers()
+//     .withId({ ID: id })
+//     .post({
+//       body: {
+//         version: version,
+//         actions: [
+//           ...actions.map((el) => {
+//             return { ...el, action: el.action };
+//           }),
+//         ],
+//       },
+//     })
+//     .execute();
+// };
 
-// export const signinCustomer = (creditials: AuthData) => apiRoot.;
-
-// console.log(getProject());
+export const changePassword = (currentPassword: string, newPassword: string, version: number) => {
+  return apiRoot
+    .me()
+    .password()
+    .post({
+      body: { version: version, currentPassword: currentPassword, newPassword: newPassword },
+    })
+    .execute();
+};

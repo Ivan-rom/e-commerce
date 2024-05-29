@@ -39,7 +39,7 @@ export const login = (email: string, password: string) => (dispatch: AppDispatch
     (data) => {
       dispatch({
         type: AuthActions.LOGIN_SUCCESS,
-        payload: { user: data },
+        payload: { user: data.body.customer },
       });
       localStorage.setItem(
         'e-com-user',

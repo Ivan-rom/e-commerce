@@ -33,8 +33,6 @@ export interface AuthState {
   user: {
     email: string;
     password: string;
-    user: {
-      [key: string]: string | number | boolean | undefined;
-    };
+    [key: string]: string | number | boolean | undefined;
   };
 }
