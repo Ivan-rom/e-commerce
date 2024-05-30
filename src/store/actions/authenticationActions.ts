@@ -41,10 +41,7 @@ export const login = (email: string, password: string) => (dispatch: AppDispatch
         type: AuthActions.LOGIN_SUCCESS,
         payload: { user: data.body.customer },
       });
-      localStorage.setItem(
-        'e-com-user',
-        JSON.stringify({ email: email, password: password, user: data.body.customer }),
-      );
+      localStorage.setItem('e-com-user', JSON.stringify({ user: data.body.customer }));
       return Promise.resolve('Success!');
     },
     (error) => {
