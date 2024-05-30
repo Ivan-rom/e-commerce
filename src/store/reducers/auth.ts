@@ -2,7 +2,7 @@ import { AuthActions } from '../../scripts/constants/enums';
 
 const user = JSON.parse(<string>localStorage.getItem('e-com-user'));
 
-const initialState = user ? { isLoggedIn: true, user } : { isLoggedIn: false, user: null };
+const initialState = user ? { isLoggedIn: true, ...user } : { isLoggedIn: false, user: null };
 
 export default function (
   state = initialState,
