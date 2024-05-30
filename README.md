@@ -15,8 +15,9 @@ This project was developed for [the RS School Course](https://github.com/rolling
 [![Trello](https://img.shields.io/badge/Trello-%23026AA7.svg?style=for-the-badge&logo=Trello&logoColor=white)](https://trello.com/b/04ygXIXp/e-commerce)
 
 ## Getting started
-1. Install dependencies: `npm i` 
-2. Run the project in development mode: `npm run start`
+1. Rename `.env.example` to `.env`
+2. Install dependencies with `npm i` 
+3. Run the project in development mode: `npm run start`
 
 ## Available Scripts
 

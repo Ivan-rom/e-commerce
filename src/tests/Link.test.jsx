@@ -3,7 +3,7 @@ import Link from '../components/Link';
 
 it('changes the class when hovered', () => {
   const component = renderer.create(
-    <Link page='https://github.com/Ivan-rom/e-commerce'>Facebook</Link>,
+    <Link page="https://github.com/Ivan-rom/e-commerce">Facebook</Link>,
   );
   let tree = component.toJSON();
   expect(tree).toMatchSnapshot();

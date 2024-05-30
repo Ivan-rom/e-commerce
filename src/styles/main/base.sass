@@ -1,21 +1,49 @@
 // Base styles file
+@layer components 
+  body 
+    @apply bg-sky-50 text-sky-950 flex flex-col py-5 px-20 my-0 mx-auto items-center
+  .error 
+    @apply text-rose-600 text-xs py-2
+  .button 
+    @apply gap-1 flex p-2 rounded-2xl border-black border hover:bg-backgroundHoverPrimary place-items-center transition-all
+  .button-hover
+    @apply fw-700 cursor-default  border-transparent bg-transparent hover:bg-transparent
+  .form
+    @apply w-full transition-all p-3 m-3 rounded shadow shadow-transparent
+  .button-collapsed
+      @apply rounded-2xl p-px bg-gradient-to-t from-transparent to-transparent relative z-10
+      &__wrapper
+        @apply bg-sky-50 rounded-2xl p-2 flex gap-2 items-center 
+      &__text
+        @apply h-0 w-0 overflow-hidden transition-all
+      .user-menu
+        @apply h-0 w-0 overflow-hidden
+      &:hover
+        @apply from-sky-950 to-transparent
+        .button-collapsed__text
+          @apply h-5 w-28
+        .user-menu
+          @apply h-24 w-44 
 
-:root
-  --main: #f0f0f0
-  --text-color: #3b3a30c9
-  --maz-color-secondary: var(--main)
+  .user-menu
+    @apply -z-10 mx-auto text-xs tracking-wide h-0 w-0 overflow-hidden transition-all grow absolute left-0 right-0 top-8 bg-sky-950 text-sky-50 rounded-2xl rounded-t-none px-5 pt-3
 
 h1 
   margin: 1rem
 
+#root
+  width: 100%
+
 body
-  margin: 3rem 0
+  // margin: 0 auto
   font-family: 'Roboto'
-  background: var(--main)
-  color: var(--text-color)
-  display: flex
-  flex-direction: column
-  align-items: center
+  // background: var(--main)
+  // color: var(--text-color)
+  // display: flex
+  // flex-direction: column
+  // align-items: center
+  max-width: 1440px
+  // padding: 1rem 5rem
 
 .text-common
   margin: 1rem
@@ -27,3 +55,9 @@ body
   margin: 3rem 0
   padding: 1rem 0
   border-top: 1px solid #77a8a8
+
+
+@media (max-width: 400px) 
+  body
+    max-width: 100%
+    padding: 1rem
