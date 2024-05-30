@@ -4,6 +4,11 @@
     @apply bg-sky-50 text-sky-950 flex flex-col py-5 px-20 my-0 mx-auto items-center
   .error 
     @apply text-rose-600 text-xs py-2
+  .input
+    @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
+    &-editable
+      &:disabled
+        @apply bg-sky-50 border-transparent
   .button 
     @apply gap-1 flex p-2 rounded-2xl border-black border hover:bg-backgroundHoverPrimary place-items-center transition-all
   .button-hover

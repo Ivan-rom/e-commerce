@@ -14,6 +14,7 @@ interface InputProps {
   checked?: boolean;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   id?: 'number';
+  autofocus?: boolean;
   other?: object;
   children?: ReactNode;
   class?: string;
@@ -28,10 +29,7 @@ export default function Input({ ...props }: InputProps) {
       <div>
         <label htmlFor={props.name}> {props.label} </label>
         <input
-          className={
-            'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' ||
-            props.inputClass
-          }
+          className={props.inputClass || 'input'}
           {...props.other}
           type={type}
           name={props.name}
