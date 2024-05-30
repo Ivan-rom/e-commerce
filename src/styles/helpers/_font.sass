@@ -16,3 +16,14 @@ $font-colors: ('accent': '#77a8a8', 'light': '#9fa9a3')
 @each $v in $font-weights
     .fw-#{$v}
         font-weight: $v
+
+$font-sizes-mobile: ("xs": 0.4, 's': 0.8, "m": 1, 'l': 1.2, "xl": 2, 'xxl': 3)
+$line-heights: ("xs": 0.4, 's': 0.8, "m": 1, 'l': 1.2, "xl": 2, 'xxl': 3)
+@media (max-width: 600px) 
+    // Font size
+    @each $size, $size-value in $font-sizes-mobile
+        .fs-#{$size}
+            font-size: #{$size-value}rem
+    .fs-xxl
+        line-height: 1
+        margin: 1rem 0
