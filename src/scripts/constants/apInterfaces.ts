@@ -1,10 +1,12 @@
+import { ProfileActions } from './enums';
+
 export interface Customer {
   firstName: string;
   lastName: string;
   email: string;
   password: string;
   dateOfBirth: string;
-  address: Array<Address>;
+  address?: Array<Address>;
 }
 
 export interface AuthData {
@@ -35,4 +37,17 @@ export interface AuthState {
     password: string;
     [key: string]: string | number | boolean | undefined;
   };
+}
+
+export interface UpdateAction {
+  action: ProfileActions;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+}
+
+export interface Updates {
+  id: string;
+  version: number;
+  actions: Customer;
 }

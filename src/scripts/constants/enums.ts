@@ -25,6 +25,7 @@ export enum AuthActions {
   LOGIN_FAIL = 'LOGIN_FAIL',
   LOGOUT = 'LOGOUT',
   SET_MESSAGE = 'SET_MESSAGE',
+  UPDATE_SUCCESS = 'UPDATE_SUCCESS',
 }
 
 export enum PageNames {
@@ -34,8 +35,8 @@ export enum PageNames {
 }
 
 export enum ProfileActions {
-  setFirstName = 'setFirstName',
-  setLastName = 'setLastName',
-  setDateOfBirth = 'setDateOfBirth',
-  changeEmail = 'changeEmail',
+  firstName = 'setFirstName',
+  lastName = 'setLastName',
+  dateOfBirth = 'setDateOfBirth',
+  email = 'changeEmail',
 }

@@ -1,7 +1,7 @@
 import { ctpClient } from './buildClient';
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import { Customer, AuthData } from '../constants/apInterfaces';
-// import { ProfileActions } from '../constants/enums';
+
 const apiRoot = createApiBuilderFromCtpClient(ctpClient).withProjectKey({
   projectKey: <string>process.env.REACT_APP_KEY,
 });
@@ -35,26 +35,39 @@ export const createCustomer = (draft: Customer) => {
     })
     .execute();
 };
-// export const updateInfo = ( // TODO: find a way to set actions by taking
-//   id: string,
-//   version: number,
-//   actions: Array<{ action: ProfileActions; [x: string]: string | number | boolean }>,
-// ) => {
-//   return apiRoot
-//     .customers()
-//     .withId({ ID: id })
-//     .post({
-//       body: {
-//         version: version,
-//         actions: [
-//           ...actions.map((el) => {
-//             return { ...el, action: el.action };
-//           }),
-//         ],
-//       },
-//     })
-//     .execute();
-// };
+export const updateInfo = (id: string, version: number, actions: Customer) => {
+  return apiRoot
+    .customers()
+    .withId({ ID: id })
+    .post({
+      body: {
+        version: version,
+        actions: [
+          {
+            action: 'setFirstName',
+            firstName: actions.firstName,
+          },
+          {
+            action: 'setLastName',
+            lastName: actions.lastName,
+          },
+          {
+            action: 'changeEmail',
+            email: actions.email,
+          },
+          {
+            action: 'setDateOfBirth',
+            dateOfBirth: actions.dateOfBirth,
+          },
+          // {
+          //   action: 'changeEmail',
+          //   email: 'test',
+          // },
+        ],
+      },
+    })
+    .execute();
+};
 
 export const changePassword = (currentPassword: string, newPassword: string, version: number) => {
   return apiRoot
@@ -73,13 +86,3 @@ export const getProducts = () => {
 export const getProduct = (id: string) => {
   return apiRoot.products().withId({ ID: id }).get().execute();
 };
-
-// export const addToCard = (id: string) => {
-//   return apiRoot
-//     .carts()
-//     .withId({ ID: id })
-//     .post({
-//       body: {},
-//     })
-//     .execute();
-// };

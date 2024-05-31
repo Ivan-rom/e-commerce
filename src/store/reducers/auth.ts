@@ -26,6 +26,12 @@ export default function (
         isLoggedIn: true,
         user: payload.user,
       };
+    case AuthActions.UPDATE_SUCCESS:
+      return {
+        ...state,
+        isLoggedIn: true,
+        user: payload.user,
+      };
     case AuthActions.LOGIN_FAIL:
       return {
         ...state,

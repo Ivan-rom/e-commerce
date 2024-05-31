@@ -1,6 +1,6 @@
 import '../src/styles/index.sass';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import Profile from './views/Profile';
+import Profile from './views/Profile/Profile';
 import LoginPage from './views/LoginPage';
 import RegisterPage from './views/RegisterPage';
 import NotFoundPage from './pages/notFound/NotFound';
@@ -8,6 +8,7 @@ import Main from './views/MainPage';
 import { useSelector } from 'react-redux';
 import Header from './components/Header';
 import { Auth } from './scripts/constants/apInterfaces';
+
 function App() {
   const state = useSelector((state: Auth) => state.auth);
   return (
