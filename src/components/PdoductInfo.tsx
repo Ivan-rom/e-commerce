@@ -2,6 +2,7 @@
 // maybe something wrong with my pc
 // if it can work with ordinary imports use them instead
 import * as commercetools from '@commercetools/platform-sdk';
+import { ShoppingCartIcon } from '@heroicons/react/24/solid';
 type ProductData = commercetools.ProductData;
 type Category = commercetools.Category;
 
@@ -27,7 +28,9 @@ function ProductInfo({ data, categories }: Props) {
       <h2 className="fs-l">by {author}</h2>
       <h1 className="fs-xl p-0 m-0">{data.name['en-US']}</h1>
       <div className="fs-l">${price}</div>
-      <button className="text-white bg-black p-2 mt-3 mb-3 rounded">Add to cart</button>
+      <button className="text-white bg-black p-2 mt-3 mb-3 rounded flex items-center gap-1">
+        <ShoppingCartIcon className="size-5" /> Add to cart
+      </button>
 
       <ul>
         <li>

@@ -7,6 +7,7 @@ import ProductInfo from '../components/PdoductInfo';
 // maybe something wrong with my pc
 // if it can work with ordinary imports use them instead
 import * as commercetools from '@commercetools/platform-sdk';
+import ProductImagesSlider from '../components/ProductImagesSlider';
 type ProductData = commercetools.ProductData;
 type Category = commercetools.Category;
 
@@ -33,10 +34,10 @@ function ProductPage() {
 
   return (
     <div className="flex gap-10 mt-4">
-      <div className="slider w-1/3">
-        {data.masterVariant.images?.map((image) => <img key={image.url} src={image.url} alt="" />)}
+      <div className="w-1/3">
+        <ProductImagesSlider images={data.masterVariant.images!} />
       </div>
-      <div className="content">
+      <div className="w-2/3">
         <ProductInfo data={data} categories={categories} />
       </div>
     </div>
