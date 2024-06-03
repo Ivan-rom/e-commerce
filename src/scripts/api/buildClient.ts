@@ -1,7 +1,6 @@
 import fetch from 'node-fetch';
 import {
   ClientBuilder,
-  // PasswordAuthMiddlewareOptions,
 
   // Import middlewares
   // type AnonymousAuthMiddlewareOptions,
@@ -39,6 +38,9 @@ const authMiddlewareOptions: AuthMiddlewareOptions = {
 // Configure httpMiddlewareOptions
 const httpMiddlewareOptions: HttpMiddlewareOptions = {
   host: `https://api.${process.env.REACT_APP_REGION}.commercetools.com`,
+  includeHeaders: true,
+  includeOriginalRequest: true,
+
   fetch,
 };
 
@@ -49,4 +51,5 @@ export const ctpClient = new ClientBuilder()
   // .withAnonymousSessionFlow(options)
   .withHttpMiddleware(httpMiddlewareOptions)
   .withLoggerMiddleware() // Include middleware for logging
+  .withUserAgentMiddleware() // Include middleware for user-agent
   .build();

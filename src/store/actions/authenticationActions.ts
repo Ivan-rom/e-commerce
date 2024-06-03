@@ -34,14 +34,20 @@ export const register =
       },
     );
 
-export const login = (email: string, password: string) => (dispatch: AppDispatch) =>
-  authenticateCustomer({ email: email, password: password }).then(
+export const login = (email: string, password: string) => async (dispatch: AppDispatch) => {
+  const customer = authenticateCustomer({ email: email, password: password });
+  console.log('CUSTOMER', customer);
+  return customer.execute().then(
     (data) => {
+      console.log('HEADERS', data);
       dispatch({
         type: AuthActions.LOGIN_SUCCESS,
         payload: { user: data.body.customer },
       });
-      localStorage.setItem('e-com-user', JSON.stringify({ user: data.body.customer }));
+      localStorage.setItem(
+        'e-com-user',
+        JSON.stringify({ email: email, password: password, user: data.body.customer }),
+      );
       return Promise.resolve('Success!');
     },
     (error) => {
@@ -61,6 +67,7 @@ export const login = (email: string, password: string) => (dispatch: AppDispatch
       return Promise.reject(message);
     },
   );
+};
 
 export const logout = () => (dispatch: (arg0: { type: AuthActions }) => void) => {
   dispatch({

@@ -3,8 +3,8 @@ import { Customer } from '../../scripts/constants/apInterfaces';
 import { AuthActions } from '../../scripts/constants/enums';
 import { AppDispatch } from '../store';
 
-export const getUser = () => (dispatch: AppDispatch) => {
-  getUserInfo().then(
+export const getUser = (id: string) => (dispatch: AppDispatch) => {
+  getUserInfo(id).then(
     (data) => {
       dispatch({
         type: AuthActions.GET_USER,
@@ -46,8 +46,9 @@ export const updateCustomer =
     );
 
 export const updatePassword =
-  (id: string, version: number, password: string) => (dispatch: AppDispatch) =>
-    changePassword(id, version, password).then(
+  (id: string, version: number, oldPassword: string, newPassword: string) =>
+  (dispatch: AppDispatch) =>
+    changePassword(id, version, oldPassword, newPassword).then(
       (data) => {
         dispatch({
           type: AuthActions.PASS_SUCCESS,

@@ -7,15 +7,23 @@ const apiRoot = createApiBuilderFromCtpClient(ctpClient).withProjectKey({
 });
 
 export const authenticateCustomer = (data: Customer | AuthData) =>
-  apiRoot
-    .login()
+  apiRoot.login().post({
+    body: { ...data },
+  });
+
+export const getUserInfo = async (id: string) => {
+  return await apiRoot
+    .customers()
+    .password()
     .post({
-      body: { ...data },
+      body: {
+        id: id,
+        version: 3,
+        currentPassword: '',
+        newPassword: '',
+      },
     })
     .execute();
-
-export const getUserInfo = async () => {
-  return await apiRoot.me().get().execute();
 };
 
 export const createCustomer = (draft: Customer) => {
@@ -35,6 +43,7 @@ export const createCustomer = (draft: Customer) => {
     })
     .execute();
 };
+
 export const updateInfo = (id: string, version: number, actions: Customer) => {
   return apiRoot
     .customers()
@@ -69,12 +78,22 @@ export const updateInfo = (id: string, version: number, actions: Customer) => {
     .execute();
 };
 
-export const changePassword = (currentPassword: string, version: number, newPassword: string) => {
+export const changePassword = (
+  id: string,
+  version: number,
+  currentPassword: string,
+  newPassword: string,
+) => {
   return apiRoot
-    .me()
+    .customers()
     .password()
     .post({
-      body: { version: version, currentPassword: currentPassword, newPassword: newPassword },
+      body: {
+        id: id,
+        version: version,
+        currentPassword: currentPassword,
+        newPassword: newPassword,
+      },
     })
     .execute();
 };
