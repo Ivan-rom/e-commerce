@@ -2,17 +2,16 @@ import Address from '../../components/AddressForm';
 import { MotionConfig, motion } from 'framer-motion';
 import Button from '../../components/Button';
 import { useSelector } from 'react-redux';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import { useState } from 'react';
 import { Auth, userAddress } from '../../scripts/constants/apInterfaces';
 import { ButtonType } from '../../scripts/constants/enums';
 import Modal from 'react-modal';
 import CreateAddressForm from './CreateAddressForm';
 export default function Addresses() {
-  //   const dispatch = useAppDispatch();
-  const user = useSelector((state: Auth) => state.auth.user);
+  const state = useSelector((state: Auth) => state);
   const [values, setValues] = useState(
-    user.addresses.reduce(
+    state.auth.user.addresses.reduce(
       (acc, item) => {
         if (item.id) {
           acc[item.id] = { ...item } as userAddress;
@@ -48,12 +47,12 @@ export default function Addresses() {
           class="button my-5"
           onClick={() => modalActions.open()}
         ></Button>
+        <h3 className="font-bold text-xl"> Billing addresses </h3>
         {Object.entries(values)
-          .filter(([key]) => user.billingAddressIds?.includes(key as string))
+          .filter(([key]) => state.auth.user.billingAddressIds?.includes(key as string))
           ?.map(([key, item]: [string, userAddress], index) => (
             <div key={index}>
-              <h3 className="font-bold text-xl"> Billing addresses </h3>
-              {user.defaultBillingAddressId === key && (
+              {state.auth.user.defaultBillingAddressId === key && (
                 <div>
                   <Address
                     title={item.title as string}
@@ -67,7 +66,7 @@ export default function Addresses() {
                   </div>
                 </div>
               )}
-              {user.defaultBillingAddressId !== item.id && (
+              {state.auth.user.defaultBillingAddressId !== item.id && (
                 <Address
                   title={item.title as string}
                   key={index}
@@ -78,16 +77,16 @@ export default function Addresses() {
               )}
             </div>
           ))}
+        <h3 className="font-bold text-xl"> Shipping addresses </h3>
         {Object.entries(values)
           .filter(
             ([key]) =>
-              Array.isArray(user.shippingAddressIds) &&
-              user.shippingAddressIds?.includes(key as string),
+              Array.isArray(state.auth.user.shippingAddressIds) &&
+              state.auth.user.shippingAddressIds?.includes(key as string),
           )
           ?.map(([key, item]: [string, userAddress], index) => (
             <div key={index}>
-              <h3 className="font-bold text-xl"> Shipping addresses </h3>
-              {user.defaultShippingAddressId === key && (
+              {state.auth.user.defaultShippingAddressId === key && (
                 <div>
                   <Address
                     title={item.title as string}
@@ -101,7 +100,7 @@ export default function Addresses() {
                   </div>
                 </div>
               )}
-              {user.defaultShippingAddressId !== item.id && (
+              {state.auth.user.defaultShippingAddressId !== item.id && (
                 <Address
                   title={item.title as string}
                   key={index}
@@ -117,9 +116,14 @@ export default function Addresses() {
           isOpen={modalIsOpen}
           onRequestClose={modalActions.close}
           contentLabel="Add address"
-          className="w-fit h-fit translate-y-2/4 mx-auto"
+          className="w-fit h-fit translate-y-1/4 mx-auto"
         >
-          <CreateAddressForm></CreateAddressForm>
+          <CreateAddressForm
+            submitter={() => {
+              modalActions.close();
+              toast.success('Succesfully created!', { position: 'bottom-center' });
+            }}
+          ></CreateAddressForm>
         </Modal>
       </motion.div>
     </MotionConfig>

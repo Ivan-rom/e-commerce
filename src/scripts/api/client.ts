@@ -1,7 +1,7 @@
 import { ctpClient } from './buildClient';
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import { Customer, AuthData, userAddress } from '../constants/apInterfaces';
-
+import { addAddressType } from '../constants/enums';
 const apiRoot = createApiBuilderFromCtpClient(ctpClient).withProjectKey({
   projectKey: <string>process.env.REACT_APP_KEY,
 });
@@ -123,3 +123,46 @@ export const createAddress = (id: string, version: number, address: userAddress)
     })
     .execute();
 };
+
+export const saveAsAddressType = (
+  id: string,
+  version: number,
+  addressId: string,
+  addAddressType: addAddressType,
+) =>
+  apiRoot
+    .customers()
+    .withId({ ID: id })
+    .post({
+      body: {
+        version: version,
+        actions: [
+          {
+            action: addAddressType,
+            addressId: addressId,
+          },
+        ],
+      },
+    })
+    .execute();
+
+export const saveAsBothAddressTypes = (id: string, version: number, addressId: string) =>
+  apiRoot
+    .customers()
+    .withId({ ID: id })
+    .post({
+      body: {
+        version: version,
+        actions: [
+          {
+            action: addAddressType.BILLING,
+            addressId: addressId,
+          },
+          {
+            action: addAddressType.SHIPPING,
+            addressId: addressId,
+          },
+        ],
+      },
+    })
+    .execute();

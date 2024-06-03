@@ -18,6 +18,11 @@ export enum FieldType {
   select,
 }
 
+export enum addAddressType {
+  BILLING = 'addBillingAddressId',
+  SHIPPING = 'addShippingAddressId',
+}
+
 export enum AuthActions {
   REGISTER_SUCCESS = 'REGISTER_SUCCESS',
   GET_USER = 'GET_USER',

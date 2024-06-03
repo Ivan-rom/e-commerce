@@ -39,6 +39,7 @@ export interface AuthState {
     addresses: Array<Address>;
     billingAddressIds: Array<string>;
     shippingAddressIds: Array<string>;
+    version: number;
     [key: string]: string | number | boolean | Array<Address> | Array<string> | undefined;
   };
 }

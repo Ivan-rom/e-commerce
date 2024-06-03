@@ -60,6 +60,7 @@ export default function Address({
         ...errors,
         ['postalCode']: codeChecker(address.postalCode, value).join(),
       });
+      validateFields(e, setErrors, errors, validate, address.postalCode);
     }
     handleChange({ ...address, [name]: value });
   };

@@ -1,6 +1,13 @@
-import { updateInfo, changePassword, getUserInfo, createAddress } from '../../scripts/api/client';
+import {
+  updateInfo,
+  changePassword,
+  getUserInfo,
+  createAddress,
+  saveAsAddressType,
+  saveAsBothAddressTypes,
+} from '../../scripts/api/client';
 import { Customer, userAddress } from '../../scripts/constants/apInterfaces';
-import { AuthActions } from '../../scripts/constants/enums';
+import { AuthActions, addAddressType } from '../../scripts/constants/enums';
 import { AppDispatch } from '../store';
 
 export const getUser = (id: string) => (dispatch: AppDispatch) => {
@@ -23,14 +30,38 @@ export const getUser = (id: string) => (dispatch: AppDispatch) => {
 };
 
 export const addAddress =
-  (id: string, version: number, address: userAddress) => (dispatch: AppDispatch) =>
+  (id: string, version: number, address: userAddress, addressType: string) =>
+  (dispatch: AppDispatch) =>
     createAddress(id, version, address).then(
-      (data) => {
+      async (data) => {
         dispatch({
           type: AuthActions.ADD_ADDRESS,
           payload: { user: data.body },
         });
-        return Promise.resolve('Success!');
+        console.log(data.body);
+        const addressId = data.body.addresses.at(-1)?.id;
+        const newVersion = data.body.version;
+        const type =
+          addressType.toLowerCase() === 'billing'
+            ? addAddressType.BILLING
+            : addressType.toLowerCase() === 'shipping'
+              ? addAddressType.SHIPPING
+              : 'BOTH';
+        if (type === addAddressType.BILLING || type === addAddressType.SHIPPING) {
+          const data = await saveAsAddressType(id, newVersion, addressId as string, type);
+          dispatch({
+            type: AuthActions.ADD_ADDRESS,
+            payload: { user: data.body },
+          });
+          return Promise.resolve('Success!');
+        } else {
+          const data = await saveAsBothAddressTypes(id, newVersion, addressId as string);
+          dispatch({
+            type: AuthActions.ADD_ADDRESS,
+            payload: { user: data.body },
+          });
+          return Promise.resolve('Success!');
+        }
       },
       (error) => {
         const message =
@@ -48,7 +79,6 @@ export const updateCustomer =
           type: AuthActions.UPDATE_SUCCESS,
           payload: { user: data.body },
         });
-        console.log(data);
         return Promise.resolve('Success!');
       },
       (error) => {

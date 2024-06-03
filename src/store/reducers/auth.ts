@@ -44,6 +44,12 @@ export default function (
         isLoggedIn: false,
         user: null,
       };
+    case AuthActions.ADD_ADDRESS:
+      return {
+        ...state,
+        isLoggedIn: true,
+        user: payload.user,
+      };
     default:
       return state;
   }
