@@ -1,8 +1,6 @@
 import { MotionConfig, motion } from 'framer-motion';
 import 'react-toastify/dist/ReactToastify.css';
-// import { login } from '../../store/actions/authenticationActions';
 import { updatePassword } from '../../store/actions/profileActions';
-// import { updatePassword } from '../../store/actions/profileActions';
 import { useAppDispatch } from '../../scripts/hooks/storeHooks';
 import { useSelector } from 'react-redux';
 

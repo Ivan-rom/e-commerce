@@ -57,7 +57,7 @@ export default function Header() {
                   <UserCircleIcon className="h-8 cursor-pointer" />
                   <div className="user-menu">
                     <div className="font-bold text-base py-2">
-                      {state.auth.user.firstName} {state.auth.user.lastName}
+                      {state.auth.user.firstName as string} {state.auth.user.lastName as string}
                     </div>
                     <ul>
                       <li>

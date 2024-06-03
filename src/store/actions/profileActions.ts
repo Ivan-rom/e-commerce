@@ -1,5 +1,5 @@
-import { updateInfo, changePassword, getUserInfo } from '../../scripts/api/client';
-import { Customer } from '../../scripts/constants/apInterfaces';
+import { updateInfo, changePassword, getUserInfo, createAddress } from '../../scripts/api/client';
+import { Customer, userAddress } from '../../scripts/constants/apInterfaces';
 import { AuthActions } from '../../scripts/constants/enums';
 import { AppDispatch } from '../store';
 
@@ -21,6 +21,25 @@ export const getUser = (id: string) => (dispatch: AppDispatch) => {
     },
   );
 };
+
+export const addAddress =
+  (id: string, version: number, address: userAddress) => (dispatch: AppDispatch) =>
+    createAddress(id, version, address).then(
+      (data) => {
+        dispatch({
+          type: AuthActions.ADD_ADDRESS,
+          payload: { user: data.body },
+        });
+        return Promise.resolve('Success!');
+      },
+      (error) => {
+        const message =
+          (error.response && error.response.data && error.response.data.message) ||
+          error.message ||
+          error.toString();
+        return message;
+      },
+    );
 export const updateCustomer =
   (id: string, version: number, actions: Customer) => (dispatch: AppDispatch) =>
     updateInfo(id, version, actions).then(
@@ -54,7 +73,6 @@ export const updatePassword =
           type: AuthActions.PASS_SUCCESS,
           payload: { user: data.body },
         });
-        console.log(data);
         return Promise.resolve('Success!');
       },
       (error) => {
@@ -62,7 +80,6 @@ export const updatePassword =
           (error.response && error.response.data && error.response.data.message) ||
           error.message ||
           error.toString();
-        console.log(error);
         dispatch({
           type: AuthActions.PASS_FAIL,
         });

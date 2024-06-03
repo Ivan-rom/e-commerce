@@ -1,6 +1,6 @@
 import { ctpClient } from './buildClient';
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
-import { Customer, AuthData } from '../constants/apInterfaces';
+import { Customer, AuthData, userAddress } from '../constants/apInterfaces';
 
 const apiRoot = createApiBuilderFromCtpClient(ctpClient).withProjectKey({
   projectKey: <string>process.env.REACT_APP_KEY,
@@ -68,10 +68,6 @@ export const updateInfo = (id: string, version: number, actions: Customer) => {
             action: 'setDateOfBirth',
             dateOfBirth: actions.dateOfBirth,
           },
-          // {
-          //   action: 'changeEmail',
-          //   email: 'test',
-          // },
         ],
       },
     })
@@ -108,4 +104,22 @@ export const getProduct = (id: string) => {
 
 export const getCategory = (id: string) => {
   return apiRoot.categories().withId({ ID: id }).get().execute();
+};
+
+export const createAddress = (id: string, version: number, address: userAddress) => {
+  return apiRoot
+    .customers()
+    .withId({ ID: id })
+    .post({
+      body: {
+        version: version,
+        actions: [
+          {
+            action: 'addAddress',
+            address: address,
+          },
+        ],
+      },
+    })
+    .execute();
 };

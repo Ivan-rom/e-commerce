@@ -1,4 +1,5 @@
 import Input from './Input';
+import { userAddress } from '../scripts/constants/apInterfaces';
 import { InputType } from '../scripts/constants/enums';
 import { useState, FormEvent } from 'react';
 import { validate, codeChecker } from '../scripts/helpers/validation';
@@ -6,6 +7,7 @@ import { validateFields } from '../scripts/helpers/fieldHandler';
 import Select from './Select';
 import { countries } from '../scripts/data/countryList';
 import { MotionConfig, motion } from 'framer-motion';
+
 const city = {
   type: InputType.text,
   label: 'City',
@@ -24,21 +26,17 @@ const postalCode = {
   name: 'postalCode',
   default: '',
 };
+
 export default function Address({
   title,
   address,
   handleChange,
+  classes,
 }: {
   title: string;
   address: { city: string; streetName: string; postalCode: string; country: string };
-  handleChange: React.Dispatch<
-    React.SetStateAction<{
-      city: string;
-      streetName: string;
-      postalCode: string;
-      country: string;
-    }>
-  >;
+  handleChange: (e: userAddress) => void;
+  classes: string;
 }) {
   const [errors, setErrors] = useState<{ [key: string]: string }>({
     city: '',
@@ -69,13 +67,13 @@ export default function Address({
   return (
     <MotionConfig transition={{ duration: 2 }}>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-        <div className="border-slate-200 my-3 border-2 p-2 rounded w-2/3">
+        <div className={`border-slate-200 my-3 border-2 p-2 rounded w-2/3 ${classes}`}>
           <div className="font-semibold"> {title} </div>
           <fieldset className="flex gap-5 flex-wrap">
             <Select
               options={countries}
               label="Country"
-              defaultOption="Select country"
+              defaultOption={'Select country' || address.country}
               name="country"
               onChange={onUpdateAddressField}
             ></Select>

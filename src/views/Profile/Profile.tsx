@@ -2,6 +2,7 @@ import { MotionConfig, motion } from 'framer-motion';
 import UserInfo from './UserInfo';
 import Password from './Password';
 import { useState } from 'react';
+import Addresses from './Addresses';
 export default function Profile() {
   const [activeTab, setActiveTab] = useState('info');
   return (
@@ -27,13 +28,19 @@ export default function Profile() {
                 </button>
               </li>
               <li>
-                <button onClick={() => setActiveTab('addresses')}>Addresses </button>
+                <button
+                  onClick={() => setActiveTab('addresses')}
+                  className={activeTab === 'addresses' ? 'font-bold transition-all' : ''}
+                >
+                  Addresses
+                </button>
               </li>
             </ul>
           </div>
           <div className="col-span-5">
             {activeTab === 'info' && <UserInfo />}
             {activeTab === 'password' && <Password />}
+            {activeTab === 'addresses' && <Addresses />}
           </div>
         </div>
       </motion.div>

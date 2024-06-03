@@ -115,7 +115,6 @@ export default function Register() {
     <MotionConfig transition={{ duration: 1 }}>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         <div className="transition-all">
-          {/* <Header navPages={[PageNames.main]} /> */}
           <BasicForm
             title="Register"
             fields={loginFields}
@@ -123,7 +122,12 @@ export default function Register() {
             validate={validate}
             onSubmit={onSubmit}
           >
-            <Address title="Shipping address" address={address} handleChange={setAddress}></Address>
+            <Address
+              title="Shipping address"
+              address={address}
+              handleChange={setAddress}
+              classes=""
+            ></Address>
             <Input
               type={InputType.checkbox}
               name="sameAsShipping"
@@ -149,13 +153,12 @@ export default function Register() {
                   opacity: 0,
                 }}
               >
-                {/* {!billingAddress && ( */}
                 <Address
                   title="Billing address"
                   address={address}
+                  classes=""
                   handleChange={setAddress}
                 ></Address>
-                {/* )} */}
               </motion.div>
             </MotionConfig>
           </BasicForm>
