@@ -4,7 +4,7 @@ import { Auth, Customer } from '../../scripts/constants/apInterfaces';
 import Input from '../../components/Input';
 import { FormEvent, useState } from 'react';
 import { ButtonType } from '../../scripts/constants/enums';
-import { formConfig } from './config';
+import { infoFormConfig } from './config';
 import Button from '../../components/Button';
 import { validate } from '../../scripts/helpers/validation';
 import { validateFields } from '../../scripts/helpers/fieldHandler';
@@ -12,18 +12,19 @@ import { useAppDispatch } from '../../scripts/hooks/storeHooks';
 import { updateCustomer } from '../../store/actions/profileActions';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { motion, MotionConfig } from 'framer-motion';
 export default function UserInfo() {
   const dispatch = useAppDispatch();
   const user = useSelector((state: Auth) => state.auth.user);
   const [errors, setErrors] = useState<{ [key: string]: string }>(
-    Object.keys(formConfig).reduce((acc: Record<string, string>, item: string) => {
+    Object.keys(infoFormConfig).reduce((acc: Record<string, string>, item: string) => {
       acc[item] = '';
       return acc;
     }, {}),
   );
   const [disabled, setDisabled] = useState(true);
   const [values, setValues] = useState(
-    formConfig.reduce(
+    infoFormConfig.reduce(
       (acc: Record<string, { value: string | number | boolean; disabled: boolean }>, item) => {
         acc[item.name] = {
           value: user[item.name] as string | number | boolean,
@@ -76,12 +77,12 @@ export default function UserInfo() {
     });
   };
   return (
-    <>
-      <div>
+    <MotionConfig transition={{ duration: 1 }}>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         <h1 className="font-bold text-3xl">Profile</h1>
         <div className="profile">
           <form onSubmit={onSubmit}>
-            {formConfig.map((item, index) => {
+            {infoFormConfig.map((item, index) => {
               return (
                 <div key={index}>
                   <Input
@@ -112,7 +113,7 @@ export default function UserInfo() {
             <ToastContainer position="bottom-center" theme="colored" autoClose={1000} />
           </form>
         </div>
-      </div>
-    </>
+      </motion.div>
+    </MotionConfig>
   );
 }

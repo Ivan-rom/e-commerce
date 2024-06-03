@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { FormEvent, ReactNode, useState } from 'react';
 import { ButtonType } from '../scripts/constants/enums';
 
 const STATUS = {
@@ -12,7 +12,7 @@ interface Props {
   disabled?: boolean;
   class?: string;
   children?: ReactNode;
-  onClick?: () => void;
+  onClick?: (e: FormEvent) => void;
 }
 
 export default function Button({ ...props }: Props) {

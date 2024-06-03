@@ -1,6 +1,6 @@
 import { InputType } from '../../scripts/constants/enums';
 
-export const formConfig = [
+export const infoFormConfig = [
   {
     type: InputType.text,
     label: 'First name',
@@ -34,6 +34,29 @@ export const formConfig = [
     name: 'email',
     other: {
       'aria-label': 'Email',
+      required: true,
+    },
+  },
+];
+
+export const passwordFormConfig = [
+  {
+    type: InputType.password,
+    label: 'Current password',
+    name: 'currentPassword',
+    disabled: false,
+    other: {
+      'aria-label': 'Current password',
+      required: true,
+    },
+  },
+  {
+    type: InputType.password,
+    label: 'New password',
+    name: 'newPassword',
+    disabled: true,
+    other: {
+      'aria-label': 'New password',
       required: true,
     },
   },

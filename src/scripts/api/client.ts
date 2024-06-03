@@ -69,7 +69,7 @@ export const updateInfo = (id: string, version: number, actions: Customer) => {
     .execute();
 };
 
-export const changePassword = (currentPassword: string, newPassword: string, version: number) => {
+export const changePassword = (currentPassword: string, version: number, newPassword: string) => {
   return apiRoot
     .me()
     .password()
