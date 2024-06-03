@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { getCategory, getProduct } from '../scripts/api/client';
 import ProductInfo from '../components/PdoductInfo';
 import ProductImagesSlider from '../components/ProductImagesSlider';
+import NotFound from '../pages/notFound/NotFound';
 
 // interfaces doesn't import for no reason
 // maybe something wrong with my pc
@@ -14,6 +15,7 @@ type Category = commercetools.Category;
 function ProductPage() {
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
   const [data, setData] = useState({} as ProductData);
   const [categories, setCategories] = useState([] as Category[]);
 
@@ -29,10 +31,14 @@ function ProductPage() {
           setCategories(res.map((cat) => cat.body).sort((a, b) => +b.orderHint - +a.orderHint)),
         );
       })
+      .catch(() => setIsError(true))
       .finally(() => setIsLoading(false));
   }, [id]);
 
-  if (isLoading) return <h1>Loading...</h1>;
+  if (isLoading) return <h1 className="fs-xxl text-center mt-20">Loading...</h1>;
+
+  if (isError)
+    return <NotFound text="This product is not found :(" subText="Or it's unavailable" />;
 
   return (
     <div className="flex gap-10 mt-4">
