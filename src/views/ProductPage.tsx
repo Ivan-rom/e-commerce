@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getCategory, getProduct } from '../scripts/api/client';
 import ProductInfo from '../components/PdoductInfo';
+import ProductImagesSlider from '../components/ProductImagesSlider';
 
 // interfaces doesn't import for no reason
 // maybe something wrong with my pc
 // if it can work with ordinary imports use them instead
 import * as commercetools from '@commercetools/platform-sdk';
-import ProductImagesSlider from '../components/ProductImagesSlider';
 type ProductData = commercetools.ProductData;
 type Category = commercetools.Category;
 
@@ -25,7 +25,9 @@ function ProductPage() {
         // getting categories for Product
         Promise.all(
           response.body.masterData.current.categories.map((cat) => getCategory(cat.id)),
-        ).then((res) => setCategories(res.map((cat) => cat.body)));
+        ).then((res) =>
+          setCategories(res.map((cat) => cat.body).sort((a, b) => +b.orderHint - +a.orderHint)),
+        );
       })
       .finally(() => setIsLoading(false));
   }, [id]);

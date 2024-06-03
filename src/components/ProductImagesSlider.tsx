@@ -14,12 +14,12 @@ function ProductImagesSlider({ images }: Props) {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isFullMode, setIsFullMode] = useState(false);
 
-  const previousSlide = () => {
+  const nextSlide = () => {
     if (activeImageIndex === 0) setActiveImageIndex(images.length - 1);
     else setActiveImageIndex(activeImageIndex - 1);
   };
 
-  const nextSlide = () => {
+  const previousSlide = () => {
     if (activeImageIndex === images.length - 1) setActiveImageIndex(0);
     else setActiveImageIndex(activeImageIndex + 1);
   };
@@ -36,11 +36,11 @@ function ProductImagesSlider({ images }: Props) {
     <div className={`${isFullMode ? 'absolute inset-0' : 'relative'}`}>
       <div className={`flex justify-center items-center gap-5 h-4/5`}>
         {images.length !== 1 && (
-          <button onClick={nextSlide} className="relative z-10">
+          <button onClick={nextSlide} className="relative z-50">
             <ArrowLongLeftIcon className="bg-sky-50 p-1 rounded-xl size-7 text-slate-600" />
           </button>
         )}
-        <div className={`overflow-hidden relative z-10`}>
+        <div className={`overflow-hidden relative z-50`}>
           <div
             className={`flex h-full w-full items-center ease-in-out duration-100 `}
             style={{ transform: `translateX(-${activeImageIndex * 100}%)` }}
@@ -61,13 +61,13 @@ function ProductImagesSlider({ images }: Props) {
           </div>
         </div>
         {images.length !== 1 && (
-          <button onClick={previousSlide} className="relative z-10">
+          <button onClick={previousSlide} className="relative z-50">
             <ArrowLongRightIcon className="bg-sky-50 p-1 rounded-xl size-7 text-slate-600" />
           </button>
         )}
       </div>
       <div
-        className={`justify-center items-center w-full flex gap-5 h-1/5 relative z-10 ${!isFullMode && 'mt-3'}`}
+        className={`justify-center items-center w-full flex gap-5 h-1/5 relative z-50 ${!isFullMode && 'mt-3'}`}
       >
         {images.map((image, i) => (
           <button
@@ -82,7 +82,7 @@ function ProductImagesSlider({ images }: Props) {
       {isFullMode && (
         <button
           onClick={changeMode}
-          className="backdrop absolute inset-0 bg-slate-700 opacity-50"
+          className="backdrop absolute inset-0 bg-slate-700 opacity-50 z-40"
         ></button>
       )}
     </div>

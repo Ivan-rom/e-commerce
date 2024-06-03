@@ -78,6 +78,10 @@ export const getCategory = (id: string) => {
   return apiRoot.categories().withId({ ID: id }).get().execute();
 };
 
+export const getDiscounts = () => {
+  return apiRoot.productDiscounts().get().execute();
+};
+
 // export const addToCard = (id: string) => {
 //   return apiRoot
 //     .carts()
