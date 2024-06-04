@@ -73,7 +73,7 @@ export default function Addresses() {
         {Object.entries(values)
           .filter(([key]) => addressGroup?.includes(key as string))
           ?.map(([key, item]: [string, userAddress], index) => (
-            <div key={index} className="flex relative w-max">
+            <div key={index} className="flex relative">
               {defaultAddress === key && (
                 <div>
                   <div>
@@ -81,6 +81,7 @@ export default function Addresses() {
                       title={item.title as string}
                       address={item}
                       classes="bg-sky-200 w-fit"
+                      disabled={true}
                       handleChange={(e: userAddress) => handleChange(index, e)}
                     />
                   </div>
@@ -94,6 +95,7 @@ export default function Addresses() {
                   title={item.title as string}
                   address={item}
                   classes="w-fit"
+                  disabled={true}
                   handleChange={(e: userAddress) => handleChange(index, e)}
                 />
               )}
@@ -117,7 +119,7 @@ export default function Addresses() {
   };
   return (
     <MotionConfig transition={{ duration: 1 }}>
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="w-2/3">
         <Button
           text="Add new address"
           type={ButtonType.button}

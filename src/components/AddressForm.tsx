@@ -32,11 +32,13 @@ export default function Address({
   address,
   handleChange,
   classes,
+  disabled,
 }: {
   title: string;
   address: { city: string; streetName: string; postalCode: string; country: string };
   handleChange: (e: userAddress) => void;
   classes: string;
+  disabled?: boolean;
 }) {
   const [errors, setErrors] = useState<{ [key: string]: string }>({
     city: '',
@@ -74,12 +76,20 @@ export default function Address({
             <Select
               options={countries}
               label="Country"
-              defaultOption={'Select country' || address.country}
+              defaultOption={address.country || 'Select country'}
               name="country"
               onChange={onUpdateAddressField}
+              disabled={disabled}
             ></Select>
             <div className="grow">
-              <Input {...city} value={address.city} onChange={onUpdateField} class="w-100"></Input>{' '}
+              <Input
+                {...city}
+                value={address.city}
+                onChange={onUpdateField}
+                class="w-100"
+                inputClass="input input-editable disabled:bg-inherit block"
+                disabled={disabled}
+              ></Input>
               {errors.city && <div className="error">{errors.city}</div>}
             </div>
             <div className="basis-8/12">
@@ -88,6 +98,8 @@ export default function Address({
                 value={address.streetName}
                 onChange={onUpdateField}
                 class="w-100"
+                inputClass="input input-editable disabled:bg-inherit block"
+                disabled={disabled}
               ></Input>
               {errors.streetName && <div className="error">{errors.street}</div>}
             </div>
@@ -96,7 +108,9 @@ export default function Address({
                 {...postalCode}
                 value={address.postalCode}
                 onChange={onUpdateField}
-                class="w-100"
+                class="w-100 flex gap-2 items-center my-3"
+                inputClass="input input-editable disabled:bg-inherit block"
+                disabled={disabled}
               ></Input>
               {errors.postalCode && <div className="error">{errors.postalCode}</div>}
             </div>
