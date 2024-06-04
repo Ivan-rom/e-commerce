@@ -9,7 +9,8 @@ import { useSelector } from 'react-redux';
 import Header from './components/Header';
 import { Auth } from './scripts/constants/apInterfaces';
 import ProductPage from './views/ProductPage';
-
+import ReactModal from 'react-modal';
+ReactModal.setAppElement('#root');
 function App() {
   const state = useSelector((state: Auth) => state.auth);
   return (

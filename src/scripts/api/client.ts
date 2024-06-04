@@ -1,7 +1,7 @@
 import { ctpClient } from './buildClient';
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import { Customer, AuthData, userAddress } from '../constants/apInterfaces';
-import { addAddressType } from '../constants/enums';
+import { addAddressType, addDefaultAddressType } from '../constants/enums';
 const apiRoot = createApiBuilderFromCtpClient(ctpClient).withProjectKey({
   projectKey: <string>process.env.REACT_APP_KEY,
 });
@@ -177,6 +177,28 @@ export const removeAddr = (id: string, version: number, addressId: string) =>
         actions: [
           {
             action: 'removeAddress',
+            addressId: addressId,
+          },
+        ],
+      },
+    })
+    .execute();
+
+export const setDefaultAddr = (
+  id: string,
+  version: number,
+  addressId: string,
+  addressType: addDefaultAddressType,
+) =>
+  apiRoot
+    .customers()
+    .withId({ ID: id })
+    .post({
+      body: {
+        version: version,
+        actions: [
+          {
+            action: addressType,
             addressId: addressId,
           },
         ],

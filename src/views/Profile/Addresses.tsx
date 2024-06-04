@@ -9,43 +9,33 @@ import { ButtonType } from '../../scripts/constants/enums';
 import Modal from 'react-modal';
 import CreateAddressForm from './CreateAddressForm';
 import { XMarkIcon, CheckIcon } from '@heroicons/react/24/solid';
-import { removeAddress } from '../../store/actions/profileActions';
+import { removeAddress, setDefaultAddress } from '../../store/actions/profileActions';
 import { useAppDispatch } from '../../scripts/hooks/storeHooks';
 
+function createIdArray(array: Array<userAddress>) {
+  return array.reduce(
+    (acc, item) => {
+      if (item.id) {
+        acc[item.id] = { ...item } as userAddress;
+      }
+      return acc;
+    },
+    {} as {
+      [key: string]: userAddress;
+    },
+  );
+}
 export default function Addresses() {
   const state = useSelector((state: Auth) => state.auth);
   const dispatch = useAppDispatch();
   const [user, setUser] = useState(state.user);
-  const createArray = () =>
-    user.addresses.reduce(
-      (acc, item) => {
-        if (item.id) {
-          acc[item.id] = { ...item } as userAddress;
-        }
-        return acc;
-      },
-      {} as {
-        [key: string]: userAddress;
-      },
-    );
+
   useEffect(() => {
     setUser({ ...state.user });
-    setValues(
-      user.addresses.reduce(
-        (acc, item) => {
-          if (item.id) {
-            acc[item.id] = { ...item } as userAddress;
-          }
-          return acc;
-        },
-        {} as {
-          [key: string]: userAddress;
-        },
-      ),
-    );
+    setValues(createIdArray(user.addresses));
   }, [state, user.addresses]);
 
-  const [values, setValues] = useState(createArray());
+  const [values, setValues] = useState(createIdArray(user.addresses));
   const [modalActionIsOpen, setIsActionOpen] = useState(false);
   const onXmarkClick = (id: string) => {
     setCurrentId(id);
@@ -59,6 +49,12 @@ export default function Addresses() {
       return newValues;
     });
   };
+
+  const setAsDefault = async (id: string, type: string) => {
+    await dispatch(setDefaultAddress(user.id as string, user.version as number, id, type));
+    toast.success('Default address has been changed');
+  };
+
   const handleRemoval = async () => {
     await dispatch(removeAddress(user.id as string, user.version as number, currentId));
     setIsActionOpen(false);
@@ -71,14 +67,14 @@ export default function Addresses() {
     close: () => setIsOpen(false),
     onXmarkClick: () => setIsActionOpen(!modalActionIsOpen),
   };
-  const render = (addressGroup: Array<string>, defaultAddress: string) => {
+  const render = (addressGroup: Array<string>, defaultAddress: string, type: string) => {
     return (
       <>
         {Object.entries(values)
           .filter(([key]) => addressGroup?.includes(key as string))
           ?.map(([key, item]: [string, userAddress], index) => (
             <div key={index} className="flex relative w-max">
-              {user.defaultBillingAddressId === key && (
+              {defaultAddress === key && (
                 <div>
                   <div>
                     <Address
@@ -89,7 +85,7 @@ export default function Addresses() {
                     />
                   </div>
                   <div className="w-fit text-xs -mt-2 mb-4 text-sky-900">
-                    Current default billing address
+                    Current default {type} address
                   </div>
                 </div>
               )}
@@ -103,7 +99,11 @@ export default function Addresses() {
               )}
               <div className="absolute cursor-pointer mt-6  flex gap-4 m-2 right-0 top-1">
                 {defaultAddress !== item.id && (
-                  <Button text="Set as default" class="button h-6"></Button>
+                  <Button
+                    text="Set as default"
+                    class="button h-6"
+                    onClick={() => setAsDefault(item.id as string, type)}
+                  ></Button>
                 )}
                 <XMarkIcon
                   onClick={() => onXmarkClick(item.id as string)}
@@ -125,14 +125,14 @@ export default function Addresses() {
           onClick={() => modalActions.open()}
         ></Button>
         <h3 className="font-bold text-xl"> Billing addresses </h3>
-        {render(user.billingAddressIds, user.defaultBillingAddressId as string)}
+        {render(user.billingAddressIds, user.defaultBillingAddressId as string, 'billing')}
         <h3 className="font-bold text-xl"> Shipping addresses </h3>
-        {render(user.shippingAddressIds, user.defaultShippingAddressId as string)}
+        {render(user.shippingAddressIds, user.defaultShippingAddressId as string, 'shipping')}
 
         <ToastContainer position="bottom-center" theme="colored" autoClose={2000} />
         <Modal
           isOpen={modalIsOpen}
-          appElement={document.getElementById('#app') as HTMLElement}
+          appElement={document.getElementById('#root') as HTMLElement}
           onRequestClose={modalActions.close}
           contentLabel="Add address"
           className="w-full sm:w-fit h-fit translate-y-1/4 sm:mx-auto"
@@ -151,7 +151,7 @@ export default function Addresses() {
           </div>
         </Modal>
         <Modal
-          appElement={document.getElementById('#app') as HTMLElement}
+          appElement={document.getElementById('#root') as HTMLElement}
           isOpen={modalActionIsOpen}
           className="m-auto flex flex-col z-50 relative bg-rose-600 text-sky-50 p-10 rounded translate-y-40 w-96"
         >

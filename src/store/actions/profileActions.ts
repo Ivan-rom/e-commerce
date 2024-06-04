@@ -6,9 +6,10 @@ import {
   saveAsAddressType,
   saveAsBothAddressTypes,
   removeAddr,
+  setDefaultAddr,
 } from '../../scripts/api/client';
 import { Customer, userAddress } from '../../scripts/constants/apInterfaces';
-import { AuthActions, addAddressType } from '../../scripts/constants/enums';
+import { AuthActions, addAddressType, addDefaultAddressType } from '../../scripts/constants/enums';
 import { AppDispatch } from '../store';
 
 export const getUser = (id: string) => (dispatch: AppDispatch) => {
@@ -48,6 +49,31 @@ export const removeAddress =
         return Promise.reject(message);
       },
     );
+
+export const setDefaultAddress =
+  (id: string, version: number, addressId: string, addressType: string) =>
+  (dispatch: AppDispatch) => {
+    const type =
+      addressType.toLowerCase() === 'billing'
+        ? addDefaultAddressType.BILLING
+        : addDefaultAddressType.SHIPPING;
+    return setDefaultAddr(id, version, addressId, type).then(
+      async (data) => {
+        dispatch({
+          type: AuthActions.SET_DEFAULT_ADDRESS,
+          payload: { user: data.body },
+        });
+        return Promise.resolve('Success!');
+      },
+      (error) => {
+        const message =
+          (error.response && error.response.data && error.response.data.message) ||
+          error.message ||
+          error.toString();
+        return Promise.reject(message);
+      },
+    );
+  };
 
 export const addAddress =
   (id: string, version: number, address: userAddress, addressType: string) =>

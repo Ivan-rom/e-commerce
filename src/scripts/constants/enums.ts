@@ -23,6 +23,11 @@ export enum addAddressType {
   SHIPPING = 'addShippingAddressId',
 }
 
+export enum addDefaultAddressType {
+  BILLING = 'setDefaultBillingAddress',
+  SHIPPING = 'setDefaultShippingAddress',
+}
+
 export enum AuthActions {
   REGISTER_SUCCESS = 'REGISTER_SUCCESS',
   GET_USER = 'GET_USER',
@@ -37,6 +42,7 @@ export enum AuthActions {
   PASS_FAIL = 'PASS_FAIL',
   ADD_ADDRESS = 'ADD_ADDRESS',
   REMOVE_ADDRESS = 'REMOVE_ADDRESS',
+  SET_DEFAULT_ADDRESS = 'SET_DEFAULT_ADDRESS',
 }
 
 export enum PageNames {
