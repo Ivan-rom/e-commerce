@@ -7,6 +7,7 @@ import {
   saveAsBothAddressTypes,
   removeAddr,
   setDefaultAddr,
+  changeAddress,
 } from '../../scripts/api/client';
 import { Customer, userAddress } from '../../scripts/constants/apInterfaces';
 import { AuthActions, addAddressType, addDefaultAddressType } from '../../scripts/constants/enums';
@@ -157,6 +158,45 @@ export const updatePassword =
           error.toString();
         dispatch({
           type: AuthActions.PASS_FAIL,
+        });
+
+        return Promise.reject(message);
+      },
+    );
+
+export const updateAddress =
+  (id: string, version: number, address: userAddress, addressId: string, addressType: string) =>
+  (dispatch: AppDispatch) =>
+    changeAddress(id, version, addressId, address).then(
+      async (data) => {
+        dispatch({
+          type: AuthActions.UPDATE_SUCCESS,
+          payload: { user: data.body },
+        });
+        const addressId = data.body.addresses.at(-1)?.id;
+        const newVersion = data.body.version;
+        const type =
+          addressType.toLowerCase() === 'billing'
+            ? addAddressType.BILLING
+            : addressType.toLowerCase() === 'shipping'
+              ? addAddressType.SHIPPING
+              : 'BOTH';
+        if (type === addAddressType.BILLING || type === addAddressType.SHIPPING) {
+          const data = await saveAsAddressType(id, newVersion, addressId as string, type);
+          dispatch({
+            type: AuthActions.ADD_ADDRESS,
+            payload: { user: data.body },
+          });
+          return Promise.resolve('Success!');
+        }
+      },
+      (error) => {
+        const message =
+          (error.response && error.response.data && error.response.data.message) ||
+          error.message ||
+          error.toString();
+        dispatch({
+          type: AuthActions.UPDATE_FAIL,
         });
 
         return Promise.reject(message);

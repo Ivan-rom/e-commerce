@@ -8,8 +8,12 @@ import { Auth, userAddress } from '../../scripts/constants/apInterfaces';
 import { ButtonType } from '../../scripts/constants/enums';
 import Modal from 'react-modal';
 import CreateAddressForm from './CreateAddressForm';
-import { XMarkIcon, CheckIcon } from '@heroicons/react/24/solid';
-import { removeAddress, setDefaultAddress } from '../../store/actions/profileActions';
+import { XMarkIcon, CheckIcon, PencilIcon } from '@heroicons/react/24/solid';
+import {
+  removeAddress,
+  setDefaultAddress,
+  updateAddress,
+} from '../../store/actions/profileActions';
 import { useAppDispatch } from '../../scripts/hooks/storeHooks';
 
 function createIdArray(array: Array<userAddress>) {
@@ -60,12 +64,45 @@ export default function Addresses() {
     setIsActionOpen(false);
     toast.success('Address removed');
   };
-
+  const [editing, setEditing] = useState(
+    user.addresses.reduce(
+      (acc, item) => {
+        acc[item.id as string] = true;
+        return acc;
+      },
+      {} as { [key: string]: boolean },
+    ),
+  );
   const [modalIsOpen, setIsOpen] = useState(false);
   const modalActions = {
     open: () => setIsOpen(true),
     close: () => setIsOpen(false),
     onXmarkClick: () => setIsActionOpen(!modalActionIsOpen),
+  };
+  const [address, setAddress] = useState<userAddress>({
+    city: '',
+    streetName: '',
+    postalCode: '',
+    country: '',
+  });
+  const onSubmit = async (e: FormEvent, addressId: string, type: string) => {
+    e.preventDefault();
+    const addressObj = {
+      ...address,
+    };
+    await dispatch(
+      updateAddress(user.id as string, user.version as number, addressObj, addressId, type),
+    );
+    setEditing(
+      user.addresses.reduce(
+        (acc, item) => {
+          acc[item.id as string] = true;
+          return acc;
+        },
+        {} as { [key: string]: boolean },
+      ),
+    );
+    toast.success('Address updated');
   };
   const render = (addressGroup: Array<string>, defaultAddress: string, type: string) => {
     return (
@@ -73,7 +110,7 @@ export default function Addresses() {
         {Object.entries(values)
           .filter(([key]) => addressGroup?.includes(key as string))
           ?.map(([key, item]: [string, userAddress], index) => (
-            <div key={index} className="flex relative">
+            <form key={index} className="flex relative">
               {defaultAddress === key && (
                 <div>
                   <div>
@@ -81,8 +118,8 @@ export default function Addresses() {
                       title={item.title as string}
                       address={item}
                       classes="bg-sky-200 w-fit"
-                      disabled={true}
-                      handleChange={(e: userAddress) => handleChange(index, e)}
+                      disabled={editing[item.id as string]}
+                      handleChange={setAddress}
                     />
                   </div>
                   <div className="w-fit text-xs -mt-2 mb-4 text-sky-900">
@@ -95,24 +132,46 @@ export default function Addresses() {
                   title={item.title as string}
                   address={item}
                   classes="w-fit"
-                  disabled={true}
+                  disabled={editing[item.id as string]}
                   handleChange={(e: userAddress) => handleChange(index, e)}
                 />
               )}
               <div className="absolute cursor-pointer mt-6  flex gap-4 m-2 right-0 top-1">
-                {defaultAddress !== item.id && (
+                {defaultAddress !== item.id && editing[item.id as string] && (
                   <Button
                     text="Set as default"
                     class="button h-6"
                     onClick={() => setAsDefault(item.id as string, type)}
                   ></Button>
                 )}
+                {!editing[item.id as string] && (
+                  <Button
+                    type={ButtonType.submit}
+                    text="Save"
+                    class="button h-6"
+                    onClick={async (e: FormEvent) => {
+                      onSubmit(e, item.id as string, type);
+                    }}
+                  ></Button>
+                )}
                 <XMarkIcon
                   onClick={() => onXmarkClick(item.id as string)}
                   className="hover:text-rose-600 transition-all w-6 h-6"
+                  title="Remove address"
+                />
+                <PencilIcon
+                  className={`h-6 w-6 ${editing[item.id as string] ? '' : 'text-sky-800'}`}
+                  name={item.title}
+                  title="Edit address"
+                  onClick={() =>
+                    setEditing((prev) => ({
+                      ...prev,
+                      [item.id as string]: !prev[item.id as string],
+                    }))
+                  }
                 />
               </div>
-            </div>
+            </form>
           ))}
       </>
     );

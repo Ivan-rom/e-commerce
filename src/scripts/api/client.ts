@@ -184,6 +184,29 @@ export const removeAddr = (id: string, version: number, addressId: string) =>
     })
     .execute();
 
+export const changeAddress = (
+  id: string,
+  version: number,
+  addressId: string,
+  address: userAddress,
+) => {
+  return apiRoot
+    .customers()
+    .withId({ ID: id })
+    .post({
+      body: {
+        version: version,
+        actions: [
+          {
+            action: 'changeAddress',
+            addressId: addressId,
+            address: address,
+          },
+        ],
+      },
+    })
+    .execute();
+};
 export const setDefaultAddr = (
   id: string,
   version: number,
