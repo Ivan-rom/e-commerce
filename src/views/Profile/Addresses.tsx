@@ -11,15 +11,12 @@ import CreateAddressForm from './CreateAddressForm';
 import { XMarkIcon, CheckIcon } from '@heroicons/react/24/solid';
 import { removeAddress } from '../../store/actions/profileActions';
 import { useAppDispatch } from '../../scripts/hooks/storeHooks';
+
 export default function Addresses() {
   const state = useSelector((state: Auth) => state);
   const dispatch = useAppDispatch();
   const [user, setUser] = useState(state.auth.user);
-  useEffect(() => {
-    setUser({ ...state.auth.user });
-  }, [state]);
-
-  const [values, setValues] = useState(
+  const createArray = () =>
     user.addresses.reduce(
       (acc, item) => {
         if (item.id) {
@@ -30,8 +27,25 @@ export default function Addresses() {
       {} as {
         [key: string]: userAddress;
       },
-    ),
-  );
+    );
+  useEffect(() => {
+    setUser({ ...state.auth.user });
+    setValues(
+      user.addresses.reduce(
+        (acc, item) => {
+          if (item.id) {
+            acc[item.id] = { ...item } as userAddress;
+          }
+          return acc;
+        },
+        {} as {
+          [key: string]: userAddress;
+        },
+      ),
+    );
+  }, [state, user.addresses]);
+
+  const [values, setValues] = useState(createArray());
   const [modalActionIsOpen, setIsActionOpen] = useState(false);
   const onXmarkClick = (id: string) => {
     setCurrentId(id);
@@ -57,6 +71,7 @@ export default function Addresses() {
     close: () => setIsOpen(false),
     onXmarkClick: () => setIsActionOpen(!modalActionIsOpen),
   };
+
   return (
     <MotionConfig transition={{ duration: 1 }}>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
