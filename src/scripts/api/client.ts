@@ -166,3 +166,20 @@ export const saveAsBothAddressTypes = (id: string, version: number, addressId: s
       },
     })
     .execute();
+
+export const removeAddr = (id: string, version: number, addressId: string) =>
+  apiRoot
+    .customers()
+    .withId({ ID: id })
+    .post({
+      body: {
+        version: version,
+        actions: [
+          {
+            action: 'removeAddress',
+            addressId: addressId,
+          },
+        ],
+      },
+    })
+    .execute();

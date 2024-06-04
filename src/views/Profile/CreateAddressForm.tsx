@@ -40,7 +40,7 @@ export default function CreateAddressForm({ submitter }: { submitter: () => void
     return await dispatch(addAddress(user.id as string, user.version as number, addressObj, type));
   };
   return (
-    <form className="bg-sky-200 my-3 border-2 p-2 rounded w-3/4 mx-auto">
+    <form className="bg-sky-200 my-3 border-2 p-2 rounded w-3/4 sm:w-2/3 m-auto">
       <Input
         label="Address title"
         name="title"
@@ -54,7 +54,7 @@ export default function CreateAddressForm({ submitter }: { submitter: () => void
         title="Create new address"
         address={address}
         handleChange={setAddress}
-        classes="bg-sky-200 mx-auto"
+        classes="bg-sky-200 mx-auto w-3/4 sm:w-2/3"
       ></Address>
       <Select
         wrapperClass="w-2/3 flex flex-col mx-auto my-3 px-4"

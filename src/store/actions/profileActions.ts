@@ -5,6 +5,7 @@ import {
   createAddress,
   saveAsAddressType,
   saveAsBothAddressTypes,
+  removeAddr,
 } from '../../scripts/api/client';
 import { Customer, userAddress } from '../../scripts/constants/apInterfaces';
 import { AuthActions, addAddressType } from '../../scripts/constants/enums';
@@ -29,16 +30,34 @@ export const getUser = (id: string) => (dispatch: AppDispatch) => {
   );
 };
 
+export const removeAddress =
+  (id: string, version: number, addressId: string) => (dispatch: AppDispatch) =>
+    removeAddr(id, version, addressId).then(
+      async (data) => {
+        dispatch({
+          type: AuthActions.REMOVE_ADDRESS,
+          payload: { user: data.body },
+        });
+        return Promise.resolve('Success!');
+      },
+      (error) => {
+        const message =
+          (error.response && error.response.data && error.response.data.message) ||
+          error.message ||
+          error.toString();
+        return Promise.reject(message);
+      },
+    );
+
 export const addAddress =
   (id: string, version: number, address: userAddress, addressType: string) =>
   (dispatch: AppDispatch) =>
     createAddress(id, version, address).then(
       async (data) => {
-        dispatch({
-          type: AuthActions.ADD_ADDRESS,
-          payload: { user: data.body },
-        });
-        console.log(data.body);
+        // dispatch({
+        //   type: AuthActions.ADD_ADDRESS,
+        //   payload: { user: data.body },
+        // });
         const addressId = data.body.addresses.at(-1)?.id;
         const newVersion = data.body.version;
         const type =

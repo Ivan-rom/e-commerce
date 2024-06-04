@@ -36,6 +36,7 @@ export enum AuthActions {
   PASS_SUCCESS = 'PASS_SUCCESS',
   PASS_FAIL = 'PASS_FAIL',
   ADD_ADDRESS = 'ADD_ADDRESS',
+  REMOVE_ADDRESS = 'REMOVE_ADDRESS',
 }
 
 export enum PageNames {
