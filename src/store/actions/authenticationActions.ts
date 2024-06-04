@@ -38,7 +38,6 @@ export const login = (email: string, password: string) => async (dispatch: AppDi
   const customer = authenticateCustomer({ email: email, password: password });
   return customer.execute().then(
     (data) => {
-      console.log('HEADERS', data);
       dispatch({
         type: AuthActions.LOGIN_SUCCESS,
         payload: { user: data.body.customer },
