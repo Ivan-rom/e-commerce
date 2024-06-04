@@ -13,9 +13,9 @@ import { removeAddress } from '../../store/actions/profileActions';
 import { useAppDispatch } from '../../scripts/hooks/storeHooks';
 
 export default function Addresses() {
-  const state = useSelector((state: Auth) => state);
+  const state = useSelector((state: Auth) => state.auth);
   const dispatch = useAppDispatch();
-  const [user, setUser] = useState(state.auth.user);
+  const [user, setUser] = useState(state.user);
   const createArray = () =>
     user.addresses.reduce(
       (acc, item) => {
@@ -29,7 +29,7 @@ export default function Addresses() {
       },
     );
   useEffect(() => {
-    setUser({ ...state.auth.user });
+    setUser({ ...state.user });
     setValues(
       user.addresses.reduce(
         (acc, item) => {
@@ -152,6 +152,7 @@ export default function Addresses() {
         <ToastContainer position="bottom-center" theme="colored" autoClose={2000} />
         <Modal
           isOpen={modalIsOpen}
+          appElement={document.getElementById('#app') as HTMLElement}
           onRequestClose={modalActions.close}
           contentLabel="Add address"
           className="w-full sm:w-fit h-fit translate-y-1/4 sm:mx-auto"
@@ -170,6 +171,7 @@ export default function Addresses() {
           </div>
         </Modal>
         <Modal
+          appElement={document.getElementById('#app') as HTMLElement}
           isOpen={modalActionIsOpen}
           className="m-auto flex flex-col z-50 relative bg-rose-600 text-sky-50 p-10 rounded translate-y-40 w-96"
         >

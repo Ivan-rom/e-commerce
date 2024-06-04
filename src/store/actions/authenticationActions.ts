@@ -36,7 +36,6 @@ export const register =
 
 export const login = (email: string, password: string) => async (dispatch: AppDispatch) => {
   const customer = authenticateCustomer({ email: email, password: password });
-  console.log('CUSTOMER', customer);
   return customer.execute().then(
     (data) => {
       console.log('HEADERS', data);

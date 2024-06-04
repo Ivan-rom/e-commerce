@@ -11,7 +11,7 @@ import { logout } from '../store/actions/authenticationActions';
 import { Auth } from '../scripts/constants/apInterfaces';
 
 export default function Header() {
-  const state = useSelector((state: Auth) => state);
+  const state = useSelector((state: Auth) => state.auth);
   const dispatch = useAppDispatch();
   const onSubmit = () => dispatch(logout());
   return (
@@ -26,7 +26,7 @@ export default function Header() {
           Home
         </NavLink>
         <div className="inline-flex items-center gap-2">
-          {!state.auth.isLoggedIn && (
+          {!state.isLoggedIn && (
             <NavLink
               to="/login"
               className={({ isActive, isPending }) =>
@@ -38,7 +38,7 @@ export default function Header() {
             </NavLink>
           )}
 
-          {!state.auth.isLoggedIn && (
+          {!state.isLoggedIn && (
             <NavLink
               to="/register"
               className={({ isActive, isPending }) =>
@@ -49,15 +49,15 @@ export default function Header() {
             </NavLink>
           )}
 
-          {state.auth.isLoggedIn && (
+          {state.isLoggedIn && (
             <>
               <div className="button-collapsed">
                 <div className="button-collapsed__wrapper">
-                  <div className="font-semibold text-xs">{state.auth.user.email}</div>
+                  <div className="font-semibold text-xs">{state.user.email}</div>
                   <UserCircleIcon className="h-8 cursor-pointer" />
                   <div className="user-menu">
                     <div className="font-bold text-base py-2">
-                      {state.auth.user.firstName as string} {state.auth.user.lastName as string}
+                      {state.user.firstName as string} {state.user.lastName as string}
                     </div>
                     <ul>
                       <li>
