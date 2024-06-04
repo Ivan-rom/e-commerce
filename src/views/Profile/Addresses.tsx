@@ -71,7 +71,50 @@ export default function Addresses() {
     close: () => setIsOpen(false),
     onXmarkClick: () => setIsActionOpen(!modalActionIsOpen),
   };
-
+  const render = (addressGroup: Array<string>, defaultAddress: string) => {
+    return (
+      <>
+        {Object.entries(values)
+          .filter(([key]) => addressGroup?.includes(key as string))
+          ?.map(([key, item]: [string, userAddress], index) => (
+            <div key={index} className="flex relative w-max">
+              {user.defaultBillingAddressId === key && (
+                <div>
+                  <div>
+                    <Address
+                      title={item.title as string}
+                      address={item}
+                      classes="bg-sky-200 w-fit"
+                      handleChange={(e: userAddress) => handleChange(index, e)}
+                    />
+                  </div>
+                  <div className="w-fit text-xs -mt-2 mb-4 text-sky-900">
+                    Current default billing address
+                  </div>
+                </div>
+              )}
+              {defaultAddress !== item.id && (
+                <Address
+                  title={item.title as string}
+                  address={item}
+                  classes="w-fit"
+                  handleChange={(e: userAddress) => handleChange(index, e)}
+                />
+              )}
+              <div className="absolute cursor-pointer mt-6  flex gap-4 m-2 right-0 top-1">
+                {defaultAddress !== item.id && (
+                  <Button text="Set as default" class="button h-6"></Button>
+                )}
+                <XMarkIcon
+                  onClick={() => onXmarkClick(item.id as string)}
+                  className="hover:text-rose-600 transition-all w-6 h-6"
+                />
+              </div>
+            </div>
+          ))}
+      </>
+    );
+  };
   return (
     <MotionConfig transition={{ duration: 1 }}>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
@@ -82,73 +125,10 @@ export default function Addresses() {
           onClick={() => modalActions.open()}
         ></Button>
         <h3 className="font-bold text-xl"> Billing addresses </h3>
-        {Object.entries(values)
-          .filter(([key]) => user.billingAddressIds?.includes(key as string))
-          ?.map(([key, item]: [string, userAddress], index) => (
-            <div key={index} className="flex">
-              {user.defaultBillingAddressId === key && (
-                <div>
-                  <Address
-                    title={item.title as string}
-                    address={item}
-                    classes="bg-sky-200 w-fit"
-                    handleChange={(e: userAddress) => handleChange(index, e)}
-                  />
-                  <div className="w-fit text-xs -mt-2 mb-4 text-sky-900">
-                    Current default billing address
-                  </div>
-                </div>
-              )}
-              {user.defaultBillingAddressId !== item.id && (
-                <Address
-                  title={item.title as string}
-                  address={item}
-                  classes="w-fit"
-                  handleChange={(e: userAddress) => handleChange(index, e)}
-                />
-              )}
-              <XMarkIcon
-                onClick={() => onXmarkClick(item.id as string)}
-                className="h-6 top-5 cursor-pointer hover:text-rose-600 transition-all mt-5 -ml-8 w-6"
-              />
-            </div>
-          ))}
+        {render(user.billingAddressIds, user.defaultBillingAddressId as string)}
         <h3 className="font-bold text-xl"> Shipping addresses </h3>
-        {Object.entries(values)
-          .filter(
-            ([key]) =>
-              Array.isArray(user.shippingAddressIds) &&
-              user.shippingAddressIds?.includes(key as string),
-          )
-          ?.map(([key, item]: [string, userAddress], index) => (
-            <div key={index} className="flex w-fit">
-              {user.defaultShippingAddressId === key && (
-                <div>
-                  <Address
-                    title={item.title as string}
-                    address={item}
-                    classes="bg-sky-200 w-fit"
-                    handleChange={(e: userAddress) => handleChange(index, e)}
-                  />
-                  <div className="text-xs  -mt-2 mb-4 text-sky-900">
-                    Current default shipping address
-                  </div>
-                </div>
-              )}
-              {user.defaultShippingAddressId !== item.id && (
-                <Address
-                  title={item.title as string}
-                  address={item}
-                  classes="w-fit"
-                  handleChange={(e: userAddress) => handleChange(index, e)}
-                />
-              )}
-              <XMarkIcon
-                onClick={() => onXmarkClick(item.id as string)}
-                className="h-6 top-5 cursor-pointer hover:text-rose-600 transition-all mt-5 -ml-8 w-6"
-              />
-            </div>
-          ))}
+        {render(user.shippingAddressIds, user.defaultShippingAddressId as string)}
+
         <ToastContainer position="bottom-center" theme="colored" autoClose={2000} />
         <Modal
           isOpen={modalIsOpen}
