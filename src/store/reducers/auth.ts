@@ -9,6 +9,7 @@ export default function (
   action: { type: AuthActions; payload: { user: object } },
 ) {
   const { type, payload } = action;
+  localStorage.setItem('e-com-user', JSON.stringify({ ...state, ...payload }));
   switch (type) {
     // case REGISTER_SUCCESS:
     //   return {
