@@ -38,4 +38,17 @@ export interface RegisterFormElements extends HTMLFormElement {
   readonly elements: RegisterElementsCollection;
 }
 
+interface AddressFormCollection extends HTMLFormControlsCollection {
+  id?: string;
+  title?: string;
+  city: string;
+  streetName: string;
+  postalCode: string;
+  country: string;
+}
+
+export interface AddressFormElements extends HTMLFormElement {
+  readonly elements: AddressFormCollection;
+}
+
 export type pageInfo = { to: string; name: PageNames; text: string; className: string };

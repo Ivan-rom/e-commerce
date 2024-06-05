@@ -1,21 +1,29 @@
 import { ctpClient } from './buildClient';
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
-import { Customer, AuthData } from '../constants/apInterfaces';
-// import { ProfileActions } from '../constants/enums';
+import { Customer, AuthData, userAddress } from '../constants/apInterfaces';
+import { addAddressType, addDefaultAddressType } from '../constants/enums';
 const apiRoot = createApiBuilderFromCtpClient(ctpClient).withProjectKey({
   projectKey: <string>process.env.REACT_APP_KEY,
 });
 
 export const authenticateCustomer = (data: Customer | AuthData) =>
-  apiRoot
-    .login()
+  apiRoot.login().post({
+    body: { ...data },
+  });
+
+export const getUserInfo = async (id: string) => {
+  return await apiRoot
+    .customers()
+    .password()
     .post({
-      body: { ...data },
+      body: {
+        id: id,
+        version: 3,
+        currentPassword: '',
+        newPassword: '',
+      },
     })
     .execute();
-
-export const getUserInfo = async () => {
-  return await apiRoot.me().get().execute();
 };
 
 export const createCustomer = (draft: Customer) => {
@@ -35,33 +43,53 @@ export const createCustomer = (draft: Customer) => {
     })
     .execute();
 };
-// export const updateInfo = ( // TODO: find a way to set actions by taking
-//   id: string,
-//   version: number,
-//   actions: Array<{ action: ProfileActions; [x: string]: string | number | boolean }>,
-// ) => {
-//   return apiRoot
-//     .customers()
-//     .withId({ ID: id })
-//     .post({
-//       body: {
-//         version: version,
-//         actions: [
-//           ...actions.map((el) => {
-//             return { ...el, action: el.action };
-//           }),
-//         ],
-//       },
-//     })
-//     .execute();
-// };
 
-export const changePassword = (currentPassword: string, newPassword: string, version: number) => {
+export const updateInfo = (id: string, version: number, actions: Customer) => {
   return apiRoot
-    .me()
+    .customers()
+    .withId({ ID: id })
+    .post({
+      body: {
+        version: version,
+        actions: [
+          {
+            action: 'setFirstName',
+            firstName: actions.firstName,
+          },
+          {
+            action: 'setLastName',
+            lastName: actions.lastName,
+          },
+          {
+            action: 'changeEmail',
+            email: actions.email,
+          },
+          {
+            action: 'setDateOfBirth',
+            dateOfBirth: actions.dateOfBirth,
+          },
+        ],
+      },
+    })
+    .execute();
+};
+
+export const changePassword = (
+  id: string,
+  version: number,
+  currentPassword: string,
+  newPassword: string,
+) => {
+  return apiRoot
+    .customers()
     .password()
     .post({
-      body: { version: version, currentPassword: currentPassword, newPassword: newPassword },
+      body: {
+        id: id,
+        version: version,
+        currentPassword: currentPassword,
+        newPassword: newPassword,
+      },
     })
     .execute();
 };
@@ -77,6 +105,129 @@ export const getProduct = (id: string) => {
 export const getCategory = (id: string) => {
   return apiRoot.categories().withId({ ID: id }).get().execute();
 };
+
+export const createAddress = (id: string, version: number, address: userAddress) => {
+  return apiRoot
+    .customers()
+    .withId({ ID: id })
+    .post({
+      body: {
+        version: version,
+        actions: [
+          {
+            action: 'addAddress',
+            address: address,
+          },
+        ],
+      },
+    })
+    .execute();
+};
+
+export const saveAsAddressType = (
+  id: string,
+  version: number,
+  addressId: string,
+  addAddressType: addAddressType,
+) =>
+  apiRoot
+    .customers()
+    .withId({ ID: id })
+    .post({
+      body: {
+        version: version,
+        actions: [
+          {
+            action: addAddressType,
+            addressId: addressId,
+          },
+        ],
+      },
+    })
+    .execute();
+
+export const saveAsBothAddressTypes = (id: string, version: number, addressId: string) =>
+  apiRoot
+    .customers()
+    .withId({ ID: id })
+    .post({
+      body: {
+        version: version,
+        actions: [
+          {
+            action: addAddressType.BILLING,
+            addressId: addressId,
+          },
+          {
+            action: addAddressType.SHIPPING,
+            addressId: addressId,
+          },
+        ],
+      },
+    })
+    .execute();
+
+export const removeAddr = (id: string, version: number, addressId: string) =>
+  apiRoot
+    .customers()
+    .withId({ ID: id })
+    .post({
+      body: {
+        version: version,
+        actions: [
+          {
+            action: 'removeAddress',
+            addressId: addressId,
+          },
+        ],
+      },
+    })
+    .execute();
+
+export const changeAddress = (
+  id: string,
+  version: number,
+  addressId: string,
+  address: userAddress,
+) => {
+  return apiRoot
+    .customers()
+    .withId({ ID: id })
+    .post({
+      body: {
+        version: version,
+        actions: [
+          {
+            action: 'changeAddress',
+            addressId: addressId,
+            address: address,
+          },
+        ],
+      },
+    })
+    .execute();
+};
+export const setDefaultAddr = (
+  id: string,
+  version: number,
+  addressId: string,
+  addressType: addDefaultAddressType,
+) =>
+  apiRoot
+    .customers()
+    .withId({ ID: id })
+    .post({
+      body: {
+        version: version,
+        actions: [
+          {
+            action: addressType,
+            addressId: addressId,
+          },
+        ],
+      },
+    })
+    .execute();
 
 export const getDiscounts = () => {
   return apiRoot.productDiscounts().get().execute();
