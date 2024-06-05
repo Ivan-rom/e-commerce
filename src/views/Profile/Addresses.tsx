@@ -85,6 +85,18 @@ export default function Addresses() {
     postalCode: '',
     country: '',
   });
+  const onChange = (e: userAddress, item: userAddress) => {
+    if (Object.values(address).join('').length === 0) {
+      setAddress({
+        city: item.city,
+        streetName: item.streetName,
+        postalCode: item.postalCode,
+        country: item.country,
+      });
+    } else {
+      setAddress(e);
+    }
+  };
   const onSubmit = async (e: FormEvent, addressId: string, type: string) => {
     e.preventDefault();
     const addressObj = {
@@ -110,32 +122,101 @@ export default function Addresses() {
         {Object.entries(values)
           .filter(([key]) => addressGroup?.includes(key as string))
           ?.map(([key, item]: [string, userAddress], index) => (
-            <form key={index} className="flex relative">
+            <form key={index} className="flex flex-col relative">
               {defaultAddress === key && (
                 <div>
                   <div>
                     <Address
                       title={item.title as string}
                       address={item}
-                      classes="bg-sky-200 w-fit"
+                      classes="bg-sky-200 w-fit pb-6"
                       disabled={editing[item.id as string]}
-                      handleChange={setAddress}
+                      handleChange={(e: userAddress) => onChange(e, item)}
                     />
+                    {!editing[item.id as string] && (
+                      <div className="flex gap-2 -mt-12 text-xs items-center mb-6 ml-4">
+                        <span className="italic">Type</span>
+                        <Button
+                          text="Billing"
+                          class="button-flat"
+                          disabled={
+                            !user.billingAddressIds.includes(item.id as string) &&
+                            !user.shippingAddressIds.includes(item.id as string)
+                          }
+                        ></Button>
+                        <Button
+                          text="Shipping"
+                          class="button-flat"
+                          disabled={
+                            !user.shippingAddressIds.includes(item.id as string) &&
+                            !user.billingAddressIds.includes(item.id as string)
+                          }
+                        ></Button>
+                        <Button
+                          text="Both"
+                          class="button-flat button-standart"
+                          disabled={
+                            user.shippingAddressIds.includes(item.id as string) &&
+                            user.billingAddressIds.includes(item.id as string)
+                          }
+                        ></Button>
+                      </div>
+                    )}
                   </div>
                   <div className="w-fit text-xs -mt-2 mb-4 text-sky-900">
                     Current default {type} address
                   </div>
+                  <Button
+                    text="Billing"
+                    class="basis-full"
+                    disabled={
+                      !user.billingAddressIds.includes(item.id as string) &&
+                      !user.shippingAddressIds.includes(item.id as string)
+                    }
+                  ></Button>
                 </div>
               )}
               {defaultAddress !== item.id && (
-                <Address
-                  title={item.title as string}
-                  address={item}
-                  classes="w-fit"
-                  disabled={editing[item.id as string]}
-                  handleChange={(e: userAddress) => handleChange(index, e)}
-                />
+                <>
+                  <Address
+                    title={item.title as string}
+                    address={item}
+                    classes="w-fit pb-6"
+                    disabled={editing[item.id as string]}
+                    handleChange={(e: userAddress) => handleChange(index, e)}
+                  />
+                  {!editing[item.id as string] && (
+                    <div className="flex gap-2 -mt-12 text-xs items-center mb-6 ml-4">
+                      <span className="italic">Type</span>
+                      <Button
+                        text="Billing"
+                        class="button-flat"
+                        disabled={
+                          !user.billingAddressIds.includes(item.id as string) &&
+                          !user.shippingAddressIds.includes(item.id as string)
+                        }
+                      ></Button>
+                      <Button
+                        text="Shipping"
+                        class="button-flat"
+                        disabled={
+                          !user.shippingAddressIds.includes(item.id as string) &&
+                          !user.billingAddressIds.includes(item.id as string)
+                        }
+                      ></Button>
+                      <Button
+                        text="Both"
+                        class="button-flat button-standart"
+                        disabled={
+                          user.shippingAddressIds.includes(item.id as string) &&
+                          user.billingAddressIds.includes(item.id as string)
+                        }
+                      ></Button>
+                    </div>
+                  )}
+                </>
               )}
+
               <div className="absolute cursor-pointer mt-6  flex gap-4 m-2 right-0 top-1">
                 {defaultAddress !== item.id && editing[item.id as string] && (
                   <Button

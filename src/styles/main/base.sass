@@ -11,6 +11,10 @@
         @apply bg-sky-50 border-transparent
   .button 
     @apply gap-1 flex p-2 rounded-2xl border-black border hover:bg-backgroundHoverPrimary place-items-center transition-all
+    &-flat
+      @apply p-1 px-2 w-fit h-fit font-black rounded-2xl bg-sky-300 text-sky-50 border hover:bg-backgroundHoverPrimary place-items-center transition-all
+      &:disabled
+        @apply bg-sky-200 text-sky-50 border-sky-50 hover:bg-sky-200
     &-standart:disabled
       @apply  bg-sky-200 text-sky-50 border-sky-50 hover:bg-sky-200
   .button-hover
