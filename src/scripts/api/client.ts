@@ -228,3 +228,17 @@ export const setDefaultAddr = (
       },
     })
     .execute();
+
+export const getDiscounts = () => {
+  return apiRoot.productDiscounts().get().execute();
+};
+
+// export const addToCard = (id: string) => {
+//   return apiRoot
+//     .carts()
+//     .withId({ ID: id })
+//     .post({
+//       body: {},
+//     })
+//     .execute();
+// };
