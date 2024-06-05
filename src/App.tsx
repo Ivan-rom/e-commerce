@@ -8,6 +8,7 @@ import Main from './views/MainPage';
 import { useSelector } from 'react-redux';
 import Header from './components/Header';
 import { Auth } from './scripts/constants/apInterfaces';
+import ProductPage from './views/ProductPage';
 function App() {
   const state = useSelector((state: Auth) => state.auth);
   return (
@@ -34,6 +35,7 @@ function App() {
           ) : (
             <Route path="/profile" element={<Navigate replace to="/" />}></Route>
           )}
+          <Route path="product/:id" element={<ProductPage />}></Route>
           <Route path="*" element={<NotFoundPage />}></Route>
         </Routes>
       </main>
