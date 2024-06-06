@@ -103,7 +103,12 @@ export const getProduct = (id: string) => {
 };
 
 export const getCategory = (id: string) => {
-  return apiRoot.categories().withId({ ID: id }).get().execute();
+  return apiRoot
+    .categories()
+    .withId({ ID: id })
+    .get()
+    .execute()
+    .then((res) => res.body);
 };
 
 export const createAddress = (id: string, version: number, address: userAddress) => {

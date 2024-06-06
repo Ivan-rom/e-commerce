@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { getProducts } from '../scripts/api/client';
+import ProductCard from './ProductCard';
 
 // interfaces doesn't import for no reason
 // maybe something wrong with my pc
 // if it can work with ordinary imports use them instead
 import * as commercetools from '@commercetools/platform-sdk';
-import getPrice from '../scripts/helpers/getPrice';
 type Product = commercetools.Product;
 
 function Catalog() {
@@ -29,25 +29,8 @@ function Catalog() {
       ) : (
         <div className="grid grid-cols-3 gap-3 m-auto w-9/12">
           {products.map(
-            (product, index) =>
-              product.masterData.published && (
-                <div key={index} className="w-full">
-                  <div>
-                    <a key={product.id} href={`product/${product.id}`}>
-                      <img
-                        className="h-60 object-cover m-auto"
-                        src={product.masterData.current.masterVariant.images![0].url}
-                        alt={`${product.masterData.current.name['en-US']} cover`}
-                      />
-                      <p className="italic text-xs">
-                        {getPrice(product.masterData.current.masterVariant)}$
-                      </p>
-
-                      <p className="font-bold">{product.masterData.current.name['en-US']}</p>
-                    </a>
-                  </div>
-                </div>
-              ),
+            (product) =>
+              product.masterData.published && <ProductCard product={product} key={product.id} />,
           )}
         </div>
       )}

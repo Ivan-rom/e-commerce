@@ -1,6 +1,9 @@
 import { ChangeEvent, ReactNode } from 'react';
 import { ButtonType, InputType, PageNames } from './enums';
 
+import * as commercetools from '@commercetools/platform-sdk';
+type Money = commercetools.Money;
+
 export type InputProps = {
   type?: InputType;
   label: string | ReactNode;
@@ -52,3 +55,8 @@ export interface AddressFormElements extends HTMLFormElement {
 }
 
 export type pageInfo = { to: string; name: PageNames; text: string; className: string };
+
+export interface DiscountedPrice {
+  newPrice: Money;
+  discount: string;
+}
