@@ -30,29 +30,27 @@ function ProductCard({ product }: Props) {
   }, [product, price]);
 
   return (
-    <div className="w-full">
-      <div>
-        <a key={product.id} href={`product/${product.id}`}>
-          <img
-            className="h-60 object-cover m-auto"
-            src={product.masterData.current.masterVariant.images![0].url}
-            alt={`${product.masterData.current.name['en-US']} cover`}
-          />
-          <p className="italic text-xs">
-            {discountedPrice ? (
-              <>
-                {' '}
-                <span>{formatPrice(discountedPrice.newPrice)}</span>{' '}
-                <span className="line-through opacity-50">{formatPrice(price.value)}</span>
-              </>
-            ) : (
-              <>{formatPrice(product.masterData.current.masterVariant.prices![0].value)}</>
-            )}
-          </p>
+    <div className="w-full p-1 rounded-sm hover:shadow">
+      <a key={product.id} href={`product/${product.id}`}>
+        <img
+          className="h-60 object-cover m-auto"
+          src={product.masterData.current.masterVariant.images![0].url}
+          alt={`${product.masterData.current.name['en-US']} cover`}
+        />
+        <p className="italic text-xs">
+          {discountedPrice ? (
+            <>
+              {' '}
+              <span>{formatPrice(discountedPrice.newPrice)}</span>{' '}
+              <span className="line-through opacity-50">{formatPrice(price.value)}</span>
+            </>
+          ) : (
+            <>{formatPrice(product.masterData.current.masterVariant.prices![0].value)}</>
+          )}
+        </p>
 
-          <p className="font-bold">{product.masterData.current.name['en-US']}</p>
-        </a>
-      </div>
+        <p className="font-bold">{product.masterData.current.name['en-US']}</p>
+      </a>
     </div>
   );
 }
