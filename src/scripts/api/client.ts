@@ -94,7 +94,7 @@ export const changePassword = (
     .execute();
 };
 
-export const getProducts = () => {
+export const getProducts = (offset: number = 0, pagesPerPage: number = 10) => {
   // return apiRoot.products().get().execute();
   return apiRoot
     .productProjections()
@@ -102,6 +102,8 @@ export const getProducts = () => {
     .get({
       queryArgs: {
         filter: `categories:exists`,
+        limit: pagesPerPage,
+        offset,
       },
     })
     .execute();
