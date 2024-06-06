@@ -95,11 +95,36 @@ export const changePassword = (
 };
 
 export const getProducts = () => {
-  return apiRoot.products().get().execute();
+  // return apiRoot.products().get().execute();
+  return apiRoot
+    .productProjections()
+    .search()
+    .get({
+      queryArgs: {
+        filter: `categories:exists`,
+      },
+    })
+    .execute();
 };
 
 export const getProduct = (id: string) => {
   return apiRoot.products().withId({ ID: id }).get().execute();
+};
+
+export const getProductsByCategory = (categoryId: string) => {
+  return apiRoot
+    .productProjections()
+    .search()
+    .get({
+      queryArgs: {
+        filter: `categories.id:"${categoryId}"`,
+      },
+    })
+    .execute();
+};
+
+export const getCategories = () => {
+  return apiRoot.categories().get().execute();
 };
 
 export const getCategory = (id: string) => {

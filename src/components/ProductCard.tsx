@@ -4,11 +4,11 @@ import { useEffect, useState } from 'react';
 import getDiscountedPrice from '../scripts/helpers/getDiscountedPrice';
 import getDiscountByCategories from '../scripts/helpers/getDiscountByCategories';
 import { getCategory } from '../scripts/api/client';
-type Product = commercetools.Product;
 type Money = commercetools.Money;
 
 type Props = {
-  product: Product;
+  product: commercetools.ProductProjection | commercetools.ProductData;
+  id: string;
 };
 
 interface DiscountedPrice {
@@ -16,12 +16,12 @@ interface DiscountedPrice {
   discount: string;
 }
 
-function ProductCard({ product }: Props) {
+function ProductCard({ product, id }: Props) {
   const [discountedPrice, setDiscountedPrice] = useState<DiscountedPrice | null>(null);
-  const price = product.masterData.current.masterVariant.prices![0];
+  const price = product.masterVariant.prices![0];
 
   useEffect(() => {
-    Promise.all(product.masterData.current.categories.map((cat) => getCategory(cat.id)))
+    Promise.all(product.categories.map((cat) => getCategory(cat.id)))
       .then((res) => getDiscountByCategories(res))
       .then((res) => {
         if (!res) return;
@@ -31,11 +31,11 @@ function ProductCard({ product }: Props) {
 
   return (
     <div className="w-full p-1 rounded-sm hover:shadow">
-      <a key={product.id} href={`product/${product.id}`}>
+      <a key={id} href={`product/${id}`}>
         <img
           className="h-60 object-cover m-auto"
-          src={product.masterData.current.masterVariant.images![0].url}
-          alt={`${product.masterData.current.name['en-US']} cover`}
+          src={product.masterVariant.images![0].url}
+          alt={`${product.name['en-US']} cover`}
         />
         <p className="italic text-xs">
           {discountedPrice ? (
@@ -45,11 +45,11 @@ function ProductCard({ product }: Props) {
               <span className="line-through opacity-50">{formatPrice(price.value)}</span>
             </>
           ) : (
-            <>{formatPrice(product.masterData.current.masterVariant.prices![0].value)}</>
+            <>{formatPrice(product.masterVariant.prices![0].value)}</>
           )}
         </p>
 
-        <p className="font-bold">{product.masterData.current.name['en-US']}</p>
+        <p className="font-bold">{product.name['en-US']}</p>
       </a>
     </div>
   );
