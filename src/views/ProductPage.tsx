@@ -27,9 +27,7 @@ function ProductPage() {
         // getting categories for Product
         Promise.all(
           response.body.masterData.current.categories.map((cat) => getCategory(cat.id)),
-        ).then((res) =>
-          setCategories(res.map((cat) => cat.body).sort((a, b) => +b.orderHint - +a.orderHint)),
-        );
+        ).then((res) => setCategories(res.sort((a, b) => +b.orderHint - +a.orderHint)));
       })
       .catch(() => setIsError(true))
       .finally(() => setIsLoading(false));

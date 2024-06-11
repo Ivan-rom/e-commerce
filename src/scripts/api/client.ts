@@ -94,16 +94,48 @@ export const changePassword = (
     .execute();
 };
 
-export const getProducts = () => {
-  return apiRoot.products().get().execute();
+export const getProducts = (offset: number = 0, pagesPerPage: number = 10) => {
+  // return apiRoot.products().get().execute();
+  return apiRoot
+    .productProjections()
+    .search()
+    .get({
+      queryArgs: {
+        filter: `categories:exists`,
+        limit: pagesPerPage,
+        offset,
+      },
+    })
+    .execute();
 };
 
 export const getProduct = (id: string) => {
   return apiRoot.products().withId({ ID: id }).get().execute();
 };
 
+export const getProductsByCategory = (categoryId: string) => {
+  return apiRoot
+    .productProjections()
+    .search()
+    .get({
+      queryArgs: {
+        filter: `categories.id:"${categoryId}"`,
+      },
+    })
+    .execute();
+};
+
+export const getCategories = () => {
+  return apiRoot.categories().get().execute();
+};
+
 export const getCategory = (id: string) => {
-  return apiRoot.categories().withId({ ID: id }).get().execute();
+  return apiRoot
+    .categories()
+    .withId({ ID: id })
+    .get()
+    .execute()
+    .then((res) => res.body);
 };
 
 export const createAddress = (id: string, version: number, address: userAddress) => {

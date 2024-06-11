@@ -1,6 +1,8 @@
 import { ShoppingCartIcon } from '@heroicons/react/24/solid';
-import { getDiscounts } from '../scripts/api/client';
 import { useEffect, useState } from 'react';
+import getDiscountByCategories from '../scripts/helpers/getDiscountByCategories';
+import getDiscountedPrice from '../scripts/helpers/getDiscountedPrice';
+import formatPrice from '../scripts/helpers/formatPrice';
 
 // interfaces doesn't import for no reason
 // maybe something wrong with my pc
@@ -29,47 +31,12 @@ function ProductInfo({ data, categories }: Props) {
 
   const price = variant.prices![0];
 
-  const formatPrice = (money: Money): string => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: money.currencyCode,
-    }).format(money.centAmount / 100);
-  };
-
-  const getDiscountByCategories = async () => {
-    const discounts = await getDiscounts().then((res) => res.body.results);
-    const foundDiscount = discounts
-      .filter((dis) => dis.isActive)
-      .filter((dis) => dis.references.filter((ref) => ref.typeId === 'category').length > 0)
-      .sort((a, b) => +b.sortOrder - +a.sortOrder)
-      .find((dis) => !!categories.find((cat) => !!dis.references.find((ref) => ref.id === cat.id)));
-    return foundDiscount;
-  };
-
   useEffect(() => {
-    getDiscountByCategories().then((res) => {
+    getDiscountByCategories(categories).then((res) => {
       if (!res) return;
-
-      let centAmount = 0;
-      let discount = '';
-
-      if (res.value.type === 'absolute') {
-        discount = formatPrice(res.value.money[0]);
-        centAmount = price.value.centAmount - res.value.money[0].centAmount;
-      } else if (res.value.type === 'relative') {
-        discount = `${res.value.permyriad / 100}%`;
-        centAmount =
-          price.value.centAmount - (price.value.centAmount / 100) * (res.value.permyriad / 100);
-      }
-
-      const newPrice = {
-        currencyCode: price.value.currencyCode,
-        centAmount,
-      };
-
-      setDiscountedPrice({ newPrice, discount });
+      setDiscountedPrice(getDiscountedPrice(res, price));
     });
-  }, [categories]);
+  }, [categories, price]);
 
   return (
     <>
