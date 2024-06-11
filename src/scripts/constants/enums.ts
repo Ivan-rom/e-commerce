@@ -18,13 +18,31 @@ export enum FieldType {
   select,
 }
 
+export enum addAddressType {
+  BILLING = 'addBillingAddressId',
+  SHIPPING = 'addShippingAddressId',
+}
+
+export enum addDefaultAddressType {
+  BILLING = 'setDefaultBillingAddress',
+  SHIPPING = 'setDefaultShippingAddress',
+}
+
 export enum AuthActions {
   REGISTER_SUCCESS = 'REGISTER_SUCCESS',
-  REGISTER_FAIL = 'REGISTER_FAILS',
+  GET_USER = 'GET_USER',
+  REGISTER_FAIL = 'REGISTER_FAIL',
   LOGIN_SUCCESS = 'LOGIN_SUCCESS',
   LOGIN_FAIL = 'LOGIN_FAIL',
   LOGOUT = 'LOGOUT',
   SET_MESSAGE = 'SET_MESSAGE',
+  UPDATE_SUCCESS = 'UPDATE_SUCCESS',
+  UPDATE_FAIL = 'UPDATE_FAIL',
+  PASS_SUCCESS = 'PASS_SUCCESS',
+  PASS_FAIL = 'PASS_FAIL',
+  ADD_ADDRESS = 'ADD_ADDRESS',
+  REMOVE_ADDRESS = 'REMOVE_ADDRESS',
+  SET_DEFAULT_ADDRESS = 'SET_DEFAULT_ADDRESS',
 }
 
 export enum PageNames {
@@ -34,8 +52,8 @@ export enum PageNames {
 }
 
 export enum ProfileActions {
-  setFirstName = 'setFirstName',
-  setLastName = 'setLastName',
-  setDateOfBirth = 'setDateOfBirth',
-  changeEmail = 'changeEmail',
+  firstName = 'setFirstName',
+  lastName = 'setLastName',
+  dateOfBirth = 'setDateOfBirth',
+  email = 'changeEmail',
 }

@@ -34,8 +34,9 @@ export const register =
       },
     );
 
-export const login = (email: string, password: string) => (dispatch: AppDispatch) =>
-  authenticateCustomer({ email: email, password: password }).then(
+export const login = (email: string, password: string) => async (dispatch: AppDispatch) => {
+  const customer = authenticateCustomer({ email: email, password: password });
+  return customer.execute().then(
     (data) => {
       dispatch({
         type: AuthActions.LOGIN_SUCCESS,
@@ -64,6 +65,7 @@ export const login = (email: string, password: string) => (dispatch: AppDispatch
       return Promise.reject(message);
     },
   );
+};
 
 export const logout = () => (dispatch: (arg0: { type: AuthActions }) => void) => {
   dispatch({

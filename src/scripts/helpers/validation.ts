@@ -117,7 +117,9 @@ export const validate = (input: HTMLInputElement, country?: string): { [key: str
       errors.lastName = checkCity(input.value).join('\n');
       break;
     case 'password':
-      errors.password = passwordChecker(input.value).join('\n');
+    case 'newPassword':
+    case 'currentPassword':
+      errors[input.name] = passwordChecker(input.value).join('\n');
       break;
     case 'birthday':
       errors.birthday = dateChecker(input.value).join('\n');
