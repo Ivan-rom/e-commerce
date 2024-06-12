@@ -10,6 +10,7 @@ import Header from './components/Header';
 import { Auth } from './scripts/constants/apInterfaces';
 import ProductPage from './views/ProductPage';
 import ReactModal from 'react-modal';
+import BasketPage from './views/BasketPage';
 ReactModal.setAppElement('#root');
 function App() {
   const state = useSelector((state: Auth) => state.auth);
@@ -37,7 +38,8 @@ function App() {
           ) : (
             <Route path="/profile" element={<Navigate replace to="/" />}></Route>
           )}
-          <Route path="product/:id" element={<ProductPage />}></Route>
+          <Route path="/basket" element={<BasketPage />}></Route>
+          <Route path="/product/:id" element={<ProductPage />}></Route>
           <Route path="*" element={<NotFoundPage />}></Route>
         </Routes>
       </main>
