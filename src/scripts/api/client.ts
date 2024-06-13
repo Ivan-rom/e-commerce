@@ -265,6 +265,22 @@ export const getDiscounts = () => {
   return apiRoot.productDiscounts().get().execute();
 };
 
+export const getCart = (id: string) => {
+  return apiRoot.carts().withCustomerId({ customerId: id }).get().execute();
+};
+
+export const createCart = (customerId: string) => {
+  return apiRoot
+    .carts()
+    .post({
+      body: {
+        customerId,
+        currency: 'USD',
+      },
+    })
+    .execute();
+};
+
 // export const addToCard = (id: string) => {
 //   return apiRoot
 //     .carts()
