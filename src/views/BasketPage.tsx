@@ -15,6 +15,7 @@ type Cart = commercetools.Cart;
 function BasketPage() {
   const [cart, setCart] = useState<Cart | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isClearing, setIsClearing] = useState(false);
   const [discountCode, setDiscountCode] = useState('');
 
   useEffect(() => {
@@ -32,9 +33,11 @@ function BasketPage() {
       return;
     }
 
-    removeFromCart(cart.id, cart.version, cart.lineItems[0].id).then((newCart) => {
-      clearCart(newCart.body);
-    });
+    removeFromCart(cart.id, cart.version, cart.lineItems[0].id)
+      .then((newCart) => {
+        clearCart(newCart.body);
+      })
+      .finally(() => setIsClearing(false));
   }
 
   function submitDiscount(e: FormEvent) {
@@ -90,24 +93,51 @@ function BasketPage() {
                     type="text"
                     placeholder="Enter discount code"
                     name="discount code"
-                    className="p-2 mr-1 border"
+                    className="p-2 mr-1 border rounded"
                     value={discountCode}
                     onChange={({ target }) => setDiscountCode(target.value)}
                   />
-                  <button className="p-2 bg-sky-300">Submit</button>
+                  <button className="p-2 bg-sky-900 text-white rounded hover:bg-sky-800 transition-colors">
+                    Submit
+                  </button>
                 </form>
                 Total price: {formatPrice(cart.totalPrice)}
               </div>
               <button
-                className="p-1 bg-red-500 text-white rounded hover:bg-red-400 transition-colors"
+                className="p-2 bg-red-500 text-white rounded hover:bg-red-400 transition-colors"
                 type="button"
-                onClick={() => clearCart(cart)}
+                onClick={() => setIsClearing(true)}
               >
                 Clear cart
               </button>
             </div>
           </>
         ))
+      )}
+
+      {cart && isClearing && (
+        <div className="absolute inset-0 z-50">
+          <div className="absolute inset-0 bg-black opacity-50">
+            <button className="absolute inset-0" onClick={() => setIsClearing(false)}></button>
+          </div>
+          <div className="absolute z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-5 bg-sky-100 rounded">
+            <div className="fs-l mb-3">Do you want to clear your cart?</div>
+            <div className="flex justify-around">
+              <button
+                className="p-2 bg-sky-900 text-white rounded hover:bg-sky-800 transition-colors"
+                onClick={() => setIsClearing(false)}
+              >
+                No
+              </button>
+              <button
+                className="p-2 bg-red-500 text-white rounded hover:bg-red-400 transition-colors"
+                onClick={() => clearCart(cart)}
+              >
+                Yes
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );
