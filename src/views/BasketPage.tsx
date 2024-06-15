@@ -88,7 +88,7 @@ function BasketPage() {
 
             <div className="flex justify-between items-start mt-4">
               <div>
-                <form onSubmit={submitDiscount}>
+                <form className="mb-2" onSubmit={submitDiscount}>
                   <input
                     type="text"
                     placeholder="Enter discount code"
@@ -98,10 +98,31 @@ function BasketPage() {
                     onChange={({ target }) => setDiscountCode(target.value)}
                   />
                   <button className="p-2 bg-sky-900 text-white rounded hover:bg-sky-800 transition-colors">
-                    Submit
+                    Activate discount code
                   </button>
                 </form>
-                Total price: {formatPrice(cart.totalPrice)}
+                <div className="flex gap-2 items-center">
+                  Total price:{' '}
+                  {cart.discountOnTotalPrice ? (
+                    <div>
+                      <span>{formatPrice(cart.totalPrice)}</span>
+                      <span className="opacity-50 line-through">
+                        {' '}
+                        {formatPrice({
+                          ...cart.totalPrice,
+                          centAmount:
+                            cart.totalPrice.centAmount +
+                            cart.discountOnTotalPrice.discountedAmount.centAmount,
+                        })}
+                      </span>
+                    </div>
+                  ) : (
+                    formatPrice(cart.totalPrice)
+                  )}
+                  <button className="p-2 bg-sky-900 text-white rounded hover:bg-sky-800 transition-colors">
+                    Buy
+                  </button>
+                </div>
               </div>
               <button
                 className="p-2 bg-red-500 text-white rounded hover:bg-red-400 transition-colors"
