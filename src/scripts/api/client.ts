@@ -321,6 +321,30 @@ export const addToCard = (cartId: string, version: number, productId: string) =>
     .execute();
 };
 
+export const changeItemInCartQuantity = (
+  cartId: string,
+  version: number,
+  itemId: string,
+  quantity: number,
+) => {
+  return apiRoot
+    .carts()
+    .withId({ ID: cartId })
+    .post({
+      body: {
+        version,
+        actions: [
+          {
+            action: 'changeLineItemQuantity',
+            lineItemId: itemId,
+            quantity,
+          },
+        ],
+      },
+    })
+    .execute();
+};
+
 export const activateCode = (cartId: string, version: number, code: string) => {
   return apiRoot
     .carts()

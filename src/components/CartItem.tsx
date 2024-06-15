@@ -1,6 +1,6 @@
 import * as commercetools from '@commercetools/platform-sdk';
 import formatPrice from '../scripts/helpers/formatPrice';
-import { removeFromCart } from '../scripts/api/client';
+import { changeItemInCartQuantity, removeFromCart } from '../scripts/api/client';
 import { TrashIcon } from '@heroicons/react/24/solid';
 import { Link } from 'react-router-dom';
 type Cart = commercetools.Cart;
@@ -13,6 +13,12 @@ type Props = {
 };
 
 function CartItem({ item, cart, updateCart }: Props) {
+  function changeQuantity(quantity: 1 | -1) {
+    changeItemInCartQuantity(cart.id, cart.version, item.id, item.quantity + quantity).then((res) =>
+      updateCart(res.body),
+    );
+  }
+
   return (
     <tr className="border">
       <td className="max-[660px]:hidden">
@@ -39,9 +45,19 @@ function CartItem({ item, cart, updateCart }: Props) {
       </td>
       <td>
         <div className="flex justify-center">
-          <button className="border p-2 hover:bg-sky-300 hover:text-white transition-all">-</button>
+          <button
+            className="border p-2 hover:bg-sky-300 hover:text-white transition-all"
+            onClick={() => changeQuantity(-1)}
+          >
+            -
+          </button>
           <div className="border border-x-0 p-2">{item.quantity}</div>
-          <button className="border p-2 hover:bg-sky-300 hover:text-white transition-all">+</button>
+          <button
+            className="border p-2 hover:bg-sky-300 hover:text-white transition-all"
+            onClick={() => changeQuantity(1)}
+          >
+            +
+          </button>
         </div>
       </td>
       <td>{formatPrice(item.totalPrice)}</td>
