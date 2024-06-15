@@ -320,3 +320,21 @@ export const addToCard = (cartId: string, version: number, productId: string) =>
     })
     .execute();
 };
+
+export const activateCode = (cartId: string, version: number, code: string) => {
+  return apiRoot
+    .carts()
+    .withId({ ID: cartId })
+    .post({
+      body: {
+        version,
+        actions: [
+          {
+            action: 'addDiscountCode',
+            code,
+          },
+        ],
+      },
+    })
+    .execute();
+};
