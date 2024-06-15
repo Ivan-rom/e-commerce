@@ -1,7 +1,6 @@
 import * as commercetools from '@commercetools/platform-sdk';
 import formatPrice from '../scripts/helpers/formatPrice';
-import { useEffect } from 'react';
-import { getDiscountById, removeFromCart } from '../scripts/api/client';
+import { removeFromCart } from '../scripts/api/client';
 import { TrashIcon } from '@heroicons/react/24/solid';
 import { Link } from 'react-router-dom';
 type Cart = commercetools.Cart;
@@ -14,16 +13,6 @@ type Props = {
 };
 
 function CartItem({ item, cart, updateCart }: Props) {
-  console.log(item);
-  useEffect(() => {
-    if (item.price.discounted) {
-      getDiscountById(item.price.discounted.discount.id).then((res) => {
-        console.log(item.name['en-US']);
-        console.log(res);
-      });
-    }
-  }, [item]);
-
   return (
     <tr className="border">
       <td className="max-[660px]:hidden">
