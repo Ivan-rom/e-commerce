@@ -10,9 +10,10 @@ type LineItem = commercetools.LineItem;
 type Props = {
   item: LineItem;
   cart: Cart;
+  updateCart: (cart: Cart) => void;
 };
 
-function CartItem({ item, cart }: Props) {
+function CartItem({ item, cart, updateCart }: Props) {
   console.log(item);
   useEffect(() => {
     if (item.price.discounted) {
@@ -58,7 +59,9 @@ function CartItem({ item, cart }: Props) {
       <td>
         <button
           className="text-red-500 hover:text-white hover:bg-red-500 p-2 rounded transition-all"
-          onClick={() => removeFromCart(cart.id, cart.version, item.id)}
+          onClick={() =>
+            removeFromCart(cart.id, cart.version, item.id).then((res) => updateCart(res.body))
+          }
         >
           <TrashIcon className="size-5" />
         </button>
