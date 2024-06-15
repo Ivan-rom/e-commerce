@@ -30,10 +30,10 @@ export default function Header() {
           to="/basket"
           className={({ isActive, isPending }) =>
             isPending
-              ? 'p-2 rounded ml-auto'
+              ? 'p-2 rounded ml-auto hover:bg-sky-200 transition-colors'
               : isActive
-                ? 'bg-sky-200 p-2 rounded ml-auto'
-                : 'p-2 rounded ml-auto'
+                ? 'bg-sky-900 text-white p-2 rounded ml-auto transition-colors'
+                : 'p-2 rounded ml-auto hover:bg-sky-200 transition-colors'
           }
         >
           <ShoppingCartIcon className="size-5" />
