@@ -10,6 +10,8 @@ import * as commercetools from '@commercetools/platform-sdk';
 import CartItem from '../components/CartItem';
 import { Link } from 'react-router-dom';
 import formatPrice from '../scripts/helpers/formatPrice';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 type Cart = commercetools.Cart;
 
 function BasketPage() {
@@ -42,7 +44,12 @@ function BasketPage() {
 
   function submitDiscount(e: FormEvent) {
     e.preventDefault();
-    activateCode(cart!.id, cart!.version, discountCode).then((res) => setCart(res.body));
+    activateCode(cart!.id, cart!.version, discountCode)
+      .then((res) => {
+        toast.success('Discount activated!');
+        setCart(res.body);
+      })
+      .catch(() => toast.error("Couldn't activate discount :("));
   }
 
   return (
@@ -160,6 +167,7 @@ function BasketPage() {
           </div>
         </div>
       )}
+      <ToastContainer position="bottom-center" theme="colored" autoClose={2000} />
     </>
   );
 }
