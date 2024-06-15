@@ -1,22 +1,69 @@
 import * as commercetools from '@commercetools/platform-sdk';
 import formatPrice from '../scripts/helpers/formatPrice';
+import { useEffect } from 'react';
+import { getDiscountById, removeFromCart } from '../scripts/api/client';
+import { TrashIcon } from '@heroicons/react/24/solid';
+import { Link } from 'react-router-dom';
+type Cart = commercetools.Cart;
 type LineItem = commercetools.LineItem;
 
 type Props = {
   item: LineItem;
+  cart: Cart;
 };
 
-function CartItem({ item }: Props) {
+function CartItem({ item, cart }: Props) {
   console.log(item);
+  useEffect(() => {
+    if (item.price.discounted) {
+      getDiscountById(item.price.discounted.discount.id).then((res) => {
+        console.log(item.name['en-US']);
+        console.log(res);
+      });
+    }
+  }, [item]);
+
   return (
-    <li className="flex gap-1 items-center">
-      <img src={item.variant.images![0].url} alt="" className=" w-14" />
-      <div>{item.name['en-US']}</div>
-      <div>{formatPrice(item.variant.prices![0].value)}</div>
-      <div>{item.quantity}</div>
-      <div>{formatPrice(item.totalPrice)}</div>
-      <div>{item.variant.sku}</div>
-    </li>
+    <tr className="border">
+      <td className="max-[660px]:hidden">
+        <div className="flex justify-center">
+          <img className="w-24 p-3" src={item.variant.images![0].url} alt="" />
+        </div>
+      </td>
+      <td>
+        <Link to={`/product/${item.productId}`}>{item.name['en-US']}</Link>
+      </td>
+      <td>
+        <div className="flex gap-1 justify-center">
+          {item.price?.discounted ? (
+            <>
+              <div>{formatPrice(item.price.discounted.value)} </div>
+              <div className="line-through opacity-50 max-[660px]:hidden">
+                {formatPrice(item.price.value)}
+              </div>
+            </>
+          ) : (
+            <>{formatPrice(item.variant.prices![0].value)}</>
+          )}
+        </div>
+      </td>
+      <td>
+        <div className="flex justify-center">
+          <button className="border p-2 hover:bg-sky-300 hover:text-white transition-all">-</button>
+          <div className="border border-x-0 p-2">{item.quantity}</div>
+          <button className="border p-2 hover:bg-sky-300 hover:text-white transition-all">+</button>
+        </div>
+      </td>
+      <td>{formatPrice(item.totalPrice)}</td>
+      <td>
+        <button
+          className="text-red-500 hover:text-white hover:bg-red-500 p-2 rounded transition-all"
+          onClick={() => removeFromCart(cart.id, cart.version, item.id)}
+        >
+          <TrashIcon className="size-5" />
+        </button>
+      </td>
+    </tr>
   );
 }
 

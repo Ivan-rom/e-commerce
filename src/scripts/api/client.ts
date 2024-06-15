@@ -265,6 +265,10 @@ export const getDiscounts = () => {
   return apiRoot.productDiscounts().get().execute();
 };
 
+export const getDiscountById = (id: string) => {
+  return apiRoot.productDiscounts().withId({ ID: id }).get().execute();
+};
+
 export const getCart = (id: string) => {
   return apiRoot.carts().withCustomerId({ customerId: id }).get().execute();
 };
@@ -281,12 +285,38 @@ export const createCart = (customerId: string) => {
     .execute();
 };
 
-// export const addToCard = (id: string) => {
-//   return apiRoot
-//     .carts()
-//     .withId({ ID: id })
-//     .post({
-//       body: {},
-//     })
-//     .execute();
-// };
+export const removeFromCart = (cartId: string, version: number, itemId: string) => {
+  return apiRoot
+    .carts()
+    .withId({ ID: cartId })
+    .post({
+      body: {
+        version,
+        actions: [
+          {
+            action: 'removeLineItem',
+            lineItemId: itemId,
+          },
+        ],
+      },
+    })
+    .execute();
+};
+
+export const addToCard = (cartId: string, version: number, productId: string) => {
+  return apiRoot
+    .carts()
+    .withId({ ID: cartId })
+    .post({
+      body: {
+        version,
+        actions: [
+          {
+            action: 'addLineItem',
+            productId,
+          },
+        ],
+      },
+    })
+    .execute();
+};
