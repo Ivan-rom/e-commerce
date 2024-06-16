@@ -1,3 +1,5 @@
+import { ReactComponent as LogoIcon } from '../assets/svg/rs_school_js.svg';
+
 function About() {
   return (
     <main>
@@ -30,7 +32,16 @@ function About() {
             src="https://avatars.githubusercontent.com/u/60271557?s=400&u=23874aca5968f84be37b08622f3d91e72a43358b&v=4"
           />
           <div className="h-full">
-            <div className="text-sky-800 font-bold text-lg">Ivan</div>
+            <div className="text-sky-800 font-bold text-lg">
+              <a href="https://github.com/Ivan-rom" target="_blank" rel="noreferrer">
+                <img
+                  src="https://github.com/tandpfun/skill-icons/raw/main/icons/Github-Dark.svg"
+                  alt="Ivan's Github"
+                  className="w-4 inline object-cover -mt-1"
+                />
+              </a>
+              &nbsp;Ivan
+            </div>
             <div className="italic font-light text-sky-600"> Team Lead & Frontent Developer</div>
           </div>
           <div className="border-t border-gray-200 mt-4">
@@ -48,7 +59,16 @@ function About() {
             src="https://avatars.githubusercontent.com/u/60271557?s=400&u=23874aca5968f84be37b08622f3d91e72a43358b&v=4"
           />
           <div className="h-full">
-            <div className="text-sky-800 font-bold text-lg">Ekaterina</div>
+            <div className="text-sky-800 font-bold text-lg">
+              <a href="https://github.com/cryingsealpup" target="_blank" rel="noreferrer">
+                <img
+                  src="https://github.com/tandpfun/skill-icons/raw/main/icons/Github-Dark.svg"
+                  alt="Ekaterina's Github"
+                  className="w-4 inline object-cover -mt-1"
+                />
+              </a>
+              &nbsp;Ekaterina
+            </div>
             <div className="italic font-light text-sky-600">Frontent Developer</div>
           </div>
           <div className="border-t border-gray-200 mt-4">
@@ -59,6 +79,14 @@ function About() {
             </ul>
           </div>
         </div>
+      </div>
+      <div className="text-sm border-t border-gray-200 text-gray-500 mt-4">
+        <p className="flex items-center my-4 italic">
+          Done with ❤️ for &nbsp;
+          <a href="https://rs.school/courses/javascript-ru">
+            <LogoIcon className="w-16" />
+          </a>
+        </p>
       </div>
     </main>
   );
