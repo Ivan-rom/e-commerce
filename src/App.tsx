@@ -7,6 +7,7 @@ import NotFoundPage from './pages/notFound/NotFound';
 import Main from './views/MainPage';
 import { useSelector } from 'react-redux';
 import Header from './components/Header';
+import About from './views/About';
 import { Auth } from './scripts/constants/apInterfaces';
 import ProductPage from './views/ProductPage';
 import ReactModal from 'react-modal';
@@ -29,7 +30,7 @@ function App() {
   return (
     <Router>
       <Header />
-      <main className="container md mx-auto min-w-80">
+      <main className="container mx-auto md:min-w-80">
         <Routes>
           <Route path="/" element={<Main />}></Route>
           <Route path="/home" element={<Main />}></Route>
@@ -51,6 +52,7 @@ function App() {
             <Route path="/profile" element={<Navigate replace to="/" />}></Route>
           )}
           <Route path="/basket" element={<BasketPage />}></Route>
+          <Route path="/about" element={<About />}></Route>
           <Route path="/product/:id" element={<ProductPage />}></Route>
           <Route path="*" element={<NotFoundPage />}></Route>
         </Routes>
