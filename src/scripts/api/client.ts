@@ -11,6 +11,22 @@ export const authenticateCustomer = (data: Customer | AuthData) =>
     body: { ...data },
   });
 
+export const getAnonymousCart = (anonymousId: string) => {
+  const cartDraft = {
+    currency: 'USD',
+    anonymousId,
+    shippingAddress: {
+      country: 'US',
+    },
+  };
+  return apiRoot
+    .carts()
+    .post({
+      body: cartDraft,
+    })
+    .execute();
+};
+
 export const getUserInfo = async (id: string) => {
   return await apiRoot
     .customers()

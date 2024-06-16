@@ -1,5 +1,10 @@
 import { ProfileActions } from './enums';
 
+import * as commercetools from '@commercetools/platform-sdk';
+type LineItem = commercetools.LineItem;
+type CentPrecisionMoney = commercetools.CentPrecisionMoney;
+type DiscountOnTotalPrice = commercetools.DiscountOnTotalPrice;
+
 export interface Customer {
   firstName: string;
   lastName: string;
@@ -25,6 +30,18 @@ export interface Address {
   country: string;
   // building: string;
   // apartment: string;
+}
+
+export interface Cart {
+  cart: CartState;
+}
+
+export interface CartState {
+  id: string;
+  version: number;
+  lineItems: LineItem[];
+  totalPrice: CentPrecisionMoney;
+  discountOnTotalPrice?: DiscountOnTotalPrice;
 }
 
 export interface Auth {
