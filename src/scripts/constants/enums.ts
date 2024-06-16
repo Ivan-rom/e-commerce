@@ -45,6 +45,15 @@ export enum AuthActions {
   SET_DEFAULT_ADDRESS = 'SET_DEFAULT_ADDRESS',
 }
 
+export enum CartActions {
+  GET_CART = 'GET_CART',
+  CREATE_CART = 'CREATE_CART',
+  ACTIVATE_DISCOUNT = 'ACTIVATE_DISCOUNT',
+  CHANGE_ITEM_QUANTITY = 'CHANGE_ITEM_QUANTITY',
+  DELETE_ITEM = 'DELETE_ITEM',
+  CLEAR_CART = 'CLEAR_CART',
+}
+
 export enum PageNames {
   main = 'main',
   login = 'login',

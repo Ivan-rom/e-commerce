@@ -11,6 +11,22 @@ export const authenticateCustomer = (data: Customer | AuthData) =>
     body: { ...data },
   });
 
+export const getAnonymousCart = (anonymousId: string) => {
+  const cartDraft = {
+    currency: 'USD',
+    anonymousId,
+    shippingAddress: {
+      country: 'US',
+    },
+  };
+  return apiRoot
+    .carts()
+    .post({
+      body: cartDraft,
+    })
+    .execute();
+};
+
 export const getUserInfo = async (id: string) => {
   return await apiRoot
     .customers()
@@ -356,6 +372,28 @@ export const activateCode = (cartId: string, version: number, code: string) => {
           {
             action: 'addDiscountCode',
             code,
+          },
+        ],
+      },
+    })
+    .execute();
+};
+
+// dfda1de9-31dc-4e41-a04f-c270a44544d6
+export const deactivateCode = (cartId: string, version: number) => {
+  return apiRoot
+    .carts()
+    .withId({ ID: cartId })
+    .post({
+      body: {
+        version,
+        actions: [
+          {
+            action: 'removeDiscountCode',
+            discountCode: {
+              typeId: 'discount-code',
+              id: 'dfda1de9-31dc-4e41-a04f-c270a44544d6',
+            },
           },
         ],
       },

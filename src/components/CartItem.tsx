@@ -1,22 +1,20 @@
 import * as commercetools from '@commercetools/platform-sdk';
 import formatPrice from '../scripts/helpers/formatPrice';
-import { changeItemInCartQuantity, removeFromCart } from '../scripts/api/client';
 import { TrashIcon } from '@heroicons/react/24/solid';
 import { Link } from 'react-router-dom';
-type Cart = commercetools.Cart;
+import { useAppDispatch, useAppSelector } from '../scripts/hooks/storeHooks';
+import { changeItemQuantityAction, removeItemAction } from '../store/actions/cartActions';
 type LineItem = commercetools.LineItem;
 
 type Props = {
   item: LineItem;
-  cart: Cart;
-  updateCart: (cart: Cart) => void;
 };
 
-function CartItem({ item, cart, updateCart }: Props) {
+function CartItem({ item }: Props) {
+  const state = useAppSelector((state) => state.cart)!;
+  const dispatch = useAppDispatch();
   function changeQuantity(quantity: 1 | -1) {
-    changeItemInCartQuantity(cart.id, cart.version, item.id, item.quantity + quantity).then((res) =>
-      updateCart(res.body),
-    );
+    dispatch(changeItemQuantityAction(state.cart, item.id, item.quantity + quantity));
   }
 
   return (
@@ -64,9 +62,7 @@ function CartItem({ item, cart, updateCart }: Props) {
       <td>
         <button
           className="text-red-500 hover:text-white hover:bg-red-500 p-2 rounded transition-all"
-          onClick={() =>
-            removeFromCart(cart.id, cart.version, item.id).then((res) => updateCart(res.body))
-          }
+          onClick={() => dispatch(removeItemAction(state.cart, item.id))}
         >
           <TrashIcon className="size-5" />
         </button>

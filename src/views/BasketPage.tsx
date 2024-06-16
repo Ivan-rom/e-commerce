@@ -1,71 +1,56 @@
-import { FormEvent, useEffect, useState } from 'react';
-import {
-  activateCode,
-  addToCard,
-  createCart,
-  getCart,
-  removeFromCart,
-} from '../scripts/api/client';
-import * as commercetools from '@commercetools/platform-sdk';
+import { FormEvent, useState } from 'react';
+import { addToCard, deactivateCode } from '../scripts/api/client';
+// import { CartState } from '../scripts/constants/apInterfaces';
 import CartItem from '../components/CartItem';
 import { Link } from 'react-router-dom';
 import formatPrice from '../scripts/helpers/formatPrice';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-type Cart = commercetools.Cart;
+import {
+  activateDiscountAction,
+  // clearCartAction
+} from '../store/actions/cartActions';
+import { useAppDispatch, useAppSelector } from '../scripts/hooks/storeHooks';
 
 function BasketPage() {
-  const [cart, setCart] = useState<Cart | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const state = useAppSelector((state) => state.cart);
+  const dispatch = useAppDispatch();
   const [isClearing, setIsClearing] = useState(false);
   const [discountCode, setDiscountCode] = useState('');
 
-  useEffect(() => {
-    const { user } = JSON.parse(localStorage.getItem('e-com-user')!);
-
-    getCart(user.id)
-      .then((res) => setCart(res.body))
-      .catch(() => createCart(user.id).then((res) => setCart(res.body)))
-      .finally(() => setIsLoading(false));
-  }, []);
-
-  function clearCart(cart: Cart) {
-    if (!cart || cart?.lineItems.length === 0) {
-      setCart(cart);
-      return;
-    }
-
-    removeFromCart(cart.id, cart.version, cart.lineItems[0].id)
-      .then((newCart) => {
-        clearCart(newCart.body);
-      })
-      .finally(() => setIsClearing(false));
-  }
+  // function clearCart(cart: CartState) {
+  //   dispatch(clearCartAction(cart));
+  // }
 
   function submitDiscount(e: FormEvent) {
     e.preventDefault();
-    activateCode(cart!.id, cart!.version, discountCode)
-      .then((res) => {
-        toast.success('Discount activated!');
-        setCart(res.body);
-      })
+    dispatch(activateDiscountAction(state!.cart, discountCode))
+      .then(() => toast.success('Discount activated!'))
       .catch(() => toast.error("Couldn't activate discount :("));
   }
 
   return (
     <>
-      {cart && (
-        <button
-          onClick={() => addToCard(cart.id, cart.version, '929b0efd-51d1-4832-9c75-d5b28b4064a0')}
-        >
-          Add to cart
-        </button>
+      {state && (
+        <>
+          <button
+            onClick={() =>
+              addToCard(state.cart.id, state.cart.version, '59d63e92-3aa2-4417-bcab-188e60d2f0c6')
+            }
+          >
+            Add to cart 1
+          </button>
+          <button
+            onClick={() =>
+              addToCard(state.cart.id, state.cart.version, '3505286d-7f25-41c5-a4a4-709ea99ea03e')
+            }
+          >
+            Add to cart 2
+          </button>
+        </>
       )}
-      {isLoading ? (
-        <div className="fs-xl">Loading...</div>
-      ) : (
-        cart &&
-        (cart.lineItems.length === 0 ? (
+      {state &&
+        (state.cart.lineItems?.length === 0 ? (
           <div className="fs-xl">
             Your cart is empty. You can go to{' '}
             <Link to="/" className="text-sky-300">
@@ -87,8 +72,8 @@ function BasketPage() {
                 </tr>
               </thead>
               <tbody>
-                {cart.lineItems.map((item) => (
-                  <CartItem item={item} key={item.id} cart={cart} updateCart={setCart} />
+                {state.cart.lineItems.map((item) => (
+                  <CartItem item={item} key={item.id} />
                 ))}
               </tbody>
             </table>
@@ -110,21 +95,21 @@ function BasketPage() {
                 </form>
                 <div className="flex gap-2 items-center">
                   Total price:{' '}
-                  {cart.discountOnTotalPrice ? (
+                  {state.cart.discountOnTotalPrice ? (
                     <div>
-                      <span>{formatPrice(cart.totalPrice)}</span>
+                      <span>{formatPrice(state.cart.totalPrice)}</span>
                       <span className="opacity-50 line-through">
                         {' '}
                         {formatPrice({
-                          ...cart.totalPrice,
+                          ...state.cart.totalPrice,
                           centAmount:
-                            cart.totalPrice.centAmount +
-                            cart.discountOnTotalPrice.discountedAmount.centAmount,
+                            state.cart.totalPrice.centAmount +
+                            state.cart.discountOnTotalPrice.discountedAmount.centAmount,
                         })}
                       </span>
                     </div>
                   ) : (
-                    formatPrice(cart.totalPrice)
+                    formatPrice(state.cart.totalPrice)
                   )}
                   <button className="p-2 bg-sky-900 text-white rounded hover:bg-sky-800 transition-colors">
                     Buy
@@ -140,10 +125,12 @@ function BasketPage() {
               </button>
             </div>
           </>
-        ))
+        ))}
+      {state && (
+        <button onClick={() => deactivateCode(state?.cart.id, state?.cart.version)}>remove</button>
       )}
 
-      {cart && isClearing && (
+      {state && isClearing && (
         <div className="absolute inset-0 z-50">
           <div className="absolute inset-0 bg-black opacity-50">
             <button className="absolute inset-0" onClick={() => setIsClearing(false)}></button>
@@ -159,7 +146,7 @@ function BasketPage() {
               </button>
               <button
                 className="p-2 bg-red-500 text-white rounded hover:bg-red-400 transition-colors"
-                onClick={() => clearCart(cart)}
+                // onClick={() => clearCart(state.cart)}
               >
                 Yes
               </button>
