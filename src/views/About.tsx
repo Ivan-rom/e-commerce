@@ -1,5 +1,5 @@
 import { ReactComponent as LogoIcon } from '../assets/svg/rs_school_js.svg';
-
+// import ivan from '../assets/team/ivan.jpg';
 function About() {
   return (
     <main>
@@ -29,7 +29,7 @@ function About() {
           <img
             className="w-44 h-44 py-4 object-cover"
             alt="Ivan"
-            src="https://avatars.githubusercontent.com/u/60271557?s=400&u=23874aca5968f84be37b08622f3d91e72a43358b&v=4"
+            src={require('../assets/team/ivan.jpg')}
           />
           <div className="h-full">
             <div className="text-sky-800 font-bold text-lg">
@@ -56,7 +56,7 @@ function About() {
           <img
             className="w-44 h-44 py-4 object-cover"
             alt="Ekaterina"
-            src="https://avatars.githubusercontent.com/u/60271557?s=400&u=23874aca5968f84be37b08622f3d91e72a43358b&v=4"
+            src={require('../assets/team/ekaterina.jpg')}
           />
           <div className="h-full">
             <div className="text-sky-800 font-bold text-lg">
@@ -73,7 +73,7 @@ function About() {
           </div>
           <div className="border-t border-gray-200 mt-4">
             <ul className="list-disc pl-8 font-light text-gray-500 text-sm mt-4">
-              <li> Arctitecture </li>
+              <li> Architecture </li>
               <li> Profile management </li>
               <li> Authentification </li>
             </ul>
