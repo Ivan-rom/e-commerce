@@ -32,9 +32,9 @@ export interface Address {
   // apartment: string;
 }
 
-export interface Cart {
-  cart: CartState;
-}
+// export interface Cart {
+//   cart: CartState;
+// }
 
 export interface CartState {
   id: string;
@@ -50,7 +50,9 @@ export interface Auth {
 
 export interface AuthState {
   isLoggedIn: boolean;
+  anonymousId?: string;
   user: {
+    id?: string;
     email: string;
     password: string;
     addresses: Array<Address>;

@@ -4,7 +4,9 @@ import {
   activateCode,
   changeItemInCartQuantity,
   createCart,
+  getAnonymousCart,
   getCart,
+  getCartById,
   removeFromCart,
 } from '../../scripts/api/client';
 import { CartState } from '../../scripts/constants/apInterfaces';
@@ -18,6 +20,28 @@ export const getCartAction = (id: string) => async (dispatch: AppDispatch) => {
     const res = await createCart(id);
     dispatch({ type: CartActions.CREATE_CART, payload: { cart: res.body } });
     return Promise.resolve('Cart created');
+  }
+};
+
+export const getCartByIdAction = (id: string) => async (dispatch: AppDispatch) => {
+  try {
+    const res = await getCartById(id);
+    dispatch({ type: CartActions.GET_CART, payload: { cart: res.body } });
+    return await Promise.resolve('Cart got');
+  } catch {
+    const res = await createCart(id);
+    dispatch({ type: CartActions.CREATE_CART, payload: { cart: res.body } });
+    return Promise.resolve('Something went wrong');
+  }
+};
+
+export const getAnonymousCartAction = (id: string) => async (dispatch: AppDispatch) => {
+  try {
+    const res = await getAnonymousCart(id);
+    dispatch({ type: CartActions.GET_CART, payload: { cart: res.body } });
+    return await Promise.resolve('Cart got');
+  } catch {
+    return Promise.resolve('Something went wrong');
   }
 };
 

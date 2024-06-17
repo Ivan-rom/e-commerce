@@ -23,7 +23,7 @@ function BasketPage() {
 
   function submitDiscount(e: FormEvent) {
     e.preventDefault();
-    dispatch(activateDiscountAction(state!.cart, discountCode))
+    dispatch(activateDiscountAction(state!, discountCode))
       .then(() => toast.success('Discount activated!'))
       .then(() => setDiscountCode(''))
       .catch(() => toast.error("Couldn't activate discount :("));
@@ -35,14 +35,14 @@ function BasketPage() {
         <>
           <button
             onClick={() =>
-              addToCard(state.cart.id, state.cart.version, '59d63e92-3aa2-4417-bcab-188e60d2f0c6')
+              addToCard(state.id, state.version, '59d63e92-3aa2-4417-bcab-188e60d2f0c6')
             }
           >
             Add to cart 1
           </button>
           <button
             onClick={() =>
-              addToCard(state.cart.id, state.cart.version, '3505286d-7f25-41c5-a4a4-709ea99ea03e')
+              addToCard(state.id, state.version, '3505286d-7f25-41c5-a4a4-709ea99ea03e')
             }
           >
             Add to cart 2
@@ -50,7 +50,7 @@ function BasketPage() {
         </>
       )}
       {state &&
-        (state.cart.lineItems?.length === 0 ? (
+        (state.lineItems?.length === 0 ? (
           <div className="fs-xl">
             Your cart is empty. You can go to{' '}
             <Link to="/" className="text-sky-300">
@@ -72,7 +72,7 @@ function BasketPage() {
                 </tr>
               </thead>
               <tbody>
-                {state.cart.lineItems.map((item) => (
+                {state.lineItems.map((item) => (
                   <CartItem item={item} key={item.id} />
                 ))}
               </tbody>
@@ -95,21 +95,21 @@ function BasketPage() {
                 </form>
                 <div className="flex gap-2 items-center">
                   Total price:{' '}
-                  {state.cart.discountOnTotalPrice ? (
+                  {state.discountOnTotalPrice ? (
                     <div>
-                      <span>{formatPrice(state.cart.totalPrice)}</span>
+                      <span>{formatPrice(state.totalPrice)}</span>
                       <span className="opacity-50 line-through">
                         {' '}
                         {formatPrice({
-                          ...state.cart.totalPrice,
+                          ...state.totalPrice,
                           centAmount:
-                            state.cart.totalPrice.centAmount +
-                            state.cart.discountOnTotalPrice.discountedAmount.centAmount,
+                            state.totalPrice.centAmount +
+                            state.discountOnTotalPrice.discountedAmount.centAmount,
                         })}
                       </span>
                     </div>
                   ) : (
-                    formatPrice(state.cart.totalPrice)
+                    formatPrice(state.totalPrice)
                   )}
                   <button className="p-2 bg-sky-900 text-white rounded hover:bg-sky-800 transition-colors">
                     Buy
@@ -126,9 +126,7 @@ function BasketPage() {
             </div>
           </>
         ))}
-      {state && (
-        <button onClick={() => deactivateCode(state?.cart.id, state?.cart.version)}>remove</button>
-      )}
+      {state && <button onClick={() => deactivateCode(state?.id, state?.version)}>remove</button>}
 
       {state && isClearing && (
         <div className="absolute inset-0 z-50">
@@ -146,7 +144,7 @@ function BasketPage() {
               </button>
               <button
                 className="p-2 bg-red-500 text-white rounded hover:bg-red-400 transition-colors"
-                onClick={() => clearCart(state.cart)}
+                onClick={() => clearCart(state)}
               >
                 Yes
               </button>

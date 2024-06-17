@@ -14,7 +14,7 @@ function CartItem({ item }: Props) {
   const state = useAppSelector((state) => state.cart)!;
   const dispatch = useAppDispatch();
   function changeQuantity(quantity: 1 | -1) {
-    dispatch(changeItemQuantityAction(state.cart, item.id, item.quantity + quantity));
+    dispatch(changeItemQuantityAction(state, item.id, item.quantity + quantity));
   }
 
   return (
@@ -62,7 +62,7 @@ function CartItem({ item }: Props) {
       <td>
         <button
           className="text-red-500 hover:text-white hover:bg-red-500 p-2 rounded transition-all"
-          onClick={() => dispatch(removeItemAction(state.cart, item.id))}
+          onClick={() => dispatch(removeItemAction(state, item.id))}
         >
           <TrashIcon className="size-5" />
         </button>
