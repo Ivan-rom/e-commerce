@@ -4,6 +4,7 @@ import {
   ArrowRightStartOnRectangleIcon,
   ArrowLeftStartOnRectangleIcon,
   UserCircleIcon,
+  ShoppingCartIcon,
 } from '@heroicons/react/24/solid';
 import Button from './Button';
 import { useAppDispatch } from '../scripts/hooks/storeHooks';
@@ -16,7 +17,7 @@ export default function Header() {
   const onSubmit = () => dispatch(logout());
   return (
     <header>
-      <nav className="nav text-base inline-flex justify-between w-full items-center">
+      <nav className="nav text-base inline-flex justify-between w-full items-center gap-2">
         <NavLink
           to="/"
           className={({ isActive, isPending }) =>
@@ -24,6 +25,18 @@ export default function Header() {
           }
         >
           Home
+        </NavLink>
+        <NavLink
+          to="/basket"
+          className={({ isActive, isPending }) =>
+            isPending
+              ? 'p-2 rounded ml-auto hover:bg-sky-200 transition-colors'
+              : isActive
+                ? 'bg-sky-900 text-white p-2 rounded ml-auto transition-colors'
+                : 'p-2 rounded ml-auto hover:bg-sky-200 transition-colors'
+          }
+        >
+          <ShoppingCartIcon className="size-5" />
         </NavLink>
         <div className="inline-flex items-center gap-2">
           {!state.isLoggedIn && (

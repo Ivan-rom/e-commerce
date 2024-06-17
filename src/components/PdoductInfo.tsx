@@ -1,7 +1,4 @@
 import { ShoppingCartIcon } from '@heroicons/react/24/solid';
-import { useEffect, useState } from 'react';
-import getDiscountByCategories from '../scripts/helpers/getDiscountByCategories';
-import getDiscountedPrice from '../scripts/helpers/getDiscountedPrice';
 import formatPrice from '../scripts/helpers/formatPrice';
 
 // interfaces doesn't import for no reason
@@ -10,20 +7,13 @@ import formatPrice from '../scripts/helpers/formatPrice';
 import * as commercetools from '@commercetools/platform-sdk';
 type ProductData = commercetools.ProductData;
 type Category = commercetools.Category;
-type Money = commercetools.Money;
 
 interface Props {
   data: ProductData;
   categories: Category[];
 }
 
-interface DiscountedPrice {
-  newPrice: Money;
-  discount: string;
-}
-
 function ProductInfo({ data, categories }: Props) {
-  const [discountedPrice, setDiscountedPrice] = useState<DiscountedPrice | null>(null);
   const variant = data.masterVariant;
   const author = variant.attributes!.find((attr) => attr.name === 'book-author')!.value;
   const weight = variant.attributes!.find((attr) => attr.name === 'book-weight')!.value;
@@ -31,25 +21,22 @@ function ProductInfo({ data, categories }: Props) {
 
   const price = variant.prices![0];
 
-  useEffect(() => {
-    getDiscountByCategories(categories).then((res) => {
-      if (!res) return;
-      setDiscountedPrice(getDiscountedPrice(res, price));
-    });
-  }, [categories, price]);
-
   return (
     <>
       <h2 className="fs-l">by {author}</h2>
       <h1 className="fs-xxl p-0 m-0">{data.name['en-US']}</h1>
 
       <div className="fs-xl relative inline-block">
-        {discountedPrice ? (
+        {price.discounted ? (
           <>
-            <span>{formatPrice(discountedPrice.newPrice)}</span>{' '}
+            <span>{formatPrice(price.discounted.value)}</span>{' '}
             <span className="line-through opacity-50">{formatPrice(price.value)}</span>
             <span className="fs-m absolute top-0 right-0 translate-x-full">
-              -{discountedPrice.discount}
+              -
+              {formatPrice({
+                centAmount: price.value.centAmount - price.discounted.value.centAmount,
+                currencyCode: 'USD',
+              })}
             </span>
           </>
         ) : (
