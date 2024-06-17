@@ -8,6 +8,7 @@ import {
   getCart,
   getCartById,
   removeFromCart,
+  addToCard,
 } from '../../scripts/api/client';
 import { CartState } from '../../scripts/constants/apInterfaces';
 
@@ -51,11 +52,27 @@ export const changeItemQuantityAction =
   (cart: CartState, id: string, quantity: number) => async (dispatch: AppDispatch) => {
     try {
       const res = await changeItemInCartQuantity(cart.id, cart.version, id, quantity);
+
       dispatch({
         type: CartActions.CHANGE_ITEM_QUANTITY,
         payload: { cart: res.body },
       });
+      console.log(res);
       return await Promise.resolve('Quantity changed');
+    } catch {
+      return await Promise.reject('Something went wrong');
+    }
+  };
+
+export const addToCartAction =
+  (cartId: string, version: number, productId: string) => async (dispatch: AppDispatch) => {
+    try {
+      const res = await addToCard(cartId, version, productId);
+      dispatch({
+        type: CartActions.ADD_TO_CART,
+        payload: { cart: res.body },
+      });
+      return await Promise.resolve('Item added to cart');
     } catch {
       return await Promise.reject('Something went wrong');
     }

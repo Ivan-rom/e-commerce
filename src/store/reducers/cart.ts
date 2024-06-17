@@ -26,6 +26,11 @@ export default function (
         ...state,
         ...payload.cart,
       };
+    case CartActions.ADD_TO_CART:
+      return {
+        ...state,
+        ...payload.cart,
+      };
     case CartActions.CHANGE_ITEM_QUANTITY:
       return {
         ...state,

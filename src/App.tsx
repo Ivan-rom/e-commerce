@@ -18,6 +18,7 @@ import {
   getCartByIdAction,
 } from './store/actions/cartActions';
 import { useAppDispatch } from './scripts/hooks/storeHooks';
+import About from './views/About';
 
 ReactModal.setAppElement('#root');
 function App() {
@@ -60,6 +61,7 @@ function App() {
           ) : (
             <Route path="/profile" element={<Navigate replace to="/" />}></Route>
           )}
+          <Route path="/about" element={<About />}></Route>
           <Route path="/basket" element={<BasketPage />}></Route>
           <Route path="/product/:id" element={<ProductPage />}></Route>
           <Route path="*" element={<NotFoundPage />}></Route>

@@ -26,6 +26,15 @@ export default function Header() {
         >
           Home
         </NavLink>
+
+        <NavLink
+          to="/about"
+          className={({ isActive, isPending }) =>
+            isPending ? 'fw-200' : isActive ? 'fw-700 ' : 'fw-200'
+          }
+        >
+          About
+        </NavLink>
         <NavLink
           to="/basket"
           className={({ isActive, isPending }) =>
