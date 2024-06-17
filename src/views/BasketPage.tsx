@@ -1,15 +1,12 @@
 import { FormEvent, useState } from 'react';
 import { addToCard, deactivateCode } from '../scripts/api/client';
-// import { CartState } from '../scripts/constants/apInterfaces';
+import { CartState } from '../scripts/constants/apInterfaces';
 import CartItem from '../components/CartItem';
 import { Link } from 'react-router-dom';
 import formatPrice from '../scripts/helpers/formatPrice';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {
-  activateDiscountAction,
-  // clearCartAction
-} from '../store/actions/cartActions';
+import { activateDiscountAction, removeItemAction } from '../store/actions/cartActions';
 import { useAppDispatch, useAppSelector } from '../scripts/hooks/storeHooks';
 
 function BasketPage() {
@@ -18,14 +15,17 @@ function BasketPage() {
   const [isClearing, setIsClearing] = useState(false);
   const [discountCode, setDiscountCode] = useState('');
 
-  // function clearCart(cart: CartState) {
-  //   dispatch(clearCartAction(cart));
-  // }
+  function clearCart(cart: CartState) {
+    if (cart.lineItems.length === 0) return setIsClearing(false);
+
+    dispatch(removeItemAction(cart, cart.lineItems[0].id)).then((res) => clearCart(res[1]));
+  }
 
   function submitDiscount(e: FormEvent) {
     e.preventDefault();
     dispatch(activateDiscountAction(state!.cart, discountCode))
       .then(() => toast.success('Discount activated!'))
+      .then(() => setDiscountCode(''))
       .catch(() => toast.error("Couldn't activate discount :("));
   }
 
@@ -146,7 +146,7 @@ function BasketPage() {
               </button>
               <button
                 className="p-2 bg-red-500 text-white rounded hover:bg-red-400 transition-colors"
-                // onClick={() => clearCart(state.cart)}
+                onClick={() => clearCart(state.cart)}
               >
                 Yes
               </button>

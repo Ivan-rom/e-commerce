@@ -49,40 +49,17 @@ export const changeItemQuantityAction =
     }
   };
 
-export const removeItemAction = (cart: CartState, id: string) => async (dispatch: AppDispatch) => {
-  try {
-    const res = await removeFromCart(cart.id, cart.version, id);
-    dispatch({
-      type: CartActions.DELETE_ITEM,
-      payload: { cart: res.body },
-    });
-    return await Promise.resolve('Item deleted');
-  } catch {
-    return await Promise.reject('Something went wrong');
-  }
-};
-
-export const clearCartAction = async (cart: CartState) => async (dispatch: AppDispatch) => {
-  try {
-    const currentCart = { ...cart };
-
-    while (currentCart.lineItems.length > 0) {
-      const res = await removeFromCart(
-        currentCart.id,
-        currentCart.version,
-        currentCart.lineItems[0].id,
-      );
-      currentCart.lineItems.shift();
-      currentCart.version = res.body.version;
+export const removeItemAction =
+  (cart: CartState, id: string) =>
+  async (dispatch: AppDispatch): Promise<[string, CartState]> => {
+    try {
+      const res = await removeFromCart(cart.id, cart.version, id);
+      dispatch({
+        type: CartActions.DELETE_ITEM,
+        payload: { cart: res.body },
+      });
+      return await Promise.resolve(['Item deleted', res.body]);
+    } catch {
+      return await Promise.reject(['Something went wrong', cart]);
     }
-
-    dispatch({
-      type: CartActions.CLEAR_CART,
-      payload: currentCart,
-    });
-
-    return 'Cart cleared';
-  } catch {
-    return Promise.reject('Something went wrong');
-  }
-};
+  };

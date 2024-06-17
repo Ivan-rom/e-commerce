@@ -21,7 +21,7 @@ export default function (state = initialState, action: { type: CartActions; payl
     case CartActions.ACTIVATE_DISCOUNT:
       return {
         ...state,
-        cart: { ...state!.cart, discountOnTotalPrice: payload.cart.discountOnTotalPrice },
+        cart: { ...payload.cart },
       };
     case CartActions.CHANGE_ITEM_QUANTITY:
       return {
