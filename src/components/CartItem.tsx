@@ -1,9 +1,10 @@
 import * as commercetools from '@commercetools/platform-sdk';
 import formatPrice from '../scripts/helpers/formatPrice';
-// import { changeItemInCartQuantity, removeFromCart } from '../scripts/api/client';
-// import { TrashIcon } from '@heroicons/react/24/solid';
+// // import { TrashIcon } from '@heroicons/react/24/solid';
 import { Link } from 'react-router-dom';
-// import { CartState } from '../scripts/constants/apInterfaces';
+import { useAppDispatch, useAppSelector } from '../scripts/hooks/storeHooks';
+import { changeItemQuantityAction, removeItemAction } from '../store/actions/cartActions';
+import { TrashIcon } from '@heroicons/react/24/solid';
 type LineItem = commercetools.LineItem;
 
 type Props = {
@@ -11,11 +12,11 @@ type Props = {
 };
 
 function CartItem({ item }: Props) {
-  // function changeQuantity(quantity: 1 | -1) {
-  //   changeItemInCartQuantity(cart.id, cart.version, item.id, item.quantity + quantity).then((res) =>
-  //     updateCart(res.body),
-  //   );
-  // }
+  const state = useAppSelector((state) => state.cart)!;
+  const dispatch = useAppDispatch();
+  function changeQuantity(quantity: 1 | -1) {
+    dispatch(changeItemQuantityAction(state, item.id, item.quantity + quantity));
+  }
 
   return (
     <tr className="border">
@@ -43,31 +44,29 @@ function CartItem({ item }: Props) {
       </td>
       <td>
         <div className="flex justify-center">
-          {/* <button
+          <button
             className="border p-2 hover:bg-sky-300 hover:text-white transition-all"
             onClick={() => changeQuantity(-1)}
           >
             -
-          </button> */}
+          </button>
           <div className="border border-x-0 p-2">{item.quantity}</div>
-          {/* <button
+          <button
             className="border p-2 hover:bg-sky-300 hover:text-white transition-all"
             onClick={() => changeQuantity(1)}
           >
             +
-          </button> */}
+          </button>
         </div>
       </td>
       <td>{formatPrice(item.totalPrice)}</td>
       <td>
-        {/* <button
+        <button
           className="text-red-500 hover:text-white hover:bg-red-500 p-2 rounded transition-all"
-          onClick={() =>
-            removeFromCart(cart.id, cart.version, item.id).then((res) => updateCart(res.body))
-          }
+          onClick={() => dispatch(removeItemAction(state, item.id))}
         >
           <TrashIcon className="size-5" />
-        </button> */}
+        </button>
       </td>
     </tr>
   );

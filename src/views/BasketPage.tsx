@@ -1,142 +1,134 @@
-import { useState } from 'react';
-import { addToCard, removeFromCart } from '../scripts/api/client';
-import { Cart, CartState } from '../scripts/constants/apInterfaces';
+import { FormEvent, useState } from 'react';
+import { addToCard, deactivateCode } from '../scripts/api/client';
+import { CartState } from '../scripts/constants/apInterfaces';
 import CartItem from '../components/CartItem';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import formatPrice from '../scripts/helpers/formatPrice';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useSelector } from 'react-redux';
+import { activateDiscountAction, removeItemAction } from '../store/actions/cartActions';
+import { useAppDispatch, useAppSelector } from '../scripts/hooks/storeHooks';
 
 function BasketPage() {
-  const cart = useSelector((state: Cart) => state.cart);
-  // const [isLoading, setIsLoading] = useState(true);
+  const state = useAppSelector((state) => state.cart);
+  const dispatch = useAppDispatch();
   const [isClearing, setIsClearing] = useState(false);
-  // const [discountCode, setDiscountCode] = useState('');
+  const [discountCode, setDiscountCode] = useState('');
 
-  // useEffect(() => {
-  //   const { user } = JSON.parse(localStorage.getItem('e-com-user')!);
-
-  //   getCart(user.id)
-  //     .then((res) => setCart(res.body))
-  //     .catch(() => createCart(user.id).then((res) => setCart(res.body)))
-  //     .finally(() => setIsLoading(false));
-  // }, []);
   function clearCart(cart: CartState) {
-    if (cart.lineItems.length === 0) return;
+    if (cart.lineItems.length === 0) return setIsClearing(false);
 
-    removeFromCart(cart.id, cart.version, cart.lineItems[0].id)
-      .then((newCart) => {
-        clearCart(newCart.body);
-      })
-      .finally(() => setIsClearing(false));
+    dispatch(removeItemAction(cart, cart.lineItems[0].id)).then((res) => clearCart(res[1]));
   }
 
-  // function submitDiscount(e: FormEvent) {
-  //   e.preventDefault();
-  //   activateCode(cart!.id, cart!.version, discountCode)
-  //     .then((res) => {
-  //       toast.success('Discount activated!');
-  //       setCart(res.body);
-  //     })
-  //     .catch(() => toast.error("Couldn't activate discount :("));
-  // }
+  function submitDiscount(e: FormEvent) {
+    e.preventDefault();
+    dispatch(activateDiscountAction(state!, discountCode))
+      .then(() => toast.success('Discount activated!'))
+      .then(() => setDiscountCode(''))
+      .catch(() => toast.error("Couldn't activate discount :("));
+  }
 
   return (
     <>
-      {cart && (
-        <button
-          onClick={() => addToCard(cart.id, cart.version, '929b0efd-51d1-4832-9c75-d5b28b4064a0')}
-        >
-          Add to cart
-        </button>
-      )}
-      {cart && (
-        // {/* {isLoading ? (
-        //   <div className="fs-xl">Loading...</div>
-        // ) : (
-        //   cart &&
-        //   (cart.lineItems.length === 0 ? (
-        //     <div className="fs-xl">
-        //       Your cart is empty. You can go to{' '}
-        //       <Link to="/" className="text-sky-300">
-        //         catalog
-        //       </Link>{' '}
-        //       to change it
-        //     </div>
-        //   ) : ( */}
+      {state && (
         <>
-          <table className="w-full text-center">
-            <thead>
-              <tr>
-                <th className="max-[660px]:hidden">Image</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total price</th>
-                <th>Delete</th>
-              </tr>
-            </thead>
-            <tbody>
-              {cart.lineItems.map((item) => (
-                <CartItem item={item} key={item.id} />
-              ))}
-            </tbody>
-          </table>
-
-          <div className="flex justify-between items-start mt-4">
-            <div>
-              {/* <form className="mb-2" onSubmit={submitDiscount}>
-              <input
-                type="text"
-                placeholder="Enter discount code"
-                name="discount code"
-                className="p-2 mr-1 border rounded"
-                value={discountCode}
-                onChange={({ target }) => setDiscountCode(target.value)}
-              />
-              <button className="p-2 bg-sky-900 text-white rounded hover:bg-sky-800 transition-colors">
-                Activate discount code
-              </button>
-            </form> */}
-              <div className="flex gap-2 items-center">
-                Total price:{' '}
-                {cart.discountOnTotalPrice ? (
-                  <div>
-                    <span>{formatPrice(cart.totalPrice)}</span>
-                    <span className="opacity-50 line-through">
-                      {' '}
-                      {formatPrice({
-                        ...cart.totalPrice,
-                        centAmount:
-                          cart.totalPrice.centAmount +
-                          cart.discountOnTotalPrice.discountedAmount.centAmount,
-                      })}
-                    </span>
-                  </div>
-                ) : (
-                  formatPrice(cart.totalPrice)
-                )}
-                <button className="p-2 bg-sky-900 text-white rounded hover:bg-sky-800 transition-colors">
-                  Buy
-                </button>
-              </div>
-            </div>
-            <button
-              className="p-2 bg-red-500 text-white rounded hover:bg-red-400 transition-colors"
-              type="button"
-              onClick={() => setIsClearing(true)}
-            >
-              Clear cart
-            </button>
-          </div>
+          <button
+            onClick={() =>
+              addToCard(state.id, state.version, '59d63e92-3aa2-4417-bcab-188e60d2f0c6')
+            }
+          >
+            Add to cart 1
+          </button>
+          <button
+            onClick={() =>
+              addToCard(state.id, state.version, '3505286d-7f25-41c5-a4a4-709ea99ea03e')
+            }
+          >
+            Add to cart 2
+          </button>
         </>
       )}
+      {state &&
+        (state.lineItems?.length === 0 ? (
+          <div className="fs-xl">
+            Your cart is empty. You can go to{' '}
+            <Link to="/" className="text-sky-300">
+              catalog
+            </Link>{' '}
+            to change it
+          </div>
+        ) : (
+          <>
+            <table className="w-full text-center">
+              <thead>
+                <tr>
+                  <th className="max-[660px]:hidden">Image</th>
+                  <th>Name</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Total price</th>
+                  <th>Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                {state.lineItems.map((item) => (
+                  <CartItem item={item} key={item.id} />
+                ))}
+              </tbody>
+            </table>
 
-      {/* ))
-      )} */}
+            <div className="flex justify-between items-start mt-4">
+              <div>
+                <form className="mb-2" onSubmit={submitDiscount}>
+                  <input
+                    type="text"
+                    placeholder="Enter discount code"
+                    name="discount code"
+                    className="p-2 mr-1 border rounded"
+                    value={discountCode}
+                    onChange={({ target }) => setDiscountCode(target.value)}
+                  />
+                  <button className="p-2 bg-sky-900 text-white rounded hover:bg-sky-800 transition-colors">
+                    Activate discount code
+                  </button>
+                </form>
+                <div className="flex gap-2 items-center">
+                  Total price:{' '}
+                  {state.discountOnTotalPrice ? (
+                    <div>
+                      <span>{formatPrice(state.totalPrice)}</span>
+                      <span className="opacity-50 line-through">
+                        {' '}
+                        {formatPrice({
+                          ...state.totalPrice,
+                          centAmount:
+                            state.totalPrice.centAmount +
+                            state.discountOnTotalPrice.discountedAmount.centAmount,
+                        })}
+                      </span>
+                    </div>
+                  ) : (
+                    formatPrice(state.totalPrice)
+                  )}
+                  <button className="p-2 bg-sky-900 text-white rounded hover:bg-sky-800 transition-colors">
+                    Buy
+                  </button>
+                </div>
+              </div>
+              <button
+                className="p-2 bg-red-500 text-white rounded hover:bg-red-400 transition-colors"
+                type="button"
+                onClick={() => setIsClearing(true)}
+              >
+                Clear cart
+              </button>
+            </div>
+          </>
+        ))}
+      {state && <button onClick={() => deactivateCode(state?.id, state?.version)}>remove</button>}
 
-      {cart && isClearing && (
+      {state && isClearing && (
         <div className="absolute inset-0 z-50">
           <div className="absolute inset-0 bg-black opacity-50">
             <button className="absolute inset-0" onClick={() => setIsClearing(false)}></button>
@@ -152,7 +144,7 @@ function BasketPage() {
               </button>
               <button
                 className="p-2 bg-red-500 text-white rounded hover:bg-red-400 transition-colors"
-                onClick={() => clearCart(cart)}
+                onClick={() => clearCart(state)}
               >
                 Yes
               </button>

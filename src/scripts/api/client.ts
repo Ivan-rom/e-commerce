@@ -2,6 +2,7 @@ import { ctpClient } from './buildClient';
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import { Customer, AuthData, userAddress } from '../constants/apInterfaces';
 import { addAddressType, addDefaultAddressType } from '../constants/enums';
+// import { countries } from '../data/countryList';
 const apiRoot = createApiBuilderFromCtpClient(ctpClient).withProjectKey({
   projectKey: <string>process.env.REACT_APP_KEY,
 });
@@ -15,9 +16,6 @@ export const getAnonymousCart = (anonymousId: string) => {
   const cartDraft = {
     currency: 'USD',
     anonymousId,
-    shippingAddress: {
-      country: 'US',
-    },
   };
   return apiRoot
     .carts()
@@ -26,6 +24,22 @@ export const getAnonymousCart = (anonymousId: string) => {
     })
     .execute();
 };
+
+// export const getAnonymousCart = (anonymousId: string) => {
+//   const cartDraft = {
+//     currency: 'USD',
+//     anonymousId,
+//     shippingAddress: {
+//       country: 'US',
+//     },
+//   };
+//   return apiRoot
+//     .carts()
+//     .post({
+//       body: cartDraft,
+//     })
+//     .execute();
+// };
 
 export const getUserInfo = async (id: string) => {
   return await apiRoot
@@ -289,6 +303,10 @@ export const getCart = (id: string) => {
   return apiRoot.carts().withCustomerId({ customerId: id }).get().execute();
 };
 
+export const getCartById = (id: string) => {
+  return apiRoot.carts().withId({ ID: id }).get().execute();
+};
+
 export const createCart = (customerId: string) => {
   return apiRoot
     .carts()
@@ -372,6 +390,28 @@ export const activateCode = (cartId: string, version: number, code: string) => {
           {
             action: 'addDiscountCode',
             code,
+          },
+        ],
+      },
+    })
+    .execute();
+};
+
+// dfda1de9-31dc-4e41-a04f-c270a44544d6
+export const deactivateCode = (cartId: string, version: number) => {
+  return apiRoot
+    .carts()
+    .withId({ ID: cartId })
+    .post({
+      body: {
+        version,
+        actions: [
+          {
+            action: 'removeDiscountCode',
+            discountCode: {
+              typeId: 'discount-code',
+              id: 'dfda1de9-31dc-4e41-a04f-c270a44544d6',
+            },
           },
         ],
       },
