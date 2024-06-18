@@ -23,7 +23,9 @@ function ProductCard({ product, id }: Props) {
     // await addToCard(cardId as string, user.version, id);
   };
 
-  const productInCart = cart.lineItems!.find((item) => item.productId === id);
+  const productInCart = cart.lineItems
+    ? cart.lineItems!.find((item) => item.productId === id)
+    : null;
 
   function changeQuantity(quantity: 1 | -1) {
     const itemQuantity = cart.lineItems!.find((item) => item.productId === id)?.quantity || 0;
