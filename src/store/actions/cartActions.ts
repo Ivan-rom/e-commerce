@@ -15,7 +15,7 @@ export const getCartAction = (id: string) => async (dispatch: AppDispatch) => {
   try {
     const res = await getCart(id);
     dispatch({ type: CartActions.GET_CART, payload: { cart: res.body } });
-    return await Promise.resolve('Cart got');
+    return Promise.resolve('Cart got');
   } catch {
     const res = await createCart(id);
     dispatch({ type: CartActions.CREATE_CART, payload: { cart: res.body } });
@@ -27,10 +27,8 @@ export const getCartByIdAction = (id: string) => async (dispatch: AppDispatch) =
   try {
     const res = await getCartById(id);
     dispatch({ type: CartActions.GET_CART, payload: { cart: res.body } });
-    return await Promise.resolve('Cart got');
+    return Promise.resolve('Cart got');
   } catch {
-    const res = await createCart(id);
-    dispatch({ type: CartActions.CREATE_CART, payload: { cart: res.body } });
     return Promise.resolve('Something went wrong');
   }
 };
@@ -39,7 +37,7 @@ export const getAnonymousCartAction = (id: string) => async (dispatch: AppDispat
   try {
     const res = await getAnonymousCart(id);
     dispatch({ type: CartActions.GET_CART, payload: { cart: res.body } });
-    return await Promise.resolve('Cart got');
+    return Promise.resolve('Cart got');
   } catch {
     return Promise.resolve('Something went wrong');
   }
@@ -53,9 +51,9 @@ export const activateDiscountAction =
         type: CartActions.ACTIVATE_DISCOUNT,
         payload: { cart: res.body },
       });
-      return await Promise.resolve('Code activated');
+      return Promise.resolve('Code activated');
     } catch {
-      return await Promise.reject("Couldn't activate discount :(");
+      return Promise.reject("Couldn't activate discount :(");
     }
   };
 
@@ -67,9 +65,9 @@ export const changeItemQuantityAction =
         type: CartActions.CHANGE_ITEM_QUANTITY,
         payload: { cart: res.body },
       });
-      return await Promise.resolve('Quantity changed');
+      return Promise.resolve('Quantity changed');
     } catch {
-      return await Promise.reject('Something went wrong');
+      return Promise.reject('Something went wrong');
     }
   };
 
@@ -82,8 +80,8 @@ export const removeItemAction =
         type: CartActions.DELETE_ITEM,
         payload: { cart: res.body },
       });
-      return await Promise.resolve(['Item deleted', res.body]);
+      return Promise.resolve(['Item deleted', res.body]);
     } catch {
-      return await Promise.reject(['Something went wrong', cart]);
+      return Promise.reject(['Something went wrong', cart]);
     }
   };

@@ -17,7 +17,7 @@ export const register =
       (res) => {
         dispatch({
           type: AuthActions.REGISTER_SUCCESS,
-          payload: res.body.customer,
+          payload: { user: res.body.customer },
         });
         return Promise.resolve('Account successfully created!');
       },

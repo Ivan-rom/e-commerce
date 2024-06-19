@@ -9,10 +9,11 @@ import {
 import Button from './Button';
 import { useAppDispatch } from '../scripts/hooks/storeHooks';
 import { logout } from '../store/actions/authenticationActions';
-import { Auth } from '../scripts/constants/apInterfaces';
+import { Auth, CartState } from '../scripts/constants/apInterfaces';
 
 export default function Header() {
-  const state = useSelector((state: Auth) => state.auth);
+  const stateAuth = useSelector((state: Auth) => state.auth);
+  const stateCart = useSelector((state: { cart: CartState }) => state.cart);
   const dispatch = useAppDispatch();
   const onSubmit = () => dispatch(logout());
   return (
@@ -26,20 +27,29 @@ export default function Header() {
         >
           Home
         </NavLink>
-        <NavLink
-          to="/basket"
-          className={({ isActive, isPending }) =>
-            isPending
-              ? 'p-2 rounded ml-auto hover:bg-sky-200 transition-colors'
-              : isActive
-                ? 'bg-sky-900 text-white p-2 rounded ml-auto transition-colors'
-                : 'p-2 rounded ml-auto hover:bg-sky-200 transition-colors'
-          }
-        >
-          <ShoppingCartIcon className="size-5" />
-        </NavLink>
+        {stateCart && (
+          <NavLink
+            to="/basket"
+            className={({ isActive, isPending }) =>
+              isPending
+                ? 'p-2 rounded ml-auto hover:bg-sky-200 transition-colors'
+                : isActive
+                  ? 'bg-sky-900 text-white p-2 rounded ml-auto transition-colors'
+                  : 'p-2 rounded ml-auto hover:bg-sky-200 transition-colors'
+            }
+          >
+            <div className="relative">
+              {stateCart.lineItems.length !== 0 && (
+                <div className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 rounded-full bg-sky-300 size-4 flex items-center justify-center fs-s">
+                  {stateCart.lineItems.length}
+                </div>
+              )}
+              <ShoppingCartIcon className="size-5" />
+            </div>
+          </NavLink>
+        )}
         <div className="inline-flex items-center gap-2">
-          {!state.isLoggedIn && (
+          {!stateAuth.isLoggedIn && (
             <NavLink
               to="/login"
               className={({ isActive, isPending }) =>
@@ -51,7 +61,7 @@ export default function Header() {
             </NavLink>
           )}
 
-          {!state.isLoggedIn && (
+          {!stateAuth.isLoggedIn && (
             <NavLink
               to="/register"
               className={({ isActive, isPending }) =>
@@ -62,15 +72,15 @@ export default function Header() {
             </NavLink>
           )}
 
-          {state.isLoggedIn && (
+          {stateAuth.isLoggedIn && (
             <>
               <div className="button-collapsed">
                 <div className="button-collapsed__wrapper">
-                  <div className="font-semibold text-xs">{state.user.email}</div>
+                  <div className="font-semibold text-xs">{stateAuth.user.email}</div>
                   <UserCircleIcon className="h-8 cursor-pointer" />
                   <div className="user-menu">
                     <div className="font-bold text-base py-2">
-                      {state.user.firstName as string} {state.user.lastName as string}
+                      {stateAuth.user.firstName as string} {stateAuth.user.lastName as string}
                     </div>
                     <ul>
                       <li>
