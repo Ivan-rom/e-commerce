@@ -74,6 +74,7 @@ function BasketPage() {
                     Activate discount code
                   </button>
                 </form>
+                <div>Discount code for testing: discount</div>
                 <div className="flex gap-2 items-center">
                   Total price:{' '}
                   {state.discountOnTotalPrice ? (
