@@ -380,25 +380,3 @@ export const activateCode = (cartId: string, version: number, code: string) => {
     })
     .execute();
 };
-
-// dfda1de9-31dc-4e41-a04f-c270a44544d6
-export const deactivateCode = (cartId: string, version: number) => {
-  return apiRoot
-    .carts()
-    .withId({ ID: cartId })
-    .post({
-      body: {
-        version,
-        actions: [
-          {
-            action: 'removeDiscountCode',
-            discountCode: {
-              typeId: 'discount-code',
-              id: 'dfda1de9-31dc-4e41-a04f-c270a44544d6',
-            },
-          },
-        ],
-      },
-    })
-    .execute();
-};

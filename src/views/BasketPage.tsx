@@ -1,5 +1,4 @@
 import { FormEvent, useState } from 'react';
-import { addToCard, deactivateCode } from '../scripts/api/client';
 import { CartState } from '../scripts/constants/apInterfaces';
 import CartItem from '../components/CartItem';
 import { Link } from 'react-router-dom';
@@ -31,24 +30,6 @@ function BasketPage() {
 
   return (
     <>
-      {state && (
-        <>
-          <button
-            onClick={() =>
-              addToCard(state.id, state.version, '59d63e92-3aa2-4417-bcab-188e60d2f0c6')
-            }
-          >
-            Add to cart 1
-          </button>
-          <button
-            onClick={() =>
-              addToCard(state.id, state.version, '3505286d-7f25-41c5-a4a4-709ea99ea03e')
-            }
-          >
-            Add to cart 2
-          </button>
-        </>
-      )}
       {state &&
         (state.lineItems?.length === 0 ? (
           <div className="fs-xl">
@@ -126,7 +107,6 @@ function BasketPage() {
             </div>
           </>
         ))}
-      {state && <button onClick={() => deactivateCode(state?.id, state?.version)}>remove</button>}
 
       {state && isClearing && (
         <div className="absolute inset-0 z-50">
