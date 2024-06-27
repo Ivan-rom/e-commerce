@@ -55,6 +55,11 @@ export enum CartActions {
   CLEAR_CART = 'CLEAR_CART',
 }
 
+export enum CartActions {
+  GET_CART = 'GET_CART',
+  CREATE_CART = 'CREATE_CART',
+}
+
 export enum PageNames {
   main = 'main',
   login = 'login',
