@@ -2,6 +2,7 @@ import { ctpClient } from './buildClient';
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import { Customer, AuthData, userAddress } from '../constants/apInterfaces';
 import { addAddressType, addDefaultAddressType } from '../constants/enums';
+// import { countries } from '../data/countryList';
 const apiRoot = createApiBuilderFromCtpClient(ctpClient).withProjectKey({
   projectKey: <string>process.env.REACT_APP_KEY,
 });
@@ -10,6 +11,19 @@ export const authenticateCustomer = (data: Customer | AuthData) =>
   apiRoot.login().post({
     body: { ...data },
   });
+
+export const getAnonymousCart = (anonymousId: string) => {
+  const cartDraft = {
+    currency: 'USD',
+    anonymousId,
+  };
+  return apiRoot
+    .carts()
+    .post({
+      body: cartDraft,
+    })
+    .execute();
+};
 
 export const getUserInfo = async (id: string) => {
   return await apiRoot
@@ -265,12 +279,104 @@ export const getDiscounts = () => {
   return apiRoot.productDiscounts().get().execute();
 };
 
-// export const addToCard = (id: string) => {
-//   return apiRoot
-//     .carts()
-//     .withId({ ID: id })
-//     .post({
-//       body: {},
-//     })
-//     .execute();
-// };
+export const getDiscountById = (id: string) => {
+  return apiRoot.productDiscounts().withId({ ID: id }).get().execute();
+};
+
+export const getCart = (id: string) => {
+  return apiRoot.carts().withCustomerId({ customerId: id }).get().execute();
+};
+
+export const getCartById = (id: string) => {
+  return apiRoot.carts().withId({ ID: id }).get().execute();
+};
+
+export const createCart = (customerId: string) => {
+  return apiRoot
+    .carts()
+    .post({
+      body: {
+        customerId,
+        currency: 'USD',
+      },
+    })
+    .execute();
+};
+
+export const removeFromCart = (cartId: string, version: number, itemId: string) => {
+  return apiRoot
+    .carts()
+    .withId({ ID: cartId })
+    .post({
+      body: {
+        version,
+        actions: [
+          {
+            action: 'removeLineItem',
+            lineItemId: itemId,
+          },
+        ],
+      },
+    })
+    .execute();
+};
+
+export const addToCard = (cartId: string, version: number, productId: string) => {
+  return apiRoot
+    .carts()
+    .withId({ ID: cartId })
+    .post({
+      body: {
+        version,
+        actions: [
+          {
+            action: 'addLineItem',
+            productId,
+          },
+        ],
+      },
+    })
+    .execute();
+};
+
+export const changeItemInCartQuantity = (
+  cartId: string,
+  version: number,
+  itemId: string,
+  quantity: number,
+) => {
+  return apiRoot
+    .carts()
+    .withId({ ID: cartId })
+    .post({
+      body: {
+        version,
+        actions: [
+          {
+            action: 'changeLineItemQuantity',
+            lineItemId: itemId,
+            quantity,
+          },
+        ],
+      },
+    })
+    .execute();
+};
+
+export const activateCode = (cartId: string, version: number, code: string) => {
+  return apiRoot
+    .carts()
+    .withId({ ID: cartId })
+    .post({
+      body: {
+        version,
+        actions: [
+          {
+            action: 'addDiscountCode',
+            code,
+          },
+        ],
+      },
+    })
+    .execute();
+};

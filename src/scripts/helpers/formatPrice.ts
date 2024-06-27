@@ -1,7 +1,4 @@
-import * as commercetools from '@commercetools/platform-sdk';
-type Money = commercetools.Money;
-
-export default function formatPrice(money: Money): string {
+export default function formatPrice(money: { currencyCode: string; centAmount: number }): string {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: money.currencyCode,
