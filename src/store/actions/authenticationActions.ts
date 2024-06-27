@@ -14,11 +14,12 @@ export const register =
       password: password,
       dateOfBirth: dateOfBirth,
     }).then(
-      () => {
+      (res) => {
         dispatch({
           type: AuthActions.REGISTER_SUCCESS,
+          payload: { user: res.body.customer },
         });
-        return Promise.resolve('Account succesfully created!');
+        return Promise.resolve('Account successfully created!');
       },
       (error) => {
         const message =

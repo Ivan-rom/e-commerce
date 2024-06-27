@@ -2,6 +2,7 @@ import { ctpClient } from './buildClient';
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import { Customer, AuthData, userAddress } from '../constants/apInterfaces';
 import { addAddressType, addDefaultAddressType } from '../constants/enums';
+// import { countries } from '../data/countryList';
 const apiRoot = createApiBuilderFromCtpClient(ctpClient).withProjectKey({
   projectKey: <string>process.env.REACT_APP_KEY,
 });
@@ -15,9 +16,6 @@ export const getAnonymousCart = (anonymousId: string) => {
   const cartDraft = {
     currency: 'USD',
     anonymousId,
-    shippingAddress: {
-      country: 'US',
-    },
   };
   return apiRoot
     .carts()
@@ -287,6 +285,10 @@ export const getDiscountById = (id: string) => {
 
 export const getCart = (id: string) => {
   return apiRoot.carts().withCustomerId({ customerId: id }).get().execute();
+};
+
+export const getCartById = (id: string) => {
+  return apiRoot.carts().withId({ ID: id }).get().execute();
 };
 
 export const createCart = (customerId: string) => {
